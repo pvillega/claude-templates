@@ -1,0 +1,70 @@
+{
+  "name": "Container for Development",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+
+  "features": {
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "default"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2.12.3": {
+      "version": "latest",
+      "enableNonRootDocker": true
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true
+    }
+  },
+
+
+  "postCreateCommand": "bash .devcontainer/postCreate.sh",
+
+  "forwardPorts": [8080, 5432, 6379],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.Go",
+        "rust-lang.rust-analyzer",
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens",
+        "redhat.vscode-yaml",
+        "humao.rest-client",
+        "anthropic.claude-code",
+        "bierner.markdown-mermaid",
+        "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "dbcode.dbcode",
+        "esbenp.prettier-vscode",
+        "github.copilot",
+        "github.copilot-chat",
+        "github.vscode-github-actions",
+        "gruntfuggly.todo-tree",
+        "mechatroner.rainbow-csv",
+        "ms-azuretools.vscode-containers",
+        "ms-vscode.makefile-tools",
+        "ms-vsliveshare.vsliveshare",
+        "mutantdino.resourcemonitor",
+        "oderwat.indent-rainbow",
+        "rangav.vscode-thunder-client",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  },
+
+  "mounts": [
+  ],
+
+  "remoteUser": "vscode"
+}
