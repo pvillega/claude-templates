@@ -141,83 +141,11 @@ else
     exit $EXIT_CODE
 fi
 
-# Sync .mcp.json file
-echo ""
-print_color "$GREEN" "Syncing .mcp.json file:"
-echo "  From: $ORIGIN_REPO/.mcp.json"
-echo "  To:   $DEST_REPO/.mcp.json"
-
-# Prepare rsync options for .mcp.json
-MCP_RSYNC_OPTS=(
-    -av                    # Archive mode + verbose
-    --delete               # Delete files in dest that don't exist in origin
-    --update               # Skip files that are newer on the destination
-    --times                # Preserve modification times
-    --itemize-changes      # Show what changes are being made
-    --backup               # Create backup of destination if overwritten
-    --backup-dir="$DEST_REPO/.mcp.json.backup.$(date +%Y%m%d_%H%M%S)"
-)
-
-# Add dry-run flag if requested
-if [ -n "$DRY_RUN" ]; then
-    MCP_RSYNC_OPTS+=(--dry-run)
-fi
-
-echo "----------------------------------------"
-
-# Run rsync for .mcp.json - use directory sync approach
-if rsync "${MCP_RSYNC_OPTS[@]}" --include=".mcp.json" --exclude="*" "$ORIGIN_REPO/" "$DEST_REPO/"; then
-    echo "----------------------------------------"
-    if [ -n "$DRY_RUN" ]; then
-        print_color "$GREEN" ".mcp.json dry run completed"
-    else
-        print_color "$GREEN" ".mcp.json synchronization completed"
-    fi
-else
-    print_color "$YELLOW" "Warning: .mcp.json sync had issues"
-fi
-
-# Check and update .gitignore (only if .mcp.json exists in destination after sync)
-if [ -f "$DEST_REPO/.mcp.json" ]; then
-    GITIGNORE_PATH="$DEST_REPO/.gitignore"
-    MCP_PATTERN=".mcp.json"
-
-    # Check if .mcp.json is already in .gitignore
-    if [ -f "$GITIGNORE_PATH" ]; then
-        # Check if .mcp.json is already ignored (exact match or with wildcards)
-        if grep -q "^\.mcp\.json$\|^\*\.mcp\.json$\|^/\.mcp\.json$" "$GITIGNORE_PATH" 2>/dev/null; then
-            print_color "$GREEN" ".mcp.json is already in .gitignore"
-        else
-            if [ -n "$DRY_RUN" ]; then
-                print_color "$YELLOW" "Would add .mcp.json to existing .gitignore"
-            else
-                # Add .mcp.json to .gitignore with a comment
-                echo "" >> "$GITIGNORE_PATH"
-                echo "# MCP configuration (contains secrets)" >> "$GITIGNORE_PATH"
-                echo "$MCP_PATTERN" >> "$GITIGNORE_PATH"
-                print_color "$GREEN" "Added .mcp.json to existing .gitignore"
-            fi
-        fi
-    else
-        # Create .gitignore with .mcp.json entry
-        if [ -n "$DRY_RUN" ]; then
-            print_color "$YELLOW" "Would create .gitignore with .mcp.json entry"
-        else
-            cat > "$GITIGNORE_PATH" << 'EOF'
-# MCP configuration (contains secrets)
-.mcp.json
-EOF
-            print_color "$GREEN" "Created .gitignore with .mcp.json entry"
-        fi
-    fi
-fi
-
 # Optional: Show summary of what was synced
 echo ""
 print_color "$GREEN" "Summary:"
 echo "  Origin: $ORIGIN_REPO/.claude/"
 echo "  Destination: $DEST_REPO/.claude/"
-echo "  MCP config: Copied to $DEST_REPO/.mcp.json"
 
 # If not dry run, show the current state
 if [ -z "$DRY_RUN" ]; then
@@ -230,9 +158,4 @@ if [ -z "$DRY_RUN" ]; then
         print_color "$GREEN" "Current .claude folder contents in destination:"
         ls -la "$DEST_REPO/.claude/"
     fi
-
-    # Show .mcp.json status
-    echo ""
-    print_color "$GREEN" ".mcp.json file in destination:"
-    ls -la "$DEST_REPO/.mcp.json"
 fi

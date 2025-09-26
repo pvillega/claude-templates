@@ -5,7 +5,6 @@
 - When creating a ToDo list, be granular with the entries. For example: instead of "style the navbar" add specific steps like "change height from 60px to 80px" and "reduce padding-top from 16px to 12px". It's better to have more steps when they are granular steps, than less steps which have less definition.
 - Use parallel agents where possible
 
-
 ## Code Quality
 
 After every code change, you MUST:

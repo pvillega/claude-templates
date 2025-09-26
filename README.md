@@ -4,7 +4,7 @@ Tools and templates for new Claude Code repos. To be copied to other repositorie
 
 ## Requirements
 
-- The environment variable PERPLEXITY_API_KEY must be defined for Claude Code to work
+- Some environment variables must be defined for Claude Code MCP to work. See envrc.exmaple for the list. You should disable any MCP you haven't configured to avoid inconsistencies.
 - You must provide a valid build bash script `buildAll.sh`. This script is supported to run all relevant build steps: build, lint, test, security scan, formatting, etc. It will be used by Claude Code to verify changes.
 
 ## Contents

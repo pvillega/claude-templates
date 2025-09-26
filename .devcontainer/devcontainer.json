@@ -38,29 +38,32 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "golang.Go",
-        "rust-lang.rust-analyzer",
-        "ms-azuretools.vscode-docker",
-        "eamodio.gitlens",
-        "redhat.vscode-yaml",
-        "humao.rest-client",
         "anthropic.claude-code",
         "bierner.markdown-mermaid",
         "davidanson.vscode-markdownlint",
         "dbaeumer.vscode-eslint",
         "dbcode.dbcode",
+        "eamodio.gitlens",
         "esbenp.prettier-vscode",
         "github.copilot",
         "github.copilot-chat",
         "github.vscode-github-actions",
+        "golang.Go",
         "gruntfuggly.todo-tree",
+        "humao.rest-client",
         "mechatroner.rainbow-csv",
         "ms-azuretools.vscode-containers",
+        "ms-azuretools.vscode-docker",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.autopep8",
         "ms-vscode.makefile-tools",
         "ms-vsliveshare.vsliveshare",
         "mutantdino.resourcemonitor",
         "oderwat.indent-rainbow",
         "rangav.vscode-thunder-client",
+        "redhat.vscode-yaml",
+        "rust-lang.rust-analyzer",
         "streetsidesoftware.code-spell-checker"
       ]
     }
