@@ -17,6 +17,14 @@ The repository has the following files:
   - **devcontainer.json** - Container configuration with Go, Rust, Node.js, Docker-in-Docker, Git, GitHub CLI, and various VS Code extensions for development
   - **postCreate.sh** - Post-creation setup script that installs additional tools including Claude Code CLI and GolangCI-Lint
 
+- **.claude/** - Claude Code configuration and MCP server documentation:
+  - **auto-plan-mode.txt** - Critical workflow requirement file enforcing plan-first execution for all tool operations
+  - **CLAUDE.md** - Agent instructions for tasks, code quality, and communication style preferences
+  - **cl.sh** - Launch script that runs Claude CLI with auto-plan mode enabled
+  - **settings.local.json** - Local settings for MCP server permissions and configurations
+  - **MCP_Deepwiki.md** - Documentation for Deepwiki MCP server integration (repository documentation access)
+  - **MCP_Perplexity.md** - Documentation for Perplexity MCP server integration (real-time web search via Sonar API)
+
 ## How to Use
 
 There are several ways you can copy files from repository A (this repo) to your existing repository B:
