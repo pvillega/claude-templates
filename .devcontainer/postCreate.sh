@@ -45,6 +45,7 @@ curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/insta
 
 echo "🦀 Installing Rust development tools..."
 cargo install cargo-watch cargo-edit cargo-audit
+cargo install --locked difftastic
 
 echo "🔧 Adding Rust components (clippy and rustfmt)..."
 rustup component add clippy rustfmt
