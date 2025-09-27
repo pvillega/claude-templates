@@ -38,7 +38,7 @@ npm install -g @anthropic-ai/claude-code
 
 echo "🔧 Installing SuperClaude..."
 pipx install SuperClaude
-printf "all\n" | SuperClaude install --yes --auto-update --components agents commands core mcp mcp_docs modes
+printf "1,2,3,4,5,6,7\n" | SuperClaude install --yes --auto-update --components agents commands core mcp mcp_docs modes
 
 echo "🔧 Installing GolangCI-Lint..."
 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.4.0
