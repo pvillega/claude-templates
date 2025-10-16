@@ -69,11 +69,8 @@ if [ -f "/home/vscode/.claude.json" ]; then
         }
     },
     "deepwiki": {
-        "command": "npx",
-        "args": [
-            "-y",
-            "mcp-deepwiki@latest"
-        ]
+        "type": "http",
+        "url": "https://mcp.deepwiki.com/mcp"
     }
 }
 EOF
@@ -86,6 +83,20 @@ EOF
     rm -f /tmp/mcp_servers_to_add.json
 
     echo "✅ MCP server configurations added successfully!"
+
+    # Modify serena MCP configuration to disable web dashboard
+    if jq -e '.mcpServers.serena' /home/vscode/.claude.json > /dev/null 2>&1; then
+        # Check if the arguments are not already present
+        if ! jq -e '.mcpServers.serena.args | contains(["--enable-web-dashboard"])' /home/vscode/.claude.json > /dev/null 2>&1; then
+            jq '.mcpServers.serena.args += ["--enable-web-dashboard", "False"]' /home/vscode/.claude.json > /tmp/.claude.json.tmp && \
+                mv /tmp/.claude.json.tmp /home/vscode/.claude.json
+            echo "✅ Serena MCP configuration updated to disable web dashboard!"
+        else
+            echo "ℹ️  Serena web dashboard configuration already present, skipping"
+        fi
+    else
+        echo "ℹ️  Serena MCP server not found, skipping configuration update"
+    fi
 else
     echo "⚠️  .claude.json not found, skipping MCP server configuration"
 fi
