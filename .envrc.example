@@ -1,4 +1,2 @@
 export PERPLEXITY_API_KEY="pplx-"
-export MORPH_API_KEY=""
-export TWENTYFIRST_API_KEY=""
 export TAVILY_API_KEY=""

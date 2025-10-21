@@ -38,7 +38,7 @@ npm install -g @anthropic-ai/claude-code
 
 echo "🔧 Installing SuperClaude..."
 pipx install SuperClaude
-printf "1,2,3,4,5,6,7\n" | SuperClaude install --yes --auto-update --components agents commands core mcp mcp_docs modes
+printf "1,2,4,5,7,8\n" | SuperClaude install --yes --auto-update --components agents commands core mcp mcp_docs modes
 
 echo "🔧 Installing GolangCI-Lint..."
 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.4.0
@@ -83,6 +83,11 @@ EOF
     rm -f /tmp/mcp_servers_to_add.json
 
     echo "✅ MCP server configurations added successfully!"
+
+    # Add autoCompactEnabled setting
+    jq '. + {"autoCompactEnabled": false}' /home/vscode/.claude.json > /tmp/.claude.json.tmp && \
+        mv /tmp/.claude.json.tmp /home/vscode/.claude.json
+    echo "✅ Added autoCompactEnabled setting to .claude.json!"
 
     # Modify serena MCP configuration to disable web dashboard
     if jq -e '.mcpServers.serena' /home/vscode/.claude.json > /dev/null 2>&1; then
