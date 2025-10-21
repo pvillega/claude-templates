@@ -1,0 +1,22 @@
+{
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true,
+    "superpowers-chrome@superpowers-marketplace": false,
+    "elements-of-style@superpowers-marketplace": false
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    }
+  },
+  "enabledMcpjsonServers": [
+    "context7",
+    "sequential-thinking",
+    "serena",
+    "playwright",
+    "deepwiki"
+  ]
+}

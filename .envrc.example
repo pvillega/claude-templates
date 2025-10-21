@@ -1,2 +1,2 @@
 export PERPLEXITY_API_KEY="pplx-"
-export TAVILY_API_KEY=""
+export TAVILY_API_KEY="tvly="

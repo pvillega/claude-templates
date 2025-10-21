@@ -30,78 +30,30 @@ else
     echo "ℹ️  No .envrc file found, skipping auto-allow"
 fi
 
-echo "🔧 Installing Python uv..."
-pipx install uv
-
 echo "📦 Installing Claude Code..."
 npm install -g @anthropic-ai/claude-code
 
-echo "🔧 Installing SuperClaude..."
-pipx install SuperClaude
-printf "1,2,4,5,7,8\n" | SuperClaude install --yes --auto-update --components agents commands core mcp mcp_docs modes
-
-echo "🔧 Installing GolangCI-Lint..."
-curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.4.0
-
-echo "🦀 Installing Rust development tools..."
-cargo install cargo-watch cargo-edit cargo-audit
-cargo install --locked difftastic
-
-echo "🔧 Adding Rust components (clippy and rustfmt)..."
-rustup component add clippy rustfmt
-
 echo "🔧 Configuring additional MCP servers..."
 
-# Add MCP server configurations to .claude.json
+# Add MCP server configurations to .claude.json from default.mcp.json
 if [ -f "/home/vscode/.claude.json" ]; then
-    # Create a temporary file with the new MCP servers to add
-    cat > /tmp/mcp_servers_to_add.json << 'EOF'
-{
-    "perplexity-ask": {
-        "type": "stdio",
-        "command": "npx",
-        "args": [
-            "-y",
-            "server-perplexity-ask"
-        ],
-        "env": {
-            "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
-        }
-    },
-    "deepwiki": {
-        "type": "http",
-        "url": "https://mcp.deepwiki.com/mcp"
-    }
-}
-EOF
+    # Check if default.mcp.json exists in the workspace
+    if [ -f "/workspaces/$(basename $(pwd))/default.mcp.json" ]; then
+        # Use jq to merge MCP servers from default.mcp.json into .claude.json
+        jq -s '.[0] * {mcpServers: (.[0].mcpServers * .[1].mcpServers)}' \
+            /home/vscode/.claude.json \
+            /workspaces/$(basename $(pwd))/default.mcp.json > /tmp/.claude.json.tmp && \
+            mv /tmp/.claude.json.tmp /home/vscode/.claude.json
 
-    # Use jq to merge the new servers into the existing configuration
-    jq '.mcpServers += input' /home/vscode/.claude.json /tmp/mcp_servers_to_add.json > /tmp/.claude.json.tmp && \
-        mv /tmp/.claude.json.tmp /home/vscode/.claude.json
-
-    # Clean up temporary file
-    rm -f /tmp/mcp_servers_to_add.json
-
-    echo "✅ MCP server configurations added successfully!"
+        echo "✅ MCP server configurations merged from default.mcp.json successfully!"
+    else
+        echo "⚠️  default.mcp.json not found in workspace, skipping MCP server merge"
+    fi
 
     # Add autoCompactEnabled setting
     jq '. + {"autoCompactEnabled": false}' /home/vscode/.claude.json > /tmp/.claude.json.tmp && \
         mv /tmp/.claude.json.tmp /home/vscode/.claude.json
     echo "✅ Added autoCompactEnabled setting to .claude.json!"
-
-    # Modify serena MCP configuration to disable web dashboard
-    if jq -e '.mcpServers.serena' /home/vscode/.claude.json > /dev/null 2>&1; then
-        # Check if the arguments are not already present
-        if ! jq -e '.mcpServers.serena.args | contains(["--enable-web-dashboard"])' /home/vscode/.claude.json > /dev/null 2>&1; then
-            jq '.mcpServers.serena.args += ["--enable-web-dashboard", "False"]' /home/vscode/.claude.json > /tmp/.claude.json.tmp && \
-                mv /tmp/.claude.json.tmp /home/vscode/.claude.json
-            echo "✅ Serena MCP configuration updated to disable web dashboard!"
-        else
-            echo "ℹ️  Serena web dashboard configuration already present, skipping"
-        fi
-    else
-        echo "ℹ️  Serena MCP server not found, skipping configuration update"
-    fi
 else
     echo "⚠️  .claude.json not found, skipping MCP server configuration"
 fi
