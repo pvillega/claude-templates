@@ -30,32 +30,24 @@ else
     echo "ℹ️  No .envrc file found, skipping auto-allow"
 fi
 
+echo "📦 Installing uv via pipx, needed for some MCP..."
+pipx install uv
+
 echo "📦 Installing Claude Code..."
 npm install -g @anthropic-ai/claude-code
 
-echo "🔧 Configuring additional MCP servers..."
+echo "🔧 Running Claude to generate local files..."
+claude -p "say hi" || true
 
-# Add MCP server configurations to .claude.json from default.mcp.json
+echo "🔧 Configuring Claude settings..."
+
 if [ -f "/home/vscode/.claude.json" ]; then
-    # Check if default.mcp.json exists in the workspace
-    if [ -f "/workspaces/$(basename $(pwd))/default.mcp.json" ]; then
-        # Use jq to merge MCP servers from default.mcp.json into .claude.json
-        jq -s '.[0] * {mcpServers: (.[0].mcpServers * .[1].mcpServers)}' \
-            /home/vscode/.claude.json \
-            /workspaces/$(basename $(pwd))/default.mcp.json > /tmp/.claude.json.tmp && \
-            mv /tmp/.claude.json.tmp /home/vscode/.claude.json
-
-        echo "✅ MCP server configurations merged from default.mcp.json successfully!"
-    else
-        echo "⚠️  default.mcp.json not found in workspace, skipping MCP server merge"
-    fi
-
     # Add autoCompactEnabled setting
     jq '. + {"autoCompactEnabled": false}' /home/vscode/.claude.json > /tmp/.claude.json.tmp && \
         mv /tmp/.claude.json.tmp /home/vscode/.claude.json
     echo "✅ Added autoCompactEnabled setting to .claude.json!"
 else
-    echo "⚠️  .claude.json not found, skipping MCP server configuration"
+    echo "⚠️  .claude.json not found, skipping configuration"
 fi
 
 echo "✅ Devcontainer setup completed successfully!"

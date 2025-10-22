@@ -12,11 +12,17 @@
       }
     }
   },
+  "enableAllProjectMcpServers": false,
   "enabledMcpjsonServers": [
     "context7",
     "sequential-thinking",
     "serena",
     "playwright",
     "deepwiki"
+  ],
+  "disabledMcpjsonServers":[
+    "chrome-devtools",
+    "tavily",
+    "perplexity-ask"
   ]
 }

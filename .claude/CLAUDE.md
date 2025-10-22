@@ -1,20 +1,47 @@
-# Agent Instructions
+# Instructions
 
 ## Tasks
 
-- When creating a ToDo list, be granular with the entries. For example: instead of "style the navbar" add specific steps like "change height from 60px to 80px" and "reduce padding-top from 16px to 12px". It's better to have more steps when they are granular steps, than less steps which have less definition.
-- Use parallel agents where possible
+- **TodoWrite granularity**: Specific steps over vague tasks
+  - ❌ "style navbar"
+  - ✅ "navbar: height 60→80px, padding-top 16→12px"
+- Use subagents & parallel agents where possible
 
 ## Code Quality
 
-After every code change, you MUST:
+After code changes:
+1. Run `buildAll.sh` → verify build ✅ & tests ✅
+2. 🚨 MUST resolve all issues found
 
-1. Run `buildAll.sh` to verify that the code builds successfully and tests pass.
-2. IMPORTANT: You MUST resolve any security issues identified during compilation.
+## Git Operations & Coordination
 
-## Communication Style
+**File Operations**:
+- Delete: obsolete files from your changes ✅ | others' work ❌ (ask first)
+- ⚠️ Before deleting to fix type/lint errors → ask user (may break other agents' work)
+- Revert: your changes ✅ | others' work ❌ (coordinate)
+- Move/rename/restore: allowed ✅
+- `.env` files: never edit ❌
 
-- Avoid condescending language like "you're absolutely right" or similar phrases - Be direct and helpful without being patronizing
-- Focus on providing solutions and explanations rather than validation
-- Maintain a collaborative and professional tone
-- Avoid opinionated, biased, and consistently extra output
+**Destructive Operations 🚨**:
+- `git reset --hard`, `git checkout/restore` to old commits → NEVER without explicit approval
+- Treat as catastrophic → when unsure, ask first
+
+**Commit Discipline**:
+- `git status` before every commit
+- Atomic commits: only files you touched, explicit paths
+- Tracked: `git commit -m "msg" -- path/file1 path/file2`
+- New: `git restore --staged :/ && git add "path/file1" && git commit -m "msg" -- path/file1`
+- Quote paths with `[]()` chars
+- `git rebase`: export `GIT_EDITOR=:` `GIT_SEQUENCE_EDITOR=:` (or `--no-edit`)
+- Never amend without explicit approval
+
+## MCP Documentation
+
+@MCP_Context7
+@MCP_ChromeDevTools
+@MCP_Deepwiki
+@MCP_Perplexity
+@MCP_Playwright
+@MCP_Serena
+@MCP_Sequential
+@MCP_Tavily

@@ -4,54 +4,57 @@ Tools and templates for new Claude Code repos. To be copied to other repositorie
 
 ## Requirements
 
-- Some environment variables must be defined for Claude Code MCP to work. See envrc.exmaple for the list. You should disable any MCP you haven't configured to avoid inconsistencies.
+- Some environment variables must be defined for Claude Code MCP to work. See envrc.example for the list.
 - You must provide a valid build bash script `buildAll.sh`. This script is supported to run all relevant build steps: build, lint, test, security scan, formatting, etc. It will be used by Claude Code to verify changes.
+-Running **sync-claude-folders.sh** requires `jq` installed
+
+
+NOTE: By default MCP that require Env vars are disabled, to both avoid errors and to preserve context. Enable them as needed.
+
 
 ## Contents
 
 The repository has the following files:
 
 - **sync-claude-folders.sh** - A bash script for syncing .claude folders between repositories using rsync. Features colorized output, dry-run mode, error handling, and automatic creation of destination directories.
+- **.devcontainer/** - VS Code devcontainer configuration for setting up a complete development environment
+- **.claude/** - Claude Code configuration and MCP server documentation
+- **.mcp.json** - Default MCP servers configured
 
-- **.devcontainer/** - VS Code devcontainer configuration for setting up a complete development environment:
-  - **devcontainer.json** - Container configuration with Go, Rust, Node.js, Docker-in-Docker, Git, GitHub CLI, and various VS Code extensions for development
-  - **postCreate.sh** - Post-creation setup script that installs additional tools including Claude Code CLI and GolangCI-Lint
+## Language-Specific Tools
 
-- **.claude/** - Claude Code configuration and MCP server documentation:
-  - **auto-plan-mode.txt** - Critical workflow requirement file enforcing plan-first execution for all tool operations
-  - **CLAUDE.md** - Agent instructions for tasks, code quality, and communication style preferences
-  - **cl.sh** - Launch script that runs Claude CLI with auto-plan mode enabled
-  - **settings.local.json** - Local settings for MCP server permissions and configurations
-  - **MCP_Deepwiki.md** - Documentation for Deepwiki MCP server integration (repository documentation access)
-  - **MCP_Perplexity.md** - Documentation for Perplexity MCP server integration (real-time web search via Sonar API)
+The `.devcontainer/` directory contains modular setup scripts for additional language-specific development tools:
+
+- **setup-python.sh** - Installs Python `uv` package manager via pipx
+- **setup-rust.sh** - Installs Rust cargo tools (cargo-binstall, cargo-edit, difftastic, etc.)
+- **setup-go.sh** - Installs GolangCI-Lint for Go code quality checking
+
+These scripts can be run after initial devcontainer setup to install additional tools for your specific language needs
 
 ## How to Use
 
-There are several ways you can copy files from repository A (this repo) to your existing repository B:
-
-### 1. **Manual Copy via Git (Recommended)**
+Use the included `sync-claude-folders.sh` script to copy configuration files from this repository to your target repository:
 
 ```bash
-# In your local copy of repo B
-git remote add repoA https://github.com/yourusername/repoA.git
-git fetch repoA
-git checkout repoA/main -- path/to/files
-# Or to get all files:
-git checkout repoA/main -- .
-git commit -m "Add files from repo A"
+# Basic usage
+./sync-claude-folders.sh /path/to/claude-templates /path/to/your-repo
+
+# Dry-run mode (preview changes without applying)
+./sync-claude-folders.sh -d /path/to/claude-templates /path/to/your-repo
+
+# Show help
+./sync-claude-folders.sh --help
 ```
 
-### 2. **Using Git Subtree**
+**What gets synced:**
+- `.claude/` directory (Claude Code configuration and MCP documentation)
+- `.devcontainer/` directory (VS Code devcontainer and language setup scripts)
+- `.envrc.example` file (environment variable template)
+- `.mcp.json` file (MCP config, merged via jq with destination)
 
-If you want to maintain a connection to repo A:
+## Acknowledgements
 
-```bash
-# In repo B
-git subtree add --prefix=subfolder/ https://github.com/yourusername/repoA.git main --squash
-```
+This repository was inspired by and incorporates patterns from:
 
-### 3. **Download and Copy**
-
-- Download repo A as a ZIP file
-- Extract and copy the files you need
-- Add them to repo B and commit
+- **[SuperClaude Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework)**: A comprehensive framework for enhanced Claude Code capabilities
+- **[ClaudeLog](https://claudelog.com)**: community-driven best practices and patterns
