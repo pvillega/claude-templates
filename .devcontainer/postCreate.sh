@@ -36,8 +36,22 @@ pipx install uv
 echo "📦 Installing Claude Code..."
 npm install -g @anthropic-ai/claude-code
 
-echo "🔧 Running Claude to generate local files..."
-claude -p "say hi" || true
+echo "🔌 Installing Claude Code plugins..."
+
+# Add marketplace if not already present
+echo "  📦 Adding superpowers marketplace..."
+claude plugin marketplace add obra/superpowers-marketplace || echo "  ℹ️  Marketplace already added"
+
+# Install the superpowers plugin
+echo "  ⚡ Installing superpowers plugin..."
+claude plugin install superpowers@superpowers-marketplace || echo "  ℹ️  Plugin already installed"
+
+# Verify installation
+if claude plugin marketplace list 2>/dev/null | grep -q "superpowers-marketplace"; then
+    echo "  ✅ Superpowers plugin installed successfully!"
+else
+    echo "  ⚠️  Plugin installation may have failed"
+fi
 
 echo "🔧 Configuring Claude settings..."
 
