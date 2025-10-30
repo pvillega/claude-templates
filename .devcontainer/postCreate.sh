@@ -38,11 +38,9 @@ npm install -g @anthropic-ai/claude-code
 
 echo "🔌 Installing Claude Code plugins..."
 
-# Add marketplace if not already present
 echo "  📦 Adding superpowers marketplace..."
 claude plugin marketplace add obra/superpowers-marketplace || echo "  ℹ️  Marketplace already added"
 
-# Install the superpowers plugin
 echo "  ⚡ Installing superpowers plugin..."
 claude plugin install superpowers@superpowers-marketplace || echo "  ℹ️  Plugin already installed"
 
@@ -52,6 +50,20 @@ if claude plugin marketplace list 2>/dev/null | grep -q "superpowers-marketplace
 else
     echo "  ⚠️  Plugin installation may have failed"
 fi
+
+echo "  🎭 Installing playwright skill..."
+claude plugin marketplace add lackeyjb/playwright-skill || echo "  ℹ️  Marketplace already added"
+claude plugin install playwright-skill@playwright-skill || echo "  ℹ️  Plugin already installed"
+
+# Run setup for playwright skill
+if [ -d "$HOME/.claude/plugins/marketplaces/playwright-skill/skills/playwright-skill" ]; then
+    cd "$HOME/.claude/plugins/marketplaces/playwright-skill/skills/playwright-skill"
+    npm run setup
+    echo "  ✅ Playwright skill setup completed!"
+else
+    echo "  ⚠️  Playwright skill directory not found, skipping setup"
+fi
+cd /workspaces/$(basename $(pwd))
 
 echo "🔧 Configuring Claude settings..."
 
