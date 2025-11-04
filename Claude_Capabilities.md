@@ -2,6 +2,30 @@
 
 This file explains some of the tools included in this configuration. This file may become outdated as plugins used evolve, so take it as a weak reference of what is included, but verify yourself.
 
+## Commands
+
+This configuration includes the following commands, which are basically triggers for certain skills:
+
+- **/superpowers:brainstorm**: triggers the brainstorming skill. It triggers the interactive design refinement process where Claude asks structured questions to transform rough ideas into fully-formed designs. It guides Claude through a conversational process of exploring alternatives, asking clarifying questions one at a time, and ultimately presenting a design in 200-300 word sections with validation steps.
+
+- **/superpowers:execute-plan**: activates the planning skill. This creates structured implementation plans for development work. It guides Claude to break down features into concrete, testable steps with clear verification criteria. The skill emphasizes creating plans that can be executed in batches and includes specifics on how to verify each step is complete before moving forward.
+
+- **/superpowers:write-plan**: launches the plan execution skill. This systematically works through implementation plans created by write-plan, executing each step with proper testing and verification. It follows a batch-based approach where Claude works through logical chunks of the plan, and validates completion at each stage.
+
+- **/ct:grammar-check**: checks the grammar and spelling of a text file passed as parameter. It follows British english rules, and creates a backup of the file first.
+
+- **/ct:commit-msg.md**: generates a commit message for the current changes and displays it, but doesn't commit the changes themselves.
+
+- **/ct:commit-msg.md**: commits the current changes, generating an appropriate message for them.
+
+## Agents
+
+- **code-reviewer (from superpowers)**: An agent configuration file that defines a Senior Code Reviewer persona for Claude Code's sub-agent system. This agent activates when a major project step has been completed and needs review against the original plan and coding standards. It uses the Sonnet model.
+
+## Skills
+
+- **Duplicate code detector**: uses jscpd (copuy-paste detector) to find duplicate code. Triggered when referring to code quality, refactoring, technical debt, or similar.
+
 ## MCP Servers
 
 This configuration includes the following MCP (Model Context Protocol) servers, each providing specialized capabilities:
@@ -21,4 +45,3 @@ This configuration includes the following MCP (Model Context Protocol) servers, 
 - **Perplexity-Ask** (`server-perplexity-ask`): Official MCP implementation for Perplexity's Sonar API, providing real-time web-wide research capabilities. Integrates Perplexity's search engine for live web searches, reasoning, and research without outdated training data. Ideal for current information needs and comprehensive answer generation with cited sources.
 
 - **DeepWiki** (`https://mcp.deepwiki.com/mcp`): Free remote MCP server providing programmatic access to documentation and search for GitHub repositories indexed on DeepWiki.com. Offers tools for reading wiki structure, retrieving documentation, and asking questions about repositories. Ideal for code understanding, architecture exploration, and technical Q&A on open-source projects.
-
