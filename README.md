@@ -8,7 +8,6 @@ Tools and templates for new Claude Code repos. To be copied to other repositorie
 - You must provide a valid build bash script `buildAll.sh`. This script is supported to run all relevant build steps: build, lint, test, security scan, formatting, etc. It will be used by Claude Code to verify changes.
 -Running **sync-claude-folders.sh** requires `jq` installed
 
-
 NOTE: By default MCP that require Env vars are disabled, to both avoid errors and to preserve context. Enable them as needed.
 
 
@@ -25,7 +24,6 @@ The repository has the following files:
 
 The `.devcontainer/` directory contains modular setup scripts for additional language-specific development tools:
 
-- **setup-python.sh** - Installs Python `uv` package manager via pipx
 - **setup-rust.sh** - Installs Rust cargo tools (cargo-binstall, cargo-edit, difftastic, etc.)
 - **setup-go.sh** - Installs GolangCI-Lint for Go code quality checking
 
@@ -52,9 +50,66 @@ Use the included `sync-claude-folders.sh` script to copy configuration files fro
 - `.envrc.example` file (environment variable template)
 - `.mcp.json` file (MCP config, merged via jq with destination)
 
+## Relevant Claude Configuration
+
+Read [Claude_Capabilities.md](./Claude_Capabilities.md) for a list of capabilities added to Claude with this tool.
+
+## Manual Setup (Without Devcontainer)
+
+If you prefer not to use devcontainer, you can set up the Claude development environment directly on your macOS or Linux machine.
+
+**NOTE:** This is **NOT** recommended, as you risk your environment to be compromised, or data to be exfiltrated. But if you are using an isolated VM or similar, this may be safe, and simpler to use across repositories.
+
+### Prerequisites
+
+**macOS:**
+- [Homebrew](https://brew.sh) (required)
+- Node.js and npm
+- Python 3.8+ (for pipx)
+
+**Linux:**
+- Node.js and npm
+- Python 3.8+ (for pipx)
+- sudo access for package installation
+
+### Running the Setup
+
+From the repository root, run:
+
+```bash
+bash .devcontainer/setup-claude-dev.sh
+```
+
+This script will:
+- Detect your OS (macOS or Linux) and install appropriate system packages
+- Install and configure direnv (adds hooks to `~/.bashrc` and `~/.zshrc`)
+- Auto-allow `.envrc` in the current directory
+- Install pipx and uv
+- Install Claude Code globally
+- Install jscpd (copy-paste detector)
+- Install Claude Code plugins (superpowers, playwright-skill)
+- Configure `~/.claude.json` settings
+
+### Optional Language-Specific Tools
+
+After running the main setup, you can optionally install language-specific development tools:
+
+```bash
+# For Rust development
+bash .devcontainer/setup-rust.sh
+
+# For Go development
+bash .devcontainer/setup-go.sh
+```
+
+**Note:** You may need to restart your shell or source your shell configuration file (e.g., `source ~/.zshrc`) for direnv and other changes to take effect.
+
+**Note:** You still need to use `sync-claude-folders.sh` to sync files to your repository, so that you get the relevant `.claude` files. But doing this, you don't need to start a devcontainer to develop.
+
 ## Acknowledgements
 
 This repository was inspired by and incorporates patterns from:
 
 - **[SuperClaude Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework)**: A comprehensive framework for enhanced Claude Code capabilities
+- **[Superpowers](https://github.com/obra/superpowers/)**: A comprehensive skills library of proven techniques, patterns, and workflows for AI coding assistants
 - **[ClaudeLog](https://claudelog.com)**: community-driven best practices and patterns
