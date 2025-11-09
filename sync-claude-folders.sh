@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to sync .claude and .devcontainer folders, plus .envrc.example file from origin repository to destination repository
+# Script to sync .claude and .devcontainer folders, plus .envrc.example and devbranch.sh files from origin repository to destination repository
 # Usage: ./sync-claude-folders.sh /path/to/origin/repo /path/to/destination/repo
 
 set -e  # Exit on error
@@ -20,7 +20,7 @@ print_color() {
 usage() {
     echo "Usage: $0 <origin_repo_path> <destination_repo_path>"
     echo ""
-    echo "Syncs .claude and .devcontainer folders, plus .envrc.example file from origin repository to destination repository"
+    echo "Syncs .claude and .devcontainer folders, plus .envrc.example and devbranch.sh files from origin repository to destination repository"
     echo "Options:"
     echo "  -h, --help     Show this help message"
     echo "  -d, --dry-run  Show what would be synced without making changes"
@@ -89,6 +89,9 @@ fi
 FILES_TO_SYNC=()
 if [ -f "$ORIGIN_REPO/.envrc.example" ]; then
     FILES_TO_SYNC+=(".envrc.example")
+fi
+if [ -f "$ORIGIN_REPO/devbranch.sh" ]; then
+    FILES_TO_SYNC+=("devbranch.sh")
 fi
 
 # Check for .mcp.json file (handled separately with merge logic)
