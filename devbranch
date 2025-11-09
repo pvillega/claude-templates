@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# devbranch - Automated branch container management for parallel feature development
+# devbranch - Automated branch management for parallel feature development
 # Usage: ./devbranch <branch-name> [options]
 
 set -e  # Exit on error
@@ -24,13 +24,13 @@ Usage: $0 <branch-name> [options]
        $0 --list
        $0 --clean <branch-name>
 
-Automated branch container management for parallel feature development.
-Creates isolated dev container environments for each branch.
+Automated branch management for parallel feature development.
+Creates isolated git clones for each branch in sibling directories.
 
 Commands:
-  <branch-name>           Create/open branch container for specified branch
-  --list                  List all branch containers with status
-  --clean <branch-name>   Stop container and remove branch directory
+  <branch-name>           Create/open branch in sibling directory
+  --list                  List all branch directories
+  --clean <branch-name>   Remove branch directory
 
 Options:
   -h, --help              Show this help message
@@ -38,20 +38,18 @@ Options:
   -n, --no-open           Skip opening VS Code after setup
 
 Examples:
-  $0 feature-auth                    # Create branch container
+  $0 feature-auth                    # Create branch in sibling directory
   $0 feature-auth --dry-run          # Preview creation
-  $0 --list                          # List all containers
-  $0 --clean feature-auth            # Remove branch container
+  $0 --list                          # List all branch directories
+  $0 --clean feature-auth            # Remove branch directory
 
 Directory structure:
   If current project is at: /path/to/project
-  Branch container created: /path/to/project-<branch-name>
+  Branch directory created: /path/to/project-<branch-name>
 
 Requirements:
   - git
-  - Docker Desktop (running)
-  - @devcontainers/cli (npm install -g @devcontainers/cli)
-  - code command (VS Code CLI)
+  - code command (VS Code CLI, optional)
 
 EOF
     exit 1
@@ -76,26 +74,6 @@ check_dependencies() {
         missing_deps+=("git")
     fi
 
-    # Check Docker
-    if command_exists docker && docker info &> /dev/null; then
-        print_color "$GREEN" "✓ Docker running"
-    else
-        if command_exists docker; then
-            print_color "$RED" "✗ Docker found but not running"
-            echo "  Please start Docker Desktop"
-        else
-            missing_deps+=("docker")
-        fi
-        return 1
-    fi
-
-    # Check devcontainer CLI
-    if command_exists devcontainer; then
-        print_color "$GREEN" "✓ devcontainer CLI found"
-    else
-        missing_deps+=("devcontainer")
-    fi
-
     # Check VS Code CLI (warning only)
     if command_exists code; then
         print_color "$GREEN" "✓ code command found"
@@ -111,12 +89,6 @@ check_dependencies() {
             case $dep in
                 git)
                     echo "  - git: Install from https://git-scm.com/"
-                    ;;
-                docker)
-                    echo "  - Docker Desktop: Install from https://www.docker.com/products/docker-desktop"
-                    ;;
-                devcontainer)
-                    echo "  - devcontainer CLI: npm install -g @devcontainers/cli"
                     ;;
             esac
         done
@@ -168,11 +140,11 @@ get_repo_info() {
     fi
 }
 
-# List branch containers
-list_containers() {
+# List branch directories
+list_directories() {
     get_repo_info
 
-    print_color "$BLUE" "Branch containers for '$PROJECT_NAME':"
+    print_color "$BLUE" "Branch directories for '$PROJECT_NAME':"
     echo ""
 
     # Find all directories matching the pattern
@@ -182,68 +154,36 @@ list_containers() {
             found=$((found + 1))
             local branch_name=$(basename "$dir" | sed "s/^${PROJECT_NAME}-//")
 
-            # Check container status
-            local container_name="devcontainer-${PROJECT_NAME}-${branch_name}"
-            local container_status="no container"
-
-            if docker ps --filter "name=${container_name}" --format '{{.Names}}' 2>/dev/null | grep -q "$container_name"; then
-                container_status="${GREEN}container running${NC}"
-            elif docker ps -a --filter "name=${container_name}" --format '{{.Names}}' 2>/dev/null | grep -q "$container_name"; then
-                container_status="${YELLOW}container stopped${NC}"
-            fi
-
-            echo -e "  ${GREEN}${branch_name}${NC}  (${container_status})"
+            echo -e "  ${GREEN}${branch_name}${NC}"
             echo "  └─ $dir"
             echo ""
         fi
     done
 
     if [ $found -eq 0 ]; then
-        print_color "$YELLOW" "No branch containers found"
+        print_color "$YELLOW" "No branch directories found"
         echo "Create one with: $0 <branch-name>"
     else
-        print_color "$GREEN" "Total: $found branch container(s)"
+        print_color "$GREEN" "Total: $found branch director(ies)"
     fi
 }
 
-# Clean up branch container
-clean_container() {
+# Clean up branch directory
+clean_directory() {
     local branch_name=$1
     get_repo_info
 
     local target_dir="$PARENT_DIR/${PROJECT_NAME}-${branch_name}"
 
     if [ ! -d "$target_dir" ]; then
-        print_color "$RED" "Error: Branch container not found: $target_dir"
+        print_color "$RED" "Error: Branch directory not found: $target_dir"
         exit 1
     fi
 
-    print_color "$YELLOW" "Cleaning up branch container:"
+    print_color "$YELLOW" "Cleaning up branch directory:"
     echo "  Branch: $branch_name"
     echo "  Location: $target_dir"
     echo ""
-
-    # Check for running container
-    local container_name="devcontainer-${PROJECT_NAME}-${branch_name}"
-    if docker ps --filter "name=${container_name}" --format '{{.Names}}' 2>/dev/null | grep -q "$container_name"; then
-        print_color "$YELLOW" "Stopping running container..."
-        if [ -z "$DRY_RUN" ]; then
-            docker stop "$container_name" &> /dev/null || true
-            print_color "$GREEN" "✓ Container stopped"
-        else
-            print_color "$YELLOW" "Would stop container: $container_name"
-        fi
-    fi
-
-    # Remove container if it exists
-    if docker ps -a --filter "name=${container_name}" --format '{{.Names}}' 2>/dev/null | grep -q "$container_name"; then
-        if [ -z "$DRY_RUN" ]; then
-            docker rm "$container_name" &> /dev/null || true
-            print_color "$GREEN" "✓ Container removed"
-        else
-            print_color "$YELLOW" "Would remove container: $container_name"
-        fi
-    fi
 
     # Confirm deletion
     if [ -z "$DRY_RUN" ]; then
@@ -267,17 +207,17 @@ clean_container() {
     fi
 
     echo ""
-    print_color "$GREEN" "✅ Branch container cleaned up successfully!"
+    print_color "$GREEN" "✅ Branch directory cleaned up successfully!"
 }
 
-# Create branch container
-create_container() {
+# Create branch directory
+create_directory() {
     local branch_name=$1
     get_repo_info
 
     local target_dir="$PARENT_DIR/${PROJECT_NAME}-${branch_name}"
 
-    print_color "$BLUE" "Creating branch container..."
+    print_color "$BLUE" "Creating branch directory..."
     echo "  Source: $REPO_ROOT"
     echo "  Target: $target_dir"
     echo "  Branch: $branch_name"
@@ -355,25 +295,6 @@ create_container() {
         echo ""
     fi
 
-    # Start dev container
-    print_color "$BLUE" "Starting dev container..."
-    if [ -z "$DRY_RUN" ]; then
-        if devcontainer up --workspace-folder "$target_dir"; then
-            print_color "$GREEN" "✓ Container started"
-        else
-            print_color "$RED" "✗ Container start failed"
-            echo ""
-            print_color "$YELLOW" "Troubleshooting tips:"
-            echo "  - Check .devcontainer/devcontainer.json configuration"
-            echo "  - Ensure Docker has enough resources"
-            echo "  - Check Docker logs for errors"
-            exit 1
-        fi
-    else
-        print_color "$YELLOW" "Would run: devcontainer up --workspace-folder $target_dir"
-    fi
-    echo ""
-
     # Open in VS Code
     if [ "$NO_OPEN" != "true" ]; then
         print_color "$BLUE" "Opening in VS Code..."
@@ -393,20 +314,13 @@ create_container() {
 
     # Summary
     echo "----------------------------------------"
-    print_color "$GREEN" "✅ Branch container ready!"
+    print_color "$GREEN" "✅ Branch directory ready!"
     echo ""
     echo "Summary:"
     echo "  Project: $PROJECT_NAME"
     echo "  Branch: $branch_name"
     echo "  Location: $target_dir"
-    if [ -z "$DRY_RUN" ]; then
-        echo "  Container: Running"
-    fi
     echo ""
-
-    if [ "$NO_OPEN" != "true" ] && command_exists code; then
-        print_color "$YELLOW" "Next step: Click 'Reopen in Container' when VS Code prompts"
-    fi
 }
 
 # Parse arguments
@@ -457,14 +371,14 @@ done
 # Execute command
 case $COMMAND in
     list)
-        list_containers
+        list_directories
         ;;
     clean)
         if [ -n "$DRY_RUN" ]; then
             print_color "$YELLOW" "DRY RUN MODE - No changes will be made"
             echo ""
         fi
-        clean_container "$BRANCH_NAME"
+        clean_directory "$BRANCH_NAME"
         ;;
     *)
         if [ -z "$BRANCH_NAME" ]; then
@@ -481,6 +395,6 @@ case $COMMAND in
             exit 1
         fi
 
-        create_container "$BRANCH_NAME"
+        create_directory "$BRANCH_NAME"
         ;;
 esac
