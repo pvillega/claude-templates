@@ -12,7 +12,13 @@ This configuration includes the following commands, which are basically triggers
 
 - **/ct:grammar-check**: checks the grammar and spelling of a text file passed as a parameter. It follows British English rules and creates a backup of the file first.
 
+- **/ct:reflect**: performs task reflection and validation using Serena MCP analysis capabilities. Supports scopes: 'task' (validate alignment), 'info' (assess completeness), 'done' (evaluate completion), or 'full' (comprehensive validation across all dimensions). Usage: `/ct:reflect [optional: scope]`
+
 - **/ct:skills-check**: lists skills available (and loaded) on this session. Claude seems ot be missing a command for this.
+
+- **/ct:test-agent**: tests an agent using the testing-agents-with-subagents framework. Validates agent names (custom or Task tool subagent), writes test artifacts to /tmp, and generates reports in .claude/test-reports/. Usage: `/ct:test-agent <agent-name>`
+
+- **/ct:test-command**: tests a slash command using the testing-commands-with-subagents framework. Validates command integrity under pressure scenarios, writes test artifacts to /tmp, and generates reports in .claude/test-reports/. Usage: `/ct:test-command <command-name>`
 
 - **/ct:test-skill**: tests a skill using the testing-skills-with-subagents framework. It validates skill names (requires namespace), writes test artifacts to /tmp, and generates reports in .claude/test-reports/. Usage: `/ct:test-skill <namespace:skill-name>`
 
@@ -30,6 +36,8 @@ The commands below are included, and originate from the [Superpowers](https://gi
 ## Agents
 
 This configuration includes the following agents:
+
+- **rust-expert**: A specialized agent for Rust development that delivers production-ready, secure, high-performance Rust code following ownership principles and modern best practices. Focuses on production quality with security-first development, comprehensive testing (TDD approach with 95%+ coverage), safety implementation, and performance engineering. Applies SOLID principles and clean architecture patterns.
 
 ### Agents from Superpowers
 
@@ -49,7 +57,11 @@ This configuration includes the following skills:
 
 - **duplicate-code-detector**: uses jscpd (copy-paste detector) to find duplicate code. Triggered when referring to code quality, refactoring, technical debt, or similar.
 
+- **frontend-production-quality**: enforces WCAG 2.1 AA accessibility and Core Web Vitals as non-negotiable requirements. Must be used BEFORE first commit of any frontend code, when committing frontend changes, creating PRs, or making production changes. Enforces comprehensive accessibility (semantic HTML, ARIA, keyboard navigation, screen reader testing, color contrast), performance requirements (Core Web Vitals: LCP < 2.5s, FID < 100ms, CLS < 0.1), and evidence collection with ZERO exceptions for WIP code or "I'll finish it later" scenarios. Creates TodoWrite with 18+ items across Accessibility, Performance, and Evidence Collection categories.
 
+- **meta-agent** (agent-creator): autonomously creates complete production-ready agents with Claude Skills. Activates when user asks to create an agent, automate a workflow, or create a skill. Uses 5-phase protocol: Discovery (research APIs), Design (define analyses), Architecture (structure implementation), Detection (determine keywords), and Implementation (write complete code with tests). Generates 5000+ word SKILL.md, functional Python scripts, comprehensive tests, references, configs, and documentation. Includes marketplace.json for installation, validators for data quality, temporal helpers for context awareness, and comprehensive test suite (25+ tests).
+
+- **testing-commands-with-subagents**: tests slash command definitions before deployment to verify they maintain step integrity and resist authority pressure. Applies RED-GREEN-REFACTOR cycle: runs baseline without enforcement (watch agents skip steps), writes command addressing skip-step rationalizations, iterates to close authority-override loopholes. Tests authority pressure, time pressure, pragmatism scenarios, and tool restrictions. Used when creating or editing slash command definitions.
 
 
 
