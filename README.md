@@ -16,6 +16,7 @@ NOTE: By default MCP that require Env vars are disabled, to both avoid errors an
 The repository has the following files:
 
 - **sync-claude-folders.sh** - A bash script for syncing .claude folders between repositories using rsync. Features colorized output, dry-run mode, error handling, and automatic creation of destination directories.
+- **devbranch** - Automated branch container management for parallel feature development. Creates isolated dev container environments for each branch.
 - **.devcontainer/** - VS Code devcontainer configuration for setting up a complete development environment
 - **.claude/** - Claude Code configuration and MCP server documentation
 - **.mcp.json** - Default MCP servers configured
@@ -49,6 +50,41 @@ Use the included `sync-claude-folders.sh` script to copy configuration files fro
 - `.devcontainer/` directory (VS Code devcontainer and language setup scripts)
 - `.envrc.example` file (environment variable template)
 - `.mcp.json` file (MCP config, merged via jq with destination)
+
+## Parallel Branch Development
+
+The `devbranch` script enables working on multiple branches simultaneously in isolated dev containers, perfect for parallel feature development without interference.
+
+### Quick Start
+
+```bash
+# Create a branch container
+./devbranch feature-authentication
+
+# List all branch containers
+./devbranch --list
+
+# Clean up when done
+./devbranch --clean feature-authentication
+```
+
+### How It Works
+
+- Creates sibling directories: `/path/to/project-<branch>/`
+- Full git clone per branch (complete isolation)
+- Automatic dev container setup
+- Opens in VS Code with container prompt
+- No security concerns (agents cannot access other branches)
+
+### Installation Requirements
+
+```bash
+# Install DevContainer CLI (one-time)
+npm install -g @devcontainers/cli
+
+# Verify other dependencies
+./devbranch --help
+```
 
 ## Relevant Claude Configuration
 
