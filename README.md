@@ -27,6 +27,7 @@ The `.devcontainer/` directory contains modular setup scripts for additional lan
 
 - **setup-rust.sh** - Installs Rust cargo tools (cargo-binstall, cargo-edit, difftastic, etc.)
 - **setup-go.sh** - Installs GolangCI-Lint for Go code quality checking
+- **setup-dotnet.sh** - Installs .NET 9 SDK and code quality tools (csharpier, dotnet-outdated-tool)
 
 These scripts can be run after initial devcontainer setup to install additional tools for your specific language needs
 
@@ -133,6 +134,9 @@ bash .devcontainer/setup-rust.sh
 
 # For Go development
 bash .devcontainer/setup-go.sh
+
+# For .NET development
+bash .devcontainer/setup-dotnet.sh
 ```
 
 **Note:** You may need to restart your shell or source your shell configuration file (e.g., `source ~/.zshrc`) for direnv and other changes to take effect.
