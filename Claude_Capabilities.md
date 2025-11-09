@@ -14,6 +14,8 @@ This configuration includes the following commands, which are basically triggers
 
 - **/ct:skills-check**: lists skills available (and loaded) on this session. Claude seems ot be missing a command for this.
 
+- **/ct:test-skill**: tests a skill using the testing-skills-with-subagents framework. It validates skill names (requires namespace), writes test artifacts to /tmp, and generates reports in .claude/test-reports/. Usage: `/ct:test-skill <namespace:skill-name>`
+
 
 ### Commands from Superpowers
 
