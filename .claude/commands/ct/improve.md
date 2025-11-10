@@ -47,7 +47,6 @@ Workflow:
 ### Performance Improvements (`--type performance`)
 Delegates to:
 - **`performance-optimization` skill** - Systematic performance improvement with measurement
-- **`measure-first-optimization` skill** - Measurement-driven optimization approach
 
 Workflow:
 1. Establish performance baselines with profiling
