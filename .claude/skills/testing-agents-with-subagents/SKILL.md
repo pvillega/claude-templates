@@ -1,6 +1,6 @@
 ---
 name: testing-agents-with-subagents
-description: Use when creating or editing agent definitions (both custom .claude/agents/*.md and Task tool subagents), before deployment, to verify they maintain purpose focus and behavioral consistency under pressure - applies RED-GREEN-REFACTOR cycle to agent persona documentation by running baseline without clear definition, writing to address drift patterns, iterating to close scope-creep loopholes
+description: Use when creating or editing agent definitions (both custom .claude/agents/*.md and Task tool subagents), before deployment, to verify they maintain purpose focus and behavioral consistency under pressure - applies RED-GREEN-REFACTOR cycle to agent persona documentation by running baseline without clear definition, writing to address drift patterns, iterating to close scope-creep loopholes. NOT for functional testing - this tests agent definition integrity.
 ---
 
 # Testing Agents With Subagents

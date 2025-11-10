@@ -1,6 +1,6 @@
 ---
 name: root-cause-analysis
-description: Use when investigating complex problems requiring systematic evidence-based analysis - enforces hypothesis testing, pattern recognition, and documentation of evidence chains before proposing solutions
+description: Use for technical/system failures (bugs, incidents, performance issues) requiring systematic evidence-based analysis - enforces hypothesis testing, pattern recognition, and documentation of evidence chains before proposing solutions
 ---
 
 # Root Cause Analysis

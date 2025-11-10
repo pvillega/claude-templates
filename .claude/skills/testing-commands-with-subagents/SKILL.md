@@ -1,6 +1,6 @@
 ---
 name: testing-commands-with-subagents
-description: Use when creating or editing slash command definitions, before deployment, to verify they maintain step integrity and resist authority pressure - applies RED-GREEN-REFACTOR cycle to command documentation by running baseline without enforcement, writing to address skip-step rationalizations, iterating to close authority-override loopholes
+description: Use when creating or editing slash command definitions, before deployment, to verify they maintain step integrity and resist authority pressure - applies RED-GREEN-REFACTOR cycle to command documentation by running baseline without enforcement, writing to address skip-step rationalizations, iterating to close authority-override loopholes. NOT for test coverage - this tests command step integrity.
 ---
 
 # Testing Commands With Subagents

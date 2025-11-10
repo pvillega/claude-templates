@@ -1,6 +1,6 @@
 ---
 name: progressive-learning
-description: Use when teaching programming concepts or creating educational content - applies progressive learning methodology with prerequisite mapping, practical examples, and understanding verification through structured exercises
+description: Use when teaching or explaining programming concepts (execution) - applies progressive learning methodology with prerequisite mapping, practical examples, and understanding verification through structured exercises
 ---
 
 # Progressive Learning Skill

@@ -1,6 +1,6 @@
 ---
 skill: root-cause-mistake-analysis
-description: Systematic immediate analysis and documentation of mistakes to prevent recurrence
+description: Use for process/cognitive failures (why did I make this mistake? meta-learning) - systematic immediate analysis and documentation of mistakes to prevent recurrence
 category: analysis
 ---
 

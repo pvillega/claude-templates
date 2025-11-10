@@ -1,6 +1,6 @@
 ---
 skill: progressive-learning-design
-description: Design and deliver learning experiences that build understanding incrementally with dependency management
+description: Use when creating curriculum or learning paths (meta-design) - design and deliver learning experiences that build understanding incrementally with dependency management
 category: communication
 ---
 
