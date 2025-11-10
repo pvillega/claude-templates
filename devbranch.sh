@@ -23,14 +23,16 @@ usage() {
 Usage: $0 <branch-name> [options]
        $0 --list
        $0 --clean <branch-name>
+       $0 --clean-merged
 
 Automated branch management for parallel feature development.
 Creates isolated git clones for each branch in sibling directories.
 
 Commands:
   <branch-name>           Create/open branch in sibling directory
-  --list                  List all branch directories
-  --clean <branch-name>   Remove branch directory
+  --list                  List all branch directories with merge status
+  --clean <branch-name>   Remove specific branch directory
+  --clean-merged          Remove all merged branch directories
 
 Options:
   -h, --help              Show this help message
@@ -40,8 +42,10 @@ Options:
 Examples:
   $0 feature-auth                    # Create branch in sibling directory
   $0 feature-auth --dry-run          # Preview creation
-  $0 --list                          # List all branch directories
-  $0 --clean feature-auth            # Remove branch directory
+  $0 --list                          # List all branch directories with merge status
+  $0 --clean feature-auth            # Remove specific branch directory
+  $0 --clean-merged                  # Remove all merged branches (with confirmation)
+  $0 --clean-merged --dry-run        # Preview which branches would be removed
 
 Directory structure:
   If current project is at: /path/to/project
@@ -140,6 +144,65 @@ get_repo_info() {
     fi
 }
 
+# Detect the default branch (main or master)
+get_default_branch() {
+    local repo_dir=$1
+
+    # Try to get remote default branch
+    local default_branch=$(git -C "$repo_dir" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+
+    if [ -n "$default_branch" ]; then
+        echo "$default_branch"
+        return 0
+    fi
+
+    # Fallback: check if main exists
+    if git -C "$repo_dir" show-ref --verify --quiet refs/heads/main; then
+        echo "main"
+        return 0
+    fi
+
+    # Fallback: check if master exists
+    if git -C "$repo_dir" show-ref --verify --quiet refs/heads/master; then
+        echo "master"
+        return 0
+    fi
+
+    # Default to main if nothing found
+    echo "main"
+}
+
+# Check if a branch is merged into the default branch
+is_branch_merged() {
+    local repo_dir=$1
+    local branch_name=$2
+    local default_branch=$3
+
+    # Change to repo directory
+    cd "$repo_dir" || return 1
+
+    # Check if branch exists
+    if ! git show-ref --verify --quiet "refs/heads/$branch_name"; then
+        cd - > /dev/null
+        return 1
+    fi
+
+    # Check if default branch exists
+    if ! git show-ref --verify --quiet "refs/heads/$default_branch"; then
+        cd - > /dev/null
+        return 1
+    fi
+
+    # Use merge-base to check if branch is ancestor of default branch
+    if git merge-base --is-ancestor "$branch_name" "$default_branch" 2>/dev/null; then
+        cd - > /dev/null
+        return 0
+    fi
+
+    cd - > /dev/null
+    return 1
+}
+
 # List branch directories
 list_directories() {
     get_repo_info
@@ -147,14 +210,34 @@ list_directories() {
     print_color "$BLUE" "Branch directories for '$PROJECT_NAME':"
     echo ""
 
+    # Detect default branch from main repo
+    local default_branch=$(get_default_branch "$REPO_ROOT")
+
     # Find all directories matching the pattern
     local found=0
+    local merged_count=0
     for dir in "$PARENT_DIR"/"$PROJECT_NAME"-*; do
         if [ -d "$dir" ]; then
             found=$((found + 1))
             local branch_name=$(basename "$dir" | sed "s/^${PROJECT_NAME}-//")
 
-            echo -e "  ${GREEN}${branch_name}${NC}"
+            # Check if it's a git repo and get current branch
+            local merge_status=""
+            if [ -d "$dir/.git" ]; then
+                local current_branch=$(git -C "$dir" rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+                if [ -n "$current_branch" ]; then
+                    # Check if branch is merged
+                    if is_branch_merged "$dir" "$current_branch" "$default_branch"; then
+                        merge_status="${GREEN}[MERGED ✓]${NC}"
+                        merged_count=$((merged_count + 1))
+                    else
+                        merge_status="${BLUE}[ACTIVE]${NC}"
+                    fi
+                fi
+            fi
+
+            echo -e "  ${GREEN}${branch_name}${NC} ${merge_status}"
             echo "  └─ $dir"
             echo ""
         fi
@@ -165,6 +248,10 @@ list_directories() {
         echo "Create one with: $0 <branch-name>"
     else
         print_color "$GREEN" "Total: $found branch director(ies)"
+        if [ $merged_count -gt 0 ]; then
+            print_color "$YELLOW" "Merged: $merged_count branch(es) can be cleaned up"
+            echo "Run: $0 --clean-merged"
+        fi
     fi
 }
 
@@ -208,6 +295,85 @@ clean_directory() {
 
     echo ""
     print_color "$GREEN" "✅ Branch directory cleaned up successfully!"
+}
+
+# Clean up all merged branch directories
+clean_merged_directories() {
+    get_repo_info
+
+    print_color "$BLUE" "Finding merged branch directories..."
+    echo ""
+
+    # Detect default branch from main repo
+    local default_branch=$(get_default_branch "$REPO_ROOT")
+    print_color "$BLUE" "Using default branch: $default_branch"
+    echo ""
+
+    # Find all merged directories
+    local merged_dirs=()
+    local merged_branches=()
+
+    for dir in "$PARENT_DIR"/"$PROJECT_NAME"-*; do
+        if [ -d "$dir" ] && [ -d "$dir/.git" ]; then
+            local branch_name=$(basename "$dir" | sed "s/^${PROJECT_NAME}-//")
+            local current_branch=$(git -C "$dir" rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+            if [ -n "$current_branch" ]; then
+                if is_branch_merged "$dir" "$current_branch" "$default_branch"; then
+                    merged_dirs+=("$dir")
+                    merged_branches+=("$branch_name")
+                fi
+            fi
+        fi
+    done
+
+    # Check if any merged branches found
+    if [ ${#merged_dirs[@]} -eq 0 ]; then
+        print_color "$GREEN" "No merged branch directories found"
+        echo "All branch directories are still active"
+        exit 0
+    fi
+
+    # Display merged branches
+    print_color "$YELLOW" "Found ${#merged_dirs[@]} merged branch(es):"
+    echo ""
+    for i in "${!merged_branches[@]}"; do
+        echo -e "  ${GREEN}${merged_branches[$i]}${NC} [MERGED ✓]"
+        echo "  └─ ${merged_dirs[$i]}"
+        echo ""
+    done
+
+    # Confirm deletion
+    if [ -z "$DRY_RUN" ]; then
+        echo ""
+        print_color "$YELLOW" "⚠️  This will permanently delete ${#merged_dirs[@]} director(ies)"
+        read -p "Continue? [y/N] " -n 1 -r
+        echo ""
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            print_color "$YELLOW" "Cleanup cancelled"
+            exit 0
+        fi
+    fi
+
+    # Remove directories
+    print_color "$YELLOW" "Removing directories..."
+    local removed_count=0
+    for i in "${!merged_dirs[@]}"; do
+        if [ -z "$DRY_RUN" ]; then
+            rm -rf "${merged_dirs[$i]}"
+            print_color "$GREEN" "✓ Removed: ${merged_branches[$i]}"
+            removed_count=$((removed_count + 1))
+        else
+            print_color "$YELLOW" "Would remove: ${merged_dirs[$i]}"
+        fi
+    done
+
+    echo ""
+    if [ -z "$DRY_RUN" ]; then
+        print_color "$GREEN" "✅ Successfully removed $removed_count merged branch director(ies)!"
+    else
+        print_color "$YELLOW" "DRY RUN: Would remove ${#merged_dirs[@]} director(ies)"
+    fi
 }
 
 # Create branch directory
@@ -356,6 +522,10 @@ while [[ $# -gt 0 ]]; do
             BRANCH_NAME="$1"
             shift
             ;;
+        --clean-merged)
+            COMMAND="clean-merged"
+            shift
+            ;;
         *)
             if [ -z "$BRANCH_NAME" ]; then
                 BRANCH_NAME="$1"
@@ -379,6 +549,13 @@ case $COMMAND in
             echo ""
         fi
         clean_directory "$BRANCH_NAME"
+        ;;
+    clean-merged)
+        if [ -n "$DRY_RUN" ]; then
+            print_color "$YELLOW" "DRY RUN MODE - No changes will be made"
+            echo ""
+        fi
+        clean_merged_directories
         ;;
     *)
         if [ -z "$BRANCH_NAME" ]; then
