@@ -484,131 +484,18 @@ Before proceeding, select 3 random items from your TodoWrite and test them. If a
 
 ---
 
-### Examples of Quality Items
+### Examples Comparison
 
-**❌ BAD (too generic):**
-- "Check accessibility"
-- "Test performance"
-- "Make it accessible"
-- "Optimize loading"
-- "Test keyboard navigation"
+| ❌ BAD (too generic) | ✅ GOOD (specific) |
+|---------------------|-------------------|
+| "Check accessibility" | "Semantic HTML: Replace `<div onClick>` with `<button>` for submit action, verify with NVDA announces 'button'" |
+| "Test performance" | "Core Web Vitals: Measure LCP < 2.5s on 3G throttled connection using Lighthouse, target hero image load" |
+| "Keep LCP low" | "Color contrast: Verify all text meets 4.5:1 ratio using WebAIM contrast checker (body text #333 on #FFF = 12.6:1 ✓)" |
+| "Test keyboard navigation" | "Keyboard nav: Tab through form (order: email input → password input → remember me checkbox → submit button), verify focus visible" |
 
-**✅ GOOD (specific):**
-- "Semantic HTML: Replace `<div onClick>` with `<button>` for submit action, verify with NVDA announces 'button'"
-- "Color contrast: Verify all text meets 4.5:1 ratio using WebAIM contrast checker (body text #333 on #FFF = 12.6:1 ✓)"
-- "Core Web Vitals: Measure LCP < 2.5s on 3G throttled connection using Lighthouse, target hero image load"
-- "Keyboard nav: Tab through form (order: email input → password input → remember me checkbox → submit button), verify focus visible"
-- "Bundle size: Current 245KB, new feature adds 15KB, justify increase (interactive data table requires ag-grid 12KB + custom logic 3KB)"
+**If 3+ of your TodoWrite items match ❌ patterns, STOP. Your TodoWrite needs major revision before proceeding.**
 
----
-
-## ❌ Failed Examples (What NOT To Do)
-
-**These items would FAIL verification. If your items look like these, revise them immediately.**
-
-### Too Generic (No Specific Tools/Elements)
-
-❌ "Check accessibility"
-- **Why it fails**: Check what? How? With what tool?
-- **Engineer asks**: WCAG criteria? Screen reader? Color contrast? Keyboard nav? All of them?
-
-❌ "Test performance"
-- **Why it fails**: Test what? How? What's passing?
-- **Engineer asks**: LCP? FID? CLS? Lighthouse? DevTools? What targets?
-
-❌ "Make it accessible"
-- **Why it fails**: Make what accessible? How?
-- **Engineer asks**: Semantic HTML? ARIA? Screen reader? Focus indicators? Which elements?
-
-❌ "Optimize loading"
-- **Why it fails**: Optimize what? By how much? How verified?
-- **Engineer asks**: Images? JS bundles? Both? What's the target? Lazy loading?
-
-### Missing Concrete Numbers
-
-❌ "Keep LCP low"
-- **Why it fails**: How low? Measured how? On what connection?
-- **Engineer asks**: <2.5s? <3s? <4s? 3G? 4G? WiFi? Lighthouse? RUM?
-
-❌ "Good color contrast"
-- **Why it fails**: What ratio? Which colors? Verified how?
-- **Engineer asks**: 4.5:1? 3:1? Which text? Body? Headers? Buttons? Checked with what?
-
-❌ "Reasonable bundle size"
-- **Why it fails**: What size? Increase by how much? Justified?
-- **Engineer asks**: Current? New? Increase? Why? What's "reasonable"?
-
-### Missing Verification Methods
-
-❌ "Test keyboard navigation"
-- **Why it fails**: Test how? What's the expected order? What's passing?
-- **Engineer asks**: What order? Focus visible? How verify? Tested with what?
-
-❌ "Screen reader compatible"
-- **Why it fails**: Tested with which screen reader? What announced?
-- **Engineer asks**: NVDA? VoiceOver? What should be announced? How verify?
-
-❌ "Performance budget met"
-- **Why it fails**: What budget? Measured how? What's passing?
-- **Engineer asks**: Which metrics? What values? Lighthouse? DevTools? What scores?
-
-### Accessibility-Critical Failures (LEGAL RISK)
-
-❌ "Improve accessibility"
-- **Why it fails**: Vague, no WCAG criteria specified.
-- **Engineer asks**: Which WCAG criteria? 2.1 A? AA? AAA? Which specific items?
-
-❌ "Add alt text"
-- **Why it fails**: To which images? What text?
-- **Engineer asks**: All images? Decorative vs meaningful? What's the description pattern?
-
-❌ "Support keyboard users"
-- **Why it fails**: How? Which elements? What's the tab order?
-- **Engineer asks**: Tab order? Focus indicators? Skip links? All interactive elements?
-
-### Performance-Critical Failures (BUSINESS IMPACT)
-
-❌ "Make it fast"
-- **Why it fails**: How fast? Which metric? Verified how?
-- **Engineer asks**: LCP? FID? CLS? All? What targets? 3G? 4G?
-
-❌ "Lazy load images"
-- **Why it fails**: Which images? With what attribute/library?
-- **Engineer asks**: All images? Above fold too? Native `loading="lazy"`? Intersection Observer?
-
-**If 3+ of your TodoWrite items match these ❌ patterns, STOP. Your TodoWrite needs major revision before proceeding.**
-
-**If ANY accessibility item is generic (❌ patterns), BLOCKED. Accessibility violations create legal liability.**
-
----
-
-## Section Completeness Check
-
-Before proceeding, confirm ALL mandatory sections present in your TodoWrite:
-
-- [ ] **Accessibility**: 8+ items (semantic HTML, ARIA, keyboard nav, screen reader, contrast, focus indicators, headings, forms) ✓
-- [ ] **Performance**: 6+ items (baseline measurement, Core Web Vitals, bundle size, lazy loading, throttled testing, Lighthouse score) ✓
-- [ ] **Evidence Collection**: 4+ items (Lighthouse scores, Core Web Vitals measurements, keyboard nav proof, contrast verification) ✓
-
-**If any section is missing or below minimum items, STOP and add them now.**
-
----
-
-## Trigger Conditions
-
-Activate this skill when:
-- **STARTING** implementation of ANY user-facing UI component or page
-- **BEFORE FIRST COMMIT** of frontend code
-- **COMMITTING** ANY frontend code to version control
-- **CREATING** pull requests with frontend changes
-- **MARKING** frontend work as "ready for review"
-- Reviewing frontend code or implementation plans
-- Making decisions about UI libraries, frameworks, or approaches
-- Someone says "we'll add accessibility/performance later" OR "I'll finish before code review"
-- **Making ANY production change (including emergency fixes, hotfixes, or bug fixes)**
-- **Production incident requiring code deployment**
-- **Reverting or rolling back changes**
-- **ANY time you think "I'll commit now and finish [X] later"**
+**If ANY accessibility item is generic, BLOCKED. Accessibility violations create legal liability.**
 
 ---
 
@@ -744,61 +631,25 @@ Bundle size increase requires explicit justification. Heavy dependencies must be
 
 ---
 
-## 🚩 Red Flags - STOP
+## 🚩 Red Flags & Anti-Patterns
 
-**If you find yourself thinking or saying ANY of these, you are about to violate the skill:**
+**If you think ANY of these, you are about to violate the skill:**
 
-### Development Red Flags
-- "We'll add accessibility later/in v2/future sprint" → No, implement now. Later = never (80% never added). Retrofit costs 3-5x more.
-- "Design is approved, just implement it" → Design approval doesn't override accessibility/performance requirements
-- "Sprint ends Friday, no time" → Shipping inaccessible UI creates legal risk + rework delays. Faster to build it right.
-- "Just this once" → Every inaccessible feature sets precedent and accumulates legal risk
-- "Internal tooling, accessibility less critical" → Wrong. Employees with disabilities have equal rights (ADA applies)
-- "Being pragmatic not dogmatic" → These requirements ARE pragmatic (WCAG 2.1 AA is legal requirement)
-- "Screen reader users are rare" → 2-3% of users = millions of people. Also: legal liability regardless of numbers.
-- "Performance optimization later" → Retrofit costs 2-4 weeks. Building it in costs 2-4 hours.
-- "Users have fast connections" → 30% of users on mobile/3G. Poor performance = 32% bounce rate.
-- "We already tested manually" → Manual ≠ systematic. Lighthouse/NVDA testing catches issues manual testing misses.
-- "Just use semantic HTML, don't need ARIA" → Sometimes true, but complex components (modals, tabs, accordions) NEED ARIA.
-- "Performance is good enough" → "Good enough" = unmeasured = probably failing Core Web Vitals = poor SEO + high bounce rate.
+| Category | Red Flag | Reality |
+|----------|----------|---------|
+| **Deferral** | "We'll add accessibility later/in v2/Monday/before review/before merge" | 80% never added. Retrofit costs 3-5x more. All forms of "later" fail equally. |
+| **Authority** | "Design is approved, just implement it" | Design approval doesn't override legal requirements (WCAG 2.1 AA). |
+| **Scope** | "Internal tooling, accessibility less critical" | ADA applies to employees. Discriminatory hiring is illegal. |
+| **Emergency** | "Production is down, no time to verify" | Rollback or run 10-min minimum verification. 60% of emergency fixes introduce new bugs. |
+| **WIP Code** | "I'll finish before code review/merge/deploy" | Finish before committing. Code review is backup, not primary verification. 80% of "later" never happens. |
+| **Boundaries** | "I have dinner plans, can't finish" | Stash changes (git stash), finish tomorrow. Don't commit incomplete work. |
+| **Testing** | "We already tested manually" | Manual ≠ systematic. Lighthouse/NVDA catches issues manual testing misses. |
+| **Performance** | "Users have fast connections" / "Performance is good enough" | 30% on mobile/3G. Unmeasured = failing Core Web Vitals = 32% bounce rate. |
 
-### Emergency Red Flags (See Production Emergencies Section)
-- "Production is down, no time to verify" → **Rollback or run 10-min minimum verification**
-- "This is a 1-line fix, low risk" → **60% of "simple" emergency fixes introduce new bugs**
-- "We'll verify during tomorrow's audit" → **No. Create 24-hour SLA ticket or verify now**
-- "Emergency exception justified" → **No exceptions. Rollback or minimum verification**
-- "The skill is for development, not emergencies" → **Skill applies to ALL production changes**
-- "Process serves business, not vice versa" → **This process IS serving business** (preventing incident #2)
-- "Deploy first, verify after" → **No. Verify first, deploy after. Or rollback**
-- "The skill's protections are orthogonal to this fix" → **Regression prevention applies to ALL changes**
-- "This is a documented exception" → **There are no exceptions. Only rollback or minimum verification**
-- "Blindly following process is poor judgment" → **These requirements prevent 60% of emergency fix failures**
-
-**When you notice a red flag, STOP. Re-read the specific skill requirement you're about to skip.**
-
-**13% explicitly defer accessibility. 40% miss Core Web Vitals. 100% of emergency bypasses risk incident #2. Each red flag represents a known failure pattern.**
-
-### WIP Code Red Flags (STOP IMMEDIATELY)
-- "I'll finish accessibility before code review" → **No, finish before committing**
-- "I'll finish accessibility before merge" → **No, finish before committing**
-- "I'll finish accessibility before deploy" → **No, finish before committing**
-- "Code review is the quality gate" → **No, YOU are the quality gate. Code review is backup.**
-- "This is WIP, not production code" → **All commits must meet requirements. No WIP exception.**
-- "I'll add TODO comments for what's missing" → **No, complete the work or don't commit**
-- "I'll stash changes but commit the working parts" → **No, stash everything or commit everything complete**
-- "Work-life balance means I can defer this" → **Work-life balance means don't start what you can't finish**
-- "Personal commitment overrides skill" → **Personal commitment means stash changes, finish tomorrow**
-- "It's just a commit, not a deploy" → **Commits become deploys. 80% of "later" never happens.**
-- "I'm just saving my work" → **Stash your work (git stash). Don't commit incomplete work.**
-- "The code works, just needs accessibility polish" → **Accessibility isn't polish. It's a legal requirement.**
-- "I've been working 7 hours, I'm exhausted" → **Then stash it and finish tomorrow. Don't commit incomplete.**
-- "Dinner plans at 6:30pm" → **Reschedule dinner OR stash code. Don't commit incomplete.**
-- "Code review Monday will ensure quality" → **You ensure quality. Code review is a backup check.**
-
-**When you notice ANY WIP code red flag:**
+**When you notice a red flag:**
 1. STOP immediately
 2. Ask: "Am I about to commit code that I KNOW doesn't meet the skill's requirements?"
-3. If YES → You have two choices: finish it now OR stash it
+3. If YES → finish it now OR stash it (git stash)
 4. NEVER commit with "I'll finish X later"
 
 ---
@@ -928,127 +779,41 @@ to screen reader testing before production release.
 
 ---
 
-## Common Failure Prevention
+## Common Anti-Patterns
 
-### Anti-Pattern: Non-Semantic HTML
-```
-❌ BAD: <div onClick={handleSubmit}>Submit</div>
-✅ GOOD: <button onClick={handleSubmit}>Submit</button>
-
-Why: <button> is keyboard accessible (Tab, Space/Enter), screen reader announces "button",
-has default focus style, supports disabled state.
-```
-
-### Anti-Pattern: Missing Alt Text
-```
-❌ BAD: <img src="product.jpg">
-✅ GOOD (meaningful): <img src="product.jpg" alt="Blue ceramic coffee mug with white handle">
-✅ GOOD (decorative): <img src="decoration.jpg" alt="">
-
-Why: Screen readers need alt text to describe images. Empty alt="" for decorative images
-tells screen reader to skip (better than "image" announced).
-```
-
-### Anti-Pattern: Form Without Labels
-```
-❌ BAD: <input type="email" placeholder="Email">
-✅ GOOD: <label for="email">Email</label>
-         <input type="email" id="email" placeholder="you@example.com">
-
-Why: Placeholders disappear on input, are not announced by screen readers. Labels persist
-and are announced, making form navigable for assistive tech users.
-```
-
-### Anti-Pattern: Color-Only Information
-```
-❌ BAD: Error text in red, success text in green (color-only distinction)
-✅ GOOD: Error text in red + "❌ Error:" prefix + aria-live="polite"
-         Success text in green + "✓ Success:" prefix + aria-live="polite"
-
-Why: Color blind users can't distinguish red/green. Text prefix + icon + ARIA live region
-ensures all users receive the information.
-```
-
-### Anti-Pattern: Invisible Focus Indicators
-```
-❌ BAD: button:focus { outline: none; }
-✅ GOOD: button:focus { outline: 2px solid #005fcc; outline-offset: 2px; }
-
-Why: Keyboard users need visible focus to know which element is active. 2px minimum,
-3:1 contrast ratio with background.
-```
-
-### Anti-Pattern: Large Unoptimized Images
-```
-❌ BAD: <img src="hero-4000x3000.jpg" width="800">
-✅ GOOD: <img src="hero-800x600.webp" loading="lazy" width="800" height="600"
-         srcset="hero-400x300.webp 400w, hero-800x600.webp 800w"
-         sizes="(max-width: 600px) 400px, 800px"
-         alt="Modern office workspace with natural lighting">
-
-Why: Right-sized images, modern formats (WebP), lazy loading, responsive sizes, reserved
-space (width/height prevents CLS). Reduces LCP from 8s to 2s.
-```
-
-### Anti-Pattern: Blocking JavaScript
-```
-❌ BAD: <script src="heavy-analytics-500kb.js"></script> in <head>
-✅ GOOD: <script src="heavy-analytics-500kb.js" defer></script>
-         OR load on-demand: import('heavy-analytics').then(...)
-
-Why: JavaScript in <head> blocks page render. Defer loads async, executes after DOM ready.
-On-demand import loads only when needed (e.g., when user clicks button).
-```
-
-### Anti-Pattern: Layout Shifts
-```
-❌ BAD: <img src="hero.jpg"> (no dimensions, loads and shifts content down)
-✅ GOOD: <img src="hero.jpg" width="800" height="600"> (reserves space, no shift)
-
-Why: Images without dimensions cause CLS (Cumulative Layout Shift). Browser doesn't know
-how much space to reserve, so content jumps when image loads. Specify width/height prevents this.
-```
+| Anti-Pattern | ❌ Bad | ✅ Good | Why |
+|--------------|--------|---------|-----|
+| **Non-Semantic HTML** | `<div onClick>Submit</div>` | `<button onClick>Submit</button>` | Keyboard accessible, screen reader announces "button", default focus style |
+| **Missing Alt Text** | `<img src="product.jpg">` | `<img src="product.jpg" alt="Blue mug">` or `alt=""` (decorative) | Screen readers need descriptions. Empty alt="" tells SR to skip. |
+| **Form Without Labels** | `<input placeholder="Email">` | `<label for="email">Email</label><input id="email">` | Placeholders disappear, aren't announced by SR. Labels persist. |
+| **Invisible Focus** | `button:focus { outline: none; }` | `button:focus { outline: 2px solid #005fcc; }` | Keyboard users need visible focus (2px, 3:1 contrast minimum) |
+| **Unoptimized Images** | `<img src="hero-4000x3000.jpg" width="800">` | `<img src="hero-800x600.webp" loading="lazy" width="800" height="600">` | Right-sized, WebP format, lazy loading, reserved space prevents CLS |
+| **Blocking JavaScript** | `<script src="500kb.js">` in `<head>` | `<script src="500kb.js" defer>` or load on-demand | Defer loads async after DOM ready. On-demand only when needed. |
 
 ---
 
-## Verification
+## Verification & Evidence Checklist
 
 Before marking frontend work complete:
 
-### 1. Accessibility Audit
-   - [ ] Run browser DevTools accessibility check (0 violations)
-   - [ ] Navigate entire feature using only keyboard (Tab, Shift+Tab, Enter, Space)
-   - [ ] Test with screen reader (NVDA or VoiceOver), verify all content announced
-   - [ ] Verify color contrast with WebAIM contrast checker (all text 4.5:1+)
-   - [ ] Check heading hierarchy (h1 → h2 → h3, no skips, inspect accessibility tree)
+**Accessibility:**
+- [ ] DevTools accessibility check (0 violations)
+- [ ] Keyboard navigation entire feature (Tab, Shift+Tab, Enter, Space)
+- [ ] Screen reader test (NVDA/VoiceOver), verify announcements
+- [ ] Color contrast WebAIM checker (all text 4.5:1+)
+- [ ] Heading hierarchy (h1→h2→h3, no skips)
 
-### 2. Performance Audit
-   - [ ] Run Lighthouse performance audit (score ≥ 90)
-   - [ ] Run Lighthouse accessibility audit (score = 100)
-   - [ ] Measure Core Web Vitals on 3G throttle (LCP < 2.5s, FID < 100ms, CLS < 0.1)
-   - [ ] Check bundle size impact (document if >10KB increase)
-   - [ ] Profile runtime performance (no long tasks >50ms in DevTools Performance tab)
+**Performance:**
+- [ ] Lighthouse: Performance ≥ 90, Accessibility = 100
+- [ ] Core Web Vitals on 3G: LCP < 2.5s, FID < 100ms, CLS < 0.1
+- [ ] Bundle size impact documented (justify if >10KB increase)
 
-### 3. Real-World Testing
-   - [ ] Test on mobile device with throttled network (3G)
-   - [ ] Test with browser zoom at 200% (text remains readable, no horizontal scroll)
-   - [ ] Test with high-contrast mode enabled (Windows High Contrast, browser extensions)
-   - [ ] Test with JavaScript initially disabled (progressive enhancement - core content visible)
-
----
-
-## Evidence Required
-
-When claiming frontend work complete, provide in TodoWrite:
-
-- [ ] **Lighthouse accessibility**: Screenshot showing score = 100
-- [ ] **Lighthouse performance**: Screenshot showing score ≥ 90
-- [ ] **Core Web Vitals**: Screenshot showing LCP, FID, CLS measurements with 3G throttle
-- [ ] **Keyboard focus**: List tab order and describe focus indicators (e.g., "1. Email input - 2px blue solid, 2. Submit - 2px blue solid")
-- [ ] **ARIA attributes**: List of ARIA used and why (e.g., `aria-label="Close dialog"` on `<button>×</button>` because × is not descriptive)
-- [ ] **Color contrast**: List all text/background combos with ratios (e.g., "Body text: #333 on #FFF = 12.6:1 ✓, Button: #FFF on #007bff = 8.6:1 ✓")
-- [ ] **Bundle size**: Before/after KB, justification if >10KB increase
-- [ ] **Screen reader**: What was announced for key interactions (form submission, button clicks, navigation)
+**Evidence Required:**
+- [ ] Lighthouse screenshots (A11y = 100, Perf ≥ 90)
+- [ ] Core Web Vitals screenshot with 3G throttle
+- [ ] Keyboard tab order list + focus indicator description
+- [ ] Color contrast ratios for all text/background combos
+- [ ] Screen reader announcements for key interactions
 
 **Failure to provide evidence = work is not complete.**
 
@@ -1084,25 +849,6 @@ GRADE YOURSELF:
 
 ---
 
-## Workflow Integration
-
-### 1. Before Implementation
-   - Add accessibility and performance requirements to TodoWrite
-   - Define specific WCAG criteria that apply (semantic HTML, ARIA, contrast, keyboard nav)
-   - Set Core Web Vitals budget (LCP, FID, CLS targets)
-
-### 2. During Implementation
-   - Test keyboard navigation continuously (Tab through after each component)
-   - Run accessibility audit after each component (DevTools Accessibility pane)
-   - Monitor bundle size in real-time (webpack-bundle-analyzer, DevTools Network tab)
-
-### 3. Before Completion
-   - Run full verification checklist (accessibility + performance + real-world testing)
-   - Gather evidence (screenshots, measurements, lists)
-   - Document any accessibility/performance trade-offs made
-
----
-
 ## Escalation
 
 If accessibility or performance requirements cannot be met:
@@ -1115,4 +861,4 @@ If accessibility or performance requirements cannot be met:
 
 ---
 
-**Remember**: Accessibility and performance are not features - they are requirements. Users with disabilities have equal right to access UI. Users on slow connections have equal right to fast experience. Build inclusive, fast experiences for everyone from the start.
+**Remember**: Accessibility and performance are not features - they are requirements. Users with disabilities have equal right to access UI. Build inclusive, fast experiences for everyone from the start.

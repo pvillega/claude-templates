@@ -45,17 +45,6 @@ Look beyond symptoms to find underlying causes through systematic investigation.
 - [ ] **Timeline**: When did problem start? Frequency? Any pattern (time of day, specific users)?
 - [ ] **Recent changes**: Deployments, config changes, dependency updates in last 24-48h
 
-**Output format:**
-```
-EVIDENCE COLLECTED:
-- Error: [paste full error message with stack trace]
-- First seen: [timestamp]
-- Frequency: [X times per hour/day]
-- Pattern: [time-based / user-based / data-based]
-- Recent changes: [deployment on DATE / config change / etc]
-- System state: [CPU%, memory%, relevant metrics]
-```
-
 **Do not proceed to hypotheses until evidence is documented.**
 
 ---
@@ -69,24 +58,6 @@ For each hypothesis, specify:
 - [ ] **Supporting evidence**: Which collected evidence supports this theory?
 - [ ] **Prediction**: If this is true, what else should we observe?
 - [ ] **Test**: How can we validate or invalidate this hypothesis?
-
-**Template:**
-```
-HYPOTHESIS A: [Root cause theory]
-- Evidence supporting: [specific logs/errors that fit this theory]
-- Prediction: If A is true, we should also see [X]
-- Test: [Specific action to validate - add logging, reproduce, check metric, etc]
-
-HYPOTHESIS B: [Alternative root cause theory]
-- Evidence supporting: [...]
-- Prediction: [...]
-- Test: [...]
-
-HYPOTHESIS C: [Another alternative]
-- Evidence supporting: [...]
-- Prediction: [...]
-- Test: [...]
-```
 
 **Why minimum 3 hypotheses?**
 - Prevents anchoring on first idea
@@ -108,184 +79,56 @@ For each test:
 - [ ] **Conclusion**: Hypothesis validated, invalidated, or needs more testing
 
 **Testing approaches:**
-```
-1. Add instrumentation
-   - Add logging at suspected failure point
-   - Add metrics/counters
-   - Enable debug mode
-
-2. Reproduce in isolation
-   - Minimal reproduction case
-   - Test environment vs production
-   - Vary inputs systematically
-
-3. Check correlations
-   - Does X always happen when Y?
-   - Timeline correlation (error spike after deployment?)
-   - User/data correlation (specific user types affected?)
-
-4. Eliminate variables
-   - Turn off feature flag
-   - Rollback to previous version
-   - Disable suspected component
-```
-
-**Document results:**
-```
-TEST 1: [Test description for Hypothesis A]
-Expected if correct: [X]
-Expected if wrong: [Y]
-Actual result: [Z]
-Conclusion: Hypothesis A [VALIDATED / INVALIDATED / INCONCLUSIVE]
-
-TEST 2: [Test for Hypothesis B]
-...
-```
+1. Add instrumentation (logging, metrics, debug mode)
+2. Reproduce in isolation (minimal case, test vs production)
+3. Check correlations (X always with Y? deployment timing? user patterns?)
+4. Eliminate variables (disable feature, rollback, turn off component)
 
 ---
 
 ### 4. Root Cause Documentation (FOURTH)
 
-**Once root cause is identified through testing, document the evidence chain:**
-
-```
-ROOT CAUSE ANALYSIS REPORT
-==========================
-
-SYMPTOM:
-[User-visible problem or error]
-
-ROOT CAUSE:
-[Underlying issue identified through investigation]
-
-EVIDENCE CHAIN:
-1. [First clue that led to hypothesis]
-2. [Supporting evidence]
-3. [Test that validated root cause]
-4. [Confirmatory evidence]
-
-HYPOTHESES TESTED:
-- Hypothesis A: [theory] - RESULT: [invalidated/validated]
-- Hypothesis B: [theory] - RESULT: [invalidated/validated]
-- Hypothesis C: [theory] - RESULT: [VALIDATED - this was the root cause]
-
-SUPPORTING DATA:
-- [Log snippet showing root cause]
-- [Metric showing correlation]
-- [Timeline showing trigger]
-
-WHY IT MATTERS:
-[Impact explanation - why this caused the observed symptom]
-```
+**Once root cause is identified through testing, document the evidence chain.**
 
 ---
 
 ### 5. Solution Path (FIFTH)
 
-**Only after root cause is validated, define solution:**
-
-```
-REMEDIATION:
-- Immediate fix: [Quick fix to stop bleeding]
-- Permanent fix: [Proper solution addressing root cause]
-- Verification: [How to confirm fix works]
-
-PREVENTION:
-- Monitoring: [Metrics to detect if issue recurs]
-- Testing: [Test cases to prevent regression]
-- Process change: [What should change to prevent similar issues]
-
-ROLLBACK PLAN:
-- If fix fails: [Steps to revert]
-- Monitoring during rollout: [Metrics to watch]
-```
+**Only after root cause is validated, define solution.**
 
 ---
 
-## Anti-Patterns to Avoid
+## Templates (Quick Reference)
 
-### Red Flags - STOP if you're doing these:
+**Evidence:** Error + timestamp + frequency + pattern + recent changes + system state
 
-❌ **"It's probably X"** → That's a hypothesis, not a conclusion. Test it.
+**Hypothesis:** Theory + supporting evidence + prediction + test method (minimum 3 hypotheses)
 
-❌ **"Let's try changing Y and see what happens"** → That's random debugging, not systematic investigation.
+**Test Results:** Method + expected if correct + expected if wrong + actual result + conclusion
 
-❌ **"The error message says Z, so Z is the problem"** → Error messages show symptoms. Dig deeper for cause.
+**Root Cause Report:** Symptom → Root cause → Evidence chain → Hypotheses tested → Supporting data
 
-❌ **"This worked for similar issue before"** → Different symptoms can have different causes. Investigate this case.
+**Solution:** Immediate fix + permanent fix + verification + prevention + rollback plan
 
-❌ **"Just restart the service"** → That may hide the symptom temporarily. Find the root cause.
+---
 
-❌ **Proposing fix without testing hypothesis** → How do you know the fix addresses root cause?
+## Anti-Patterns - STOP If You're Doing This
 
-❌ **Testing only one hypothesis** → What if you're wrong? Always test alternatives.
+- ❌ "It's probably X" → That's a hypothesis, not conclusion. Test it.
+- ❌ "Let's try Y" → Random debugging ≠ systematic investigation
+- ❌ "Error says Z" → Error = symptom. Dig for cause.
+- ❌ "This worked before" → Different case may have different cause
+- ❌ "Just restart" → Hides symptom, doesn't fix root cause
 
 ---
 
 ## Common Investigation Patterns
 
-### Pattern: Intermittent Failure
-```
-Evidence needed:
-- Failure frequency (X times per hour/day)
-- Time pattern (all day? specific hours?)
-- Load pattern (under high load? low load?)
-- User pattern (all users? specific segment?)
-
-Likely hypotheses:
-- Race condition (load-dependent)
-- Resource exhaustion (time/load-dependent)
-- External dependency timeout (network-dependent)
-- Data-dependent edge case (specific input triggers)
-
-Tests:
-- Load testing (reproduce under high load)
-- Add timing logs (measure execution time)
-- Check resource metrics during failures
-- Identify common factor in failing requests
-```
-
-### Pattern: Sudden Onset Failure
-```
-Evidence needed:
-- Exact timestamp when failures started
-- Deployments/changes in last 24-48h
-- Dependency version changes
-- Configuration changes
-
-Likely hypotheses:
-- Recent deployment introduced bug
-- Dependency breaking change
-- Configuration change side effect
-- External service change
-
-Tests:
-- Rollback to previous version (does problem go away?)
-- Check deployment logs (what changed?)
-- Compare configs (before/after)
-- Check dependency changelogs
-```
-
-### Pattern: Data Corruption or Inconsistency
-```
-Evidence needed:
-- Which data is wrong?
-- When did corruption start?
-- Pattern in corrupted records (time? user? input?)
-- Recent schema changes or migrations?
-
-Likely hypotheses:
-- Race condition in writes
-- Migration script bug
-- Validation bypass
-- Timezone/encoding issue
-
-Tests:
-- Trace data flow (where does data get written?)
-- Check transaction isolation
-- Review migration scripts
-- Test with known-good input
-```
+| Pattern | Evidence Needed | Likely Hypotheses | Tests |
+|---------|----------------|-------------------|-------|
+| **Intermittent** | Frequency, timing, load, users | Race condition, resource exhaustion, dependency timeout, data edge case | Load testing, timing logs, resource metrics, request analysis |
+| **Sudden Onset** | Timestamp, recent changes, deployments | Recent deployment, dependency breaking change, config side effect | Rollback test, check deployment logs, compare configs |
+| **Data Corruption** | Affected data, timing, schema changes | Race condition in writes, migration bug, validation bypass | Trace data flow, check transactions, review migrations |
 
 ---
 

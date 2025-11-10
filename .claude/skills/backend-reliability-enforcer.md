@@ -5,138 +5,89 @@ description: Use when implementing backend systems, APIs, data persistence, or a
 
 # Backend Reliability Enforcer
 
-## ⚠️ MANDATORY FIRST STEP - READ THIS NOW
+## ⚠️ MANDATORY FIRST STEP
 
-### 🚨 CRITICAL: Anti-Rationalization Warning
+### Anti-Rationalization Warning
 
-**Time pressure, tight deadlines, and customer urgency are NOT exceptions to this skill.**
+**Time pressure, tight deadlines, and customer urgency are NOT exceptions.**
 
-This skill exists BECAUSE of pressure. Shortcuts under pressure create:
-- Financial loss from duplicate charges or data corruption (payment bugs cost thousands)
-- Compliance violations and legal liability (GDPR, PCI-DSS, SOX)
-- Multi-hour production incidents from missing observability (cascade failures)
-- Customer trust damage from security breaches or data loss
+Shortcuts create: financial loss (payment bugs cost thousands), compliance violations (GDPR, PCI-DSS), multi-hour incidents (cascade failures), customer trust damage.
 
-**Common rationalizations that mean you're about to fail:**
-- "Let's get it working first, add [error handling/security] later" → No, reliability requirements are NOT optional
-- "We'll add [idempotency/transactions/audit] in v2" → No, retrofitting costs 10x more + requires customer refunds
-- "Just this once" → No, every shortcut creates technical debt and sets a dangerous precedent
-- "Customer needs it in 3 days" → Shipping broken payment code causes more delay than building it right
-- "Being pragmatic not dogmatic" → No, these requirements ARE pragmatic (learned from production incidents)
-- "That edge case is unlikely" → Unlikely × scale = frequent. Unlikely failures corrupt data at scale.
+| Rationalization | Why It Fails |
+|----------------|--------------|
+| "Add [error handling/security] later" | Reliability requirements are NOT optional |
+| "Add [idempotency/transactions] in v2" | Retrofitting costs 10x more + requires refunds |
+| "Just this once" | Every shortcut creates technical debt |
+| "Customer needs it in 3 days" | Shipping broken code causes MORE delay |
+| "Being pragmatic not dogmatic" | These ARE pragmatic (learned from incidents) |
+| "That edge case is unlikely" | Unlikely × scale = frequent data corruption |
 
-**If you're thinking any of these thoughts, STOP. Re-read the skill requirements.**
+**If thinking these thoughts, STOP. Re-read requirements.**
 
 ---
 
-**STOP. Before proceeding with this backend task, you MUST:**
+### TodoWrite Creation Requirements
 
-1. **CREATE TodoWrite** with these 5 sections (DO NOT SKIP):
-   - **Fault Tolerance**: Minimum 5 items
-   - **Error Handling**: Minimum 5 items
-   - **Data Integrity**: Minimum 5 items
-   - **Security**: Minimum 5 items
-   - **Observability**: Minimum 5 items
+**Before proceeding, CREATE TodoWrite with 5 sections (25+ items total):**
 
-2. **VERIFY TodoWrite quality** using standards below (MANDATORY - see verification checkpoint)
+1. **Fault Tolerance**: 5+ items
+2. **Error Handling**: 5+ items
+3. **Data Integrity**: 5+ items
+4. **Security**: 5+ items
+5. **Observability**: 5+ items
 
-3. **CONFIRM section completeness** using checklist below
-
-**Do not analyze, plan, or implement until TodoWrite is created and verified.**
-
----
-
-## 🛑 TODOWRITE OUTPUT REQUIREMENT - BLOCKING
-
-**CRITICAL: You MUST output your TodoWrite creation BEFORE any implementation.**
-
-**To prove you created TodoWrite, output this exact sequence:**
+**Output this template:**
 
 ```
 === TODOWRITE CREATION ===
 
 **Fault Tolerance** (5+ items):
-[List your 5+ fault tolerance items here]
+[List items]
 
 **Error Handling** (5+ items):
-[List your 5+ error handling items here]
+[List items]
 
 **Data Integrity** (5+ items):
-[List your 5+ data integrity items here]
+[List items]
 
 **Security** (5+ items):
-[List your 5+ security items here]
+[List items]
 
 **Observability** (5+ items):
-[List your 5+ observability items here]
+[List items]
 
-TOTAL: ___ items
+TOTAL: ___ items (must be 25+)
 
 === TODOWRITE CREATED ===
 ```
 
-**If you skip this output, you are violating the skill and must STOP immediately.**
-
-**Why this is non-negotiable:**
-- TodoWrite is the PRIMARY enforcement mechanism for reliability requirements
-- Without visible TodoWrite, there's no proof you followed the discipline
-- Skipping TodoWrite = skipping ALL the reliability safeguards
-
-**After outputting TodoWrite, proceed to Verification Checkpoint below.**
+**Do not analyze, plan, or implement until TodoWrite is created and verified.**
 
 ---
 
-## 🛑 MANDATORY VERIFICATION CHECKPOINT - DO NOT PROCEED
+## Verification Checkpoint
 
-**After creating TodoWrite, you MUST verify EVERY item meets quality standards BEFORE proceeding.**
+**Verify 3 random items meet ALL criteria:**
 
-**Complete this checklist and output the results:**
+| Criteria | Example |
+|----------|---------|
+| Concrete numbers/thresholds | "5 failures/10s", "15s timeout", "100 req/min" |
+| Specific tools/technologies | "Opossum", "pino", "Joi", "Knex", "Redis" |
+| Measurable outcome | "generates UUID v4 correlation ID" |
 
+**Test format:**
 ```
-VERIFICATION CHECKLIST:
-[ ] Selected 3 random items from TodoWrite
-[ ] Item 1: [paste full item text here]
-    - Has concrete numbers/thresholds? YES/NO (examples: "5 failures/10s", "15s timeout", "100 req/min", "24h TTL")
-    - Names specific tools/technologies? YES/NO (examples: "Opossum", "pino", "Joi", "Knex", "Redis", "axios")
-    - States measurable outcome? YES/NO (examples: "generates UUID v4 correlation ID", "validates email format", "alerts if error rate > 5%")
-[ ] Item 2: [paste full item text here]
-    - Has concrete numbers/thresholds? YES/NO
-    - Names specific tools/technologies? YES/NO
-    - States measurable outcome? YES/NO
-[ ] Item 3: [paste full item text here]
-    - Has concrete numbers/thresholds? YES/NO
-    - Names specific tools/technologies? YES/NO
-    - States measurable outcome? YES/NO
+[ ] Item 1: [paste text]
+    - Concrete numbers? YES/NO
+    - Specific tools? YES/NO
+    - Measurable outcome? YES/NO
+[ ] Item 2: [repeat]
+[ ] Item 3: [repeat]
 
-RESULT: All 9 checks must be YES. If any NO, revise items and re-verify.
+RESULT: All 9 checks = YES
 ```
 
-**DO NOT PROCEED WITH IMPLEMENTATION until all 9 checks pass.**
-
----
-
-**Minimum total: 25 specific items** covering all 5 categories.
-
----
-
-## Section Completion Confirmation
-
-**After creating TodoWrite, output this checklist to confirm all sections present:**
-
-```
-SECTION COMPLETION:
-[ ] Fault Tolerance: 5+ items
-[ ] Error Handling: 5+ items
-[ ] Data Integrity: 5+ items
-[ ] Security: 5+ items
-[ ] Observability: 5+ items
-
-TOTAL: ___ items (must be 25+)
-```
-
-**If any section is unchecked or total < 25, STOP and add missing items now.**
-
-**Why this matters:** 20% of agents miss entire sections (especially Data Integrity and Observability). For payment systems, missing Data Integrity = catastrophic (no idempotency, transactions, audit).
+**BLOCKED if any NO. Revise and re-verify.**
 
 ---
 
@@ -198,144 +149,25 @@ PAYMENT CHECKPOINT VERIFICATION:
 
 ## TodoWrite Quality Standards
 
-After creating TodoWrite, verify EVERY item meets these criteria:
+**Specificity Test: "Could an engineer implement this tomorrow without asking questions?"**
 
-- [ ] Names specific tool/library/framework (e.g., "Hystrix", "Opossum", "pino", "Joi")
-- [ ] Includes concrete values/thresholds (e.g., "5 failures/10s", "15s timeout", "4.5:1 contrast")
-- [ ] States measurable outcome (e.g., "generate UUID correlation ID", not "add logging")
+### Required Elements (ALL three)
 
-## The Specificity Test
+| Element | Examples |
+|---------|----------|
+| Concrete numbers/thresholds | "5 failures/10s", "15s timeout", "100 req/min", "24h TTL" |
+| Specific tools/technologies | "Opossum", "pino", "Joi", "Knex", "Redis", "axios" |
+| Measurable outcome | "generates UUID v4 correlation ID", "validates email format" |
 
-**For EACH TodoWrite item, ask: "Could an engineer implement this tomorrow without asking clarifying questions?"**
+### Quality Examples
 
-**If NO → Item fails specificity test.**
-
-### What Makes an Item Specific?
-
-Must include ALL three:
-1. **Concrete numbers/thresholds**: "5 failures/10s", "15s timeout", "100 req/min", "24h TTL", "error rate > 5%"
-2. **Specific tools/technologies**: "Opossum", "pino", "Joi", "Zod", "Knex", "Sequelize", "Redis", "axios"
-3. **Measurable outcome**: "generates UUID v4 correlation ID", "validates email format", "alerts if error rate > 5%", "stores 24h"
-
-### Test Examples
-
-❌ **FAILS TEST**: "Add error handling"
-- Engineer asks: Which errors? How handled? With what tool? What logged?
-
-✅ **PASSES TEST**: "Structured logging with pino: Include UUID v4 correlation ID from `X-Correlation-ID` header in all log entries. Log format: `{correlationId, level, timestamp, service, message, metadata}`"
-- Engineer knows: Tool (pino), ID format (UUID v4), header name, log structure
-
-❌ **FAILS TEST**: "Validate input"
-- Engineer asks: Which fields? Which rules? Which library? What error response?
-
-✅ **PASSES TEST**: "Joi schema validation: `amount` (number, positive, max 999999), `currency` (string, ISO 4217 codes), `customer_id` (UUID v4 format). Return 400 with `{error: 'validation_failed', fields: [...]}` on failure."
-- Engineer knows: Tool (Joi), fields, rules, error response format
-
-### Apply This Test
-
-Before proceeding, select 3 random items from your TodoWrite and test them. If any fail, revise before proceeding.
-
----
-
-### Examples of Quality Items
-
-**❌ BAD (too generic):**
-- "Add error handling"
-- "Add logging"
-- "Add timeout"
-- "Validate input"
-- "Add circuit breaker"
-
-**✅ GOOD (specific):**
-- "Implement structured logging with UUID correlation IDs using pino/winston"
-- "Configure 15s timeout for Stripe API calls using axios timeout config"
-- "Validate request body with Joi/Zod schema before processing"
-- "Circuit breaker using Opossum with 5 failures/10s threshold, 30s reset"
-- "Generate idempotency key from `Idempotency-Key` request header, store in Redis 24h TTL"
-
----
-
-## ❌ Failed Examples (What NOT To Do)
-
-**These items would FAIL verification. If your items look like these, revise them immediately.**
-
-### Too Generic (No Tool Names)
-
-❌ "Add error handling"
-- **Why it fails**: Which errors? How handled? With what tool?
-- **Engineer asks**: Try/catch? Error middleware? What logged? What returned?
-
-❌ "Add logging"
-- **Why it fails**: What logged? Which library? What format?
-- **Engineer asks**: Console.log? Structured logging? Which tool? What fields?
-
-❌ "Add timeout"
-- **Why it fails**: On what? How long? With what mechanism?
-- **Engineer asks**: API calls? Database? Which specific calls? Axios? Fetch? Native?
-
-❌ "Validate input"
-- **Why it fails**: Which fields? Which rules? Which library?
-- **Engineer asks**: Joi? Zod? Yup? Custom? What validation rules?
-
-### Missing Concrete Thresholds
-
-❌ "Add circuit breaker"
-- **Why it fails**: Failure threshold? Reset time? Which library?
-- **Engineer asks**: How many failures? Over what time? When does it reset? Opossum? Hystrix?
-
-❌ "Implement retry logic"
-- **Why it fails**: How many retries? What backoff? For which operations?
-- **Engineer asks**: 3 retries? Exponential backoff? Which errors trigger retry?
-
-❌ "Add rate limiting"
-- **Why it fails**: What limit? Per what timeframe? Per IP? Per user?
-- **Engineer asks**: 100 req/min? 1000 req/hour? How tracked? Redis? In-memory?
-
-### Missing Measurable Outcomes
-
-❌ "Improve observability"
-- **Why it fails**: What specifically gets observed? How measured?
-- **Engineer asks**: Which metrics? What dashboards? What alerts?
-
-❌ "Ensure data integrity"
-- **Why it fails**: How ensured? What specific mechanism?
-- **Engineer asks**: Transactions? Validation? Checksums? What exactly?
-
-❌ "Make it secure"
-- **Why it fails**: Which security measures? How verified?
-- **Engineer asks**: Auth? Encryption? Input sanitization? Rate limiting? What exactly?
-
-### Payment-Critical Failures (CATASTROPHIC)
-
-❌ "Prevent duplicate charges"
-- **Why it fails**: No implementation details. How prevented?
-- **Engineer asks**: Idempotency keys? Which header? Stored where? What TTL?
-
-❌ "Ensure atomicity"
-- **Why it fails**: Using what mechanism? No tool specified.
-- **Engineer asks**: Database transactions? Which ORM? Knex? Sequelize? Prisma?
-
-❌ "Track payment history"
-- **Why it fails**: Track what exactly? No audit trail fields specified.
-- **Engineer asks**: Which fields? Who, what, when? Old/new values? Transaction IDs?
-
-**If 3+ of your TodoWrite items match these ❌ patterns, STOP. Your TodoWrite needs major revision before proceeding.**
-
-**If ANY payment-critical item is generic (❌ patterns), BLOCKED. Revise immediately.**
-
----
-
-## Section Completeness Check
-
-Before proceeding, confirm ALL mandatory sections present in your TodoWrite:
-
-- [ ] **Fault Tolerance**: 5+ items (circuit breaker, retry, timeout, degradation, health checks) ✓
-- [ ] **Error Handling**: 5+ items (correlation IDs, structured logs, error types, metrics, alerts) ✓
-- [ ] **Data Integrity**: 5+ items (input validation, transactions, idempotency, retention, audit trail) ✓
-- [ ] **Security**: 5+ items (auth, authorization, sanitization, encryption, rate limiting) ✓
-- [ ] **Observability**: 5+ items (structured logs, metrics, tracing, dashboards, runbooks) ✓
-
-**If any section is missing or below 5 items, STOP and add them now.**
+| ❌ Generic (FAILS) | ✅ Specific (PASSES) |
+|-------------------|---------------------|
+| "Add error handling" | "Structured logging with pino: UUID v4 correlation ID from `X-Correlation-ID` header in format `{correlationId, level, timestamp, service, message}`" |
+| "Validate input" | "Joi schema: `amount` (number, positive, max 999999), `currency` (ISO 4217), `customer_id` (UUID v4). Return 400 with `{error: 'validation_failed', fields: [...]}`" |
+| "Add circuit breaker" | "Opossum circuit breaker: 5 failures/10s threshold, 30s reset, fallback to cached data" |
+| "Add timeout" | "axios timeout: 15s for Stripe API calls, 5s for database queries" |
+| "Prevent duplicate charges" | "`Idempotency-Key` header (UUID v4), Redis SET NX EX 24h, return cached response if exists" |
 
 ---
 
@@ -425,236 +257,98 @@ If implementing payment processing, subscription billing, or financial transacti
 
 ---
 
-## 🚩 Red Flags - STOP
+## Red Flags & Anti-Patterns
 
-**If you find yourself thinking or saying ANY of these, you are about to violate the skill:**
+**If thinking ANY of these, STOP and re-read requirements:**
 
-- "Let's get it working first, add [error handling/security/observability] later" → No, reliability requirements are NOT optional
-- "We'll add [idempotency/transactions/audit] in v2/post-launch" → No, implement now. Later = never (80% never added)
-- "Just this once" → Every shortcut creates technical debt and sets dangerous precedent
-- "Customer needs it in 3 days" → Shipping broken payment code causes MORE delay than building it right
-- "Being pragmatic not dogmatic" → These requirements ARE pragmatic (learned from production incidents)
-- "That edge case is unlikely" → Unlikely × scale = frequent. Unlikely failures corrupt data at scale.
-- "We already manually tested it" → Manual ≠ automated/systematic. Manual doesn't prevent production issues.
-- "Code review will catch this" → Review is final gate, not substitute for requirements. Reviewers assume you built it right.
-- "Internal tool, lower quality acceptable" → Wrong. Internal tools process real data. Data corruption = same impact.
-- "We'll fix bugs in production" → Bugs in backend = data corruption = impossible to fix retroactively
-- "Add logging after we see issues" → Can't debug production without logs. Adding after = blind debugging for hours.
-- "Circuit breaker is overkill for this" → One slow external service takes down your entire system. Not overkill.
-- "Validation slows down development" → Validation prevents data corruption. Cleaning corrupt data is 100x slower.
+| Red Flag | Why It Fails | Consequence |
+|----------|--------------|-------------|
+| "Add [reliability] later" | 80% never added, retrofitting costs 10x | Production incidents, data corruption |
+| "Just this once" | Creates technical debt precedent | Cascading shortcuts |
+| "Customer needs it in 3 days" | Broken code causes MORE delay | Emergency fixes, refunds |
+| "That edge case is unlikely" | Unlikely × scale = frequent | Data corruption at scale |
+| "Manual testing is enough" | Manual ≠ systematic | Production bugs slip through |
+| "Code review will catch it" | Review ≠ substitute for requirements | Assumes you built it right |
+| "Internal tool = lower quality" | Processes real data | Same corruption impact |
+| "Add logging after issues" | Can't debug without logs | Hours of blind debugging |
+| "Circuit breaker is overkill" | One slow service = cascade | System-wide outages |
+| "Validation slows development" | Prevents corruption | Cleanup costs 100x more |
 
-**When you notice a red flag, STOP. Re-read the specific skill requirement you're about to skip.**
-
-**For payment operations, ANY red flag = CATASTROPHIC risk. No compromises.**
+**For payment operations, ANY red flag = CATASTROPHIC. No compromises.**
 
 ---
 
-### When Asked to Skip Requirements
+## Response Templates for Pushback
 
-Use these EXACT response templates:
+### "We'll Add [Requirement] Later"
 
-#### "We'll Add [Requirement] Later"
+```
+❌ BLOCKED: Cannot defer [requirement] to future iterations.
 
-❌ **BLOCKED**: I cannot defer [error handling/idempotency/transactions/observability] to future iterations.
+Why "later" fails:
+- 80% never get added (next sprint has new priorities)
+- Retrofitting costs 10x more
+- Production bugs require emergency fixes + refunds
 
-**Why "later" always fails:**
-- "Later" never comes - next sprint has new priorities
-- Retrofitting costs 10x more than building it in (especially for payment systems)
-- Technical debt accumulates and blocks future changes
-- Production bugs require emergency fixes + customer refunds + loss of trust
+Consequences if skipped:
+- Idempotency → Duplicate charges → $10K-100K refunds + compliance violations
+- Transactions → Data corruption → days of manual cleanup
+- Observability → Blind incidents → multi-hour debugging
+- Circuit breakers → Cascade failures → system-wide outages
 
-**The data:**
-- 80% of "we'll add later" items never get added
-- Retrofitting observability after incidents costs 10x more
-- Adding idempotency after duplicate charges requires customer refunds + manual reconciliation (cost: $10K-100K+)
-- Retrofitting transactions after data corruption requires manual cleanup (cost: days of engineering time)
+Required to defer:
+1. Specific retrofit date (sprint/date, not "later")
+2. Budget allocated (engineer-weeks + dollars)
+3. Risk acceptance signed by [decision maker + date]
+4. Interim mitigation plan (monitoring/on-call/refund process)
 
-**Specific consequence for this requirement:**
-- Skipping idempotency (payments) → Duplicate charges → customer refunds + loss of trust + compliance violations
-- Skipping transactions → Data corruption → manual cleanup + data loss + regulatory issues
-- Skipping observability → Blind production incidents → multi-hour debugging + extended downtime
-- Skipping circuit breakers → Cascade failures → system-wide outages
+Cannot provide all 4? Implement now.
+Payment operations: NOT acceptable to defer. No exceptions.
+```
 
-**Required**: Implement now, or explicitly document:
-1. Specific date for retrofit (not "later" - actual sprint/date)
-2. Budget allocated (engineer-weeks + dollar cost)
-3. Risk acceptance signed by [decision maker's name + date]
-4. Interim mitigation plan (manual monitoring? 24/7 on-call? customer refund process?)
+### Specific Requirement Blocks
 
-**If you cannot provide these 4 items, requirement must be implemented now.**
-
-**For payment operations:** This risk is NOT acceptable. Payment-critical requirements (idempotency, transactions, audit) must be implemented before launch. No exceptions.
+| Requirement | Risk | Required Implementation |
+|-------------|------|------------------------|
+| Circuit breaker | Cascade failure across all endpoints | Opossum/Hystrix: 5 failures/10s, 30s reset, fallback behavior |
+| Correlation IDs | 5-min debug → multi-hour search | UUID v4 at ingress, `X-Correlation-ID` header, all logs, downstream propagation |
+| Idempotency (payments) | Duplicate charges, compliance violations | `Idempotency-Key` header (UUID), Redis/DB 24h TTL, atomic check-and-set |
+| Transactions | Data inconsistency, manual fixes | BEGIN/COMMIT/ROLLBACK wrapping all related ops, rollback on error |
 
 ---
 
-#### Skipping Circuit Breaker
-```
-❌ BLOCKED: I cannot implement external service calls without circuit breaker protection.
+## Final Verification
 
-Risk: Without circuit breaker, a slow/failing external service will exhaust our connection pool
-and thread pool, causing cascade failure across all endpoints.
+**Before completion:**
 
-Required: Circuit breaker (Opossum/Hystrix) with failure threshold (e.g., 5 failures/10s),
-open state timeout (30s), and fallback behavior (return cached data or error response).
+| Category | Verification | Command |
+|----------|--------------|---------|
+| Build & Test | All tests pass, zero lint errors | `./buildAll.sh` |
+| Error Scenarios | Test failure modes | Service down, timeout, invalid input |
+| Security | Auth/validation works | Auth blocks unauthorized requests |
+| Observability | Logs/metrics instrumented | `rg "correlationId\|correlation_id" src/backend/` |
+| Documentation | Updated | API docs, runbooks, deployment notes |
 
-To override: Explicitly state you accept cascade failure risk and I will document this in code comments.
-```
-
-#### Skipping Correlation IDs
-```
-❌ BLOCKED: I cannot implement this endpoint without correlation ID support.
-
-Risk: Without correlation IDs, debugging production issues requires manual log correlation across
-services - turning 5-minute investigations into multi-hour searches.
-
-Required: Generate UUID v4 correlation ID at API gateway/ingress, pass via `X-Correlation-ID`
-header, include in all structured logs, propagate to downstream services.
-
-To override: Explicitly state you accept degraded observability and I will document this gap.
-```
-
-#### Skipping Idempotency (Payments)
-```
-❌ BLOCKED: I cannot implement payment operations without idempotency keys.
-
-Risk: Without idempotency, network retries or duplicate requests will charge customers multiple
-times, causing financial loss and compliance violations.
-
-Required: Accept `Idempotency-Key` header (UUID), store in Redis/DB with 24h TTL, return cached
-response if key seen before, atomic check-and-set operation.
-
-To override: This risk is NOT acceptable for payment operations. If you insist, we must implement
-manual refund process and customer support escalation path.
-```
-
-#### Skipping Transactions
-```
-❌ BLOCKED: I cannot implement multi-step data operations without database transactions.
-
-Risk: Without transactions, partial failures leave data in inconsistent state (e.g., order created
-but inventory not decremented), requiring manual data fixes.
-
-Required: Wrap all related operations in database transaction (BEGIN/COMMIT/ROLLBACK), handle
-rollback on any error, verify ACID guarantees.
-
-To override: Explicitly state you accept data inconsistency risk and I will add manual cleanup script.
-```
-
----
-
-## Common Failure Prevention
-
-### "We'll add error handling later"
-❌ **BLOCK**: Error handling is not optional for backend code
-✅ **REQUIRE**: Comprehensive error handling before merging
-
-### "Just return 500 for all errors"
-❌ **BLOCK**: Generic errors hide actionable information
-✅ **REQUIRE**: Specific error types with appropriate HTTP status codes (400/401/403/404/422/500)
-
-### "We don't need timeouts for that call"
-❌ **BLOCK**: Unbounded waits cascade into system-wide failures
-✅ **REQUIRE**: Explicit timeouts on all network I/O (axios config: `timeout: 15000`)
-
-### "The database will handle consistency"
-❌ **BLOCK**: Assuming consistency without verifying transaction boundaries
-✅ **REQUIRE**: Explicit transaction scopes for multi-step operations (knex.transaction())
-
-### "We'll add logging after it works"
-❌ **BLOCK**: Observability must be built-in from the start
-✅ **REQUIRE**: Structured logging and metrics instrumented during implementation
-
-### "That edge case is unlikely"
-❌ **BLOCK**: Unlikely failures in backend systems cause data corruption at scale
-✅ **REQUIRE**: Handle all identified edge cases or document why they're impossible
-
----
-
-## Evidence Collection
-
-Add these items to your TodoWrite before marking task complete:
-
-- [ ] **Build verification**: Run `./buildAll.sh`, screenshot showing all tests pass, zero lint errors
-- [ ] **Error scenario testing**: Document test results for service down, timeout, invalid input cases
-- [ ] **Security verification**: Screenshot/log showing auth check blocks unauthorized request
-- [ ] **Observability proof**: Log excerpt showing correlation ID in structured logs, metric collection confirmed
-- [ ] **Code review link**: PR/commit with changes implementing all TodoWrite items
-
----
-
-## Verification
-
-Before completing any backend task, verify:
-
-1. **Build & Test**: Run `buildAll.sh` - all tests pass, no lint errors
-2. **Error Scenarios**: Test failure modes (service down, timeout, invalid input)
-3. **Security**: Verify authentication, authorization, input validation
-4. **Observability**: Check logs contain correlation IDs, metrics are instrumented
-5. **Documentation**: Update API docs, runbooks, deployment notes
-
-### Verification Commands
-
-```bash
-# Run full test suite
-./buildAll.sh
-
-# Check for TODO/FIXME markers in backend code
-rg -t ts -t js -t go -t py "TODO|FIXME" src/backend/
-
-# Verify error handling coverage
-rg -t ts -t js "throw new Error|throw Error" src/backend/ --count
-
-# Verify correlation ID usage in logs
-rg -t ts -t js "correlationId|correlation_id" src/backend/
-```
-
-**If verification fails**: Do not mark task complete. Add blocking TodoWrite items to address gaps.
-
----
-
-## Final Self-Grading
-
-**Before claiming backend work complete, grade your own TodoWrite:**
+**Self-Grading Checklist:**
 
 ```
-SELF-GRADING CHECKLIST:
-[ ] Minimum 25 items across 5 sections (Fault Tolerance, Error Handling, Data Integrity, Security, Observability)
-[ ] 80%+ of items have concrete numbers/thresholds (5 failures/10s, 15s timeout, 100 req/min, 24h TTL)
-[ ] 80%+ of items name specific tools/technologies (Opossum, pino, Joi, Knex, Redis, axios)
-[ ] 100% of items have measurable outcomes ("generates UUID correlation ID", "validates email format", etc.)
-[ ] Zero items use vague verbs without specifics ("add error handling", "add logging" without tool/format)
-[ ] Tested 3 random items with Specificity Test - all passed (can engineer implement without questions?)
-[ ] For payments: ALL 3 critical requirements present (idempotency, transactions, audit trail with full details)
+[ ] 25+ items across 5 sections
+[ ] 80%+ have concrete numbers (5 failures/10s, 15s timeout)
+[ ] 80%+ name specific tools (Opossum, pino, Joi, Knex, Redis)
+[ ] 100% have measurable outcomes ("generates UUID correlation ID")
+[ ] Zero vague items ("add logging" without tool/format)
+[ ] 3 random items passed Specificity Test (engineer can implement without questions)
+[ ] Payments: ALL 3 critical requirements (idempotency, transactions, audit)
 
-GRADE YOURSELF:
-- All 7 checkboxes passed: 9-10/10 (Excellent - ready to proceed)
-- 5-6 checkboxes passed: 7-8/10 (Good - minor revisions needed)
-- 3-4 checkboxes passed: 5-6/10 (Needs revision - improve specificity)
-- 0-2 checkboxes passed: 1-4/10 (Failed - major revision required)
+GRADING:
+- All 7 passed: 9-10/10 (Excellent)
+- 5-6 passed: 7-8/10 (Good - minor revisions)
+- 3-4 passed: 5-6/10 (Needs revision)
+- 0-2 passed: 1-4/10 (Failed - major revision)
 ```
 
-**If you graded yourself below 7/10, you MUST revise TodoWrite before proceeding with implementation.**
-
-**For payment operations**: If payment checkpoint item is unchecked, BLOCKED. Cannot proceed regardless of other grades.
-
-**Why this matters**: 47% of agents create generic items. 50% miss payment-critical requirements. Self-grading prevents this.
-
----
-
-## Reliability Checklist
-
-For every backend component, ensure:
-
-- ✅ All external calls have circuit breakers + timeouts with specific thresholds
-- ✅ Database operations use transactions where needed
-- ✅ All inputs validated with schema before processing
-- ✅ Errors logged with correlation IDs + structured format
-- ✅ Metrics/alerts configured for SLOs (latency, error rate, throughput)
-- ✅ Security: authentication, authorization, input sanitization, rate limiting
-- ✅ Graceful degradation defined for dependency failures
-- ✅ Idempotency implemented for non-GET operations (especially payments)
-- ✅ Audit trails for sensitive operations
-- ✅ Documentation updated (API specs, runbooks)
+**Below 7/10: MUST revise before proceeding.**
+**Payment checkpoint unchecked: BLOCKED.**
 
 ---
 

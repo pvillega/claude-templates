@@ -13,7 +13,7 @@ category: engineering
 - Preparing for feature addition
 - Post-feature cleanup
 
-## 6-Step Mandatory Process
+## 5-Step Mandatory Process
 
 ### 1. Analyze Code Quality (Baseline)
 - TodoWrite: Create refactoring plan with metrics
@@ -38,33 +38,22 @@ Select ONE pattern per iteration
 - Keep changes atomic
 
 ### 4. Validate Preservation (MANDATORY)
-- Run ALL tests
-- Tests MUST pass with zero changes
-- If tests fail: Revert immediately
-- No behavior changes allowed
+- Run ALL tests → MUST pass with zero changes
+- If tests fail → Revert immediately
+- Re-measure complexity metrics → Calculate improvement %
+- Document before/after comparison
 
-### 5. Measure Improvement
-- Re-measure complexity metrics
-- Calculate improvement percentage
-- Document metrics comparison
-- Confirm improvement achieved
-
-### 6. Document Change
+### 5. Document Change
 - Pattern applied
 - Rationale (why this pattern?)
 - Before/after metrics
 - Commit with descriptive message
 
-## Red Flags
-- "I'll refactor everything at once"
-- Skipping tests between changes
-- Mixing refactoring with features
-- No metric measurement
-- Large, non-atomic changes
-
-## Anti-Patterns
-❌ Big rewrite refactoring
-❌ "Improving" code without tests
-❌ Mixing refactoring with new features
-❌ No before/after measurement
-✅ Small steps with continuous validation
+## Red Flags & Anti-Patterns
+| ❌ Avoid | ✅ Instead |
+|---------|-----------|
+| Big rewrite refactoring | Small, single-pattern changes |
+| Skipping tests between changes | Run ALL tests after each change |
+| Mixing refactoring with features | Separate refactoring commits |
+| No metric measurement | Before/after metrics always |
+| "I'll refactor everything at once" | ONE pattern per iteration |
