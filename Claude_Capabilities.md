@@ -12,16 +12,23 @@ This configuration includes the following commands, which are basically triggers
 
 - **/ct:grammar-check**: checks the grammar and spelling of a text file passed as a parameter. It follows British English rules and creates a backup of the file first.
 
+- **/ct:improve**: applies systematic improvements to code quality, performance, and maintainability. Routes to appropriate skills based on improvement type (quality, performance, maintainability, security). Provides comprehensive analysis with multi-domain coordination and best practices. Usage: `/ct:improve [target] [--type quality|performance|maintainability|security] [--safe] [--interactive]`
+
 - **/ct:reflect**: performs task reflection and validation using Serena MCP analysis capabilities. Supports scopes: 'task' (validate alignment), 'info' (assess completeness), 'done' (evaluate completion), or 'full' (comprehensive validation across all dimensions). Usage: `/ct:reflect [optional: scope]`
+
+- **/ct:research**: applies scientific methodology with adaptive strategies, multi-hop reasoning, and evidence-based synthesis for comprehensive research. Uses systematic four-phase process: Discovery, Investigation, Synthesis, and Reporting. Integrates with WebSearch, Tavily, DeepWiki, Perplexity, and Context7 MCPs for optimal information gathering. Usage: `/ct:research`
 
 - **/ct:skills-check**: lists skills available (and loaded) on this session. Claude seems ot be missing a command for this.
 
 - **/ct:test-agent**: tests an agent using the testing-agents-with-subagents framework. Validates agent names (custom or Task tool subagent), writes test artifacts to /tmp, and generates reports in .claude/test-reports/. Usage: `/ct:test-agent <agent-name>`
 
+- **/ct:test-all-skills**: tests all skills in `.claude/skills/` using parallel subagents with multiple iterations. Discovers skills dynamically, spawns parallel subagents (one per skill), and repeats for multiple iterations to refine results. Assesses token cost vs. value-add threshold: SMALL skills (<2.5K tokens) must add value in >10% of cases; LARGE skills (≥2.5K tokens) must add value in >20% of cases. Usage: `/ct:test-all-skills [optional: iterations]`
+
 - **/ct:test-command**: tests a slash command using the testing-commands-with-subagents framework. Validates command integrity under pressure scenarios, writes test artifacts to /tmp, and generates reports in .claude/test-reports/. Usage: `/ct:test-command <command-name>`
 
 - **/ct:test-skill**: tests a skill using the testing-skills-with-subagents framework. It validates skill names (requires namespace), writes test artifacts to /tmp, and generates reports in .claude/test-reports/. Usage: `/ct:test-skill <namespace:skill-name>`
 
+- **/ct:troubleshoot**: diagnoses and resolves issues in code, builds, deployments, and system behavior. Applies systematic debugging approach with hypothesis testing and evidence collection. Routes to appropriate investigation methodology based on issue type. Usage: `/ct:troubleshoot [issue] [--type bug|build|performance|deployment] [--trace] [--fix]`
 
 ### Commands from Superpowers
 
@@ -35,9 +42,7 @@ The commands below are included, and originate from the [Superpowers](https://gi
 
 ## Agents
 
-This configuration includes the following agents:
-
-- **rust-expert**: A specialized agent for Rust development that delivers production-ready, secure, high-performance Rust code following ownership principles and modern best practices. Focuses on production quality with security-first development, comprehensive testing (TDD approach with 95%+ coverage), safety implementation, and performance engineering. Applies SOLID principles and clean architecture patterns.
+This configuration does not currently include any local custom agents.
 
 ### Agents from Superpowers
 
@@ -55,15 +60,29 @@ This configuration includes the following skills:
 
 - **deployment-automation-enforcer**: use when designing or implementing deployment pipelines, CI/CD workflows, infrastructure provisioning, or any automation that touches production systems
 
+- **discovery-learning**: guides learning through strategic questioning and validates understanding via structured checkpoints. Uses Socratic questioning progression from observation to principle application. Applies progressive learning methodology with prerequisite mapping, practical examples, and understanding verification through structured exercises.
+
 - **duplicate-code-detector**: uses jscpd (copy-paste detector) to find duplicate code. Triggered when referring to code quality, refactoring, technical debt, or similar.
+
+- **edge-case-discovery**: systematically identifies boundary conditions, failure modes, and edge cases through structured analysis. Uses 5-step process: Boundary Value Analysis, Equivalence Partitioning, State Transition Analysis, Error Condition Enumeration, and Integration Point Analysis. Ideal for designing APIs, writing defensive code, planning tests, threat modeling, or building fault-tolerant systems.
 
 - **frontend-production-quality**: enforces WCAG 2.1 AA accessibility and Core Web Vitals as non-negotiable requirements. Must be used BEFORE first commit of any frontend code, when committing frontend changes, creating PRs, or making production changes. Enforces comprehensive accessibility (semantic HTML, ARIA, keyboard navigation, screen reader testing, color contrast), performance requirements (Core Web Vitals: LCP < 2.5s, FID < 100ms, CLS < 0.1), and evidence collection with ZERO exceptions for WIP code or "I'll finish it later" scenarios. Creates TodoWrite with 18+ items across Accessibility, Performance, and Evidence Collection categories.
 
+- **incremental-refactoring**: systematic code transformation through small, measurable, behavior-preserving changes. Applies 5-step mandatory process: Analyze Code Quality (baseline), Identify Refactoring Pattern, Apply Change Incrementally, Verify Behavior Preservation, Measure Improvement. Use when code smells identified, technical debt reduction planned, or preparing for feature addition.
+
 - **meta-agent** (agent-creator): autonomously creates complete production-ready agents with Claude Skills. Activates when user asks to create an agent, automate a workflow, or create a skill. Uses 5-phase protocol: Discovery (research APIs), Design (define analyses), Architecture (structure implementation), Detection (determine keywords), and Implementation (write complete code with tests). Generates 5000+ word SKILL.md, functional Python scripts, comprehensive tests, references, configs, and documentation. Includes marketplace.json for installation, validators for data quality, temporal helpers for context awareness, and comprehensive test suite (25+ tests).
+
+- **performance-optimization**: enforces measurement-driven analysis and bottleneck elimination before implementing optimizations. Applies baseline-first methodology: establish performance baselines, identify bottlenecks through profiling, apply targeted optimizations, and verify improvements with metrics. CRITICAL: Baseline must be established before any code changes.
+
+- **progressive-learning**: applies progressive learning methodology when teaching or explaining programming concepts. Uses prerequisite mapping, practical examples, and understanding verification through structured exercises. Activates when user requests explanations, tutorials, step-by-step breakdowns, learning paths, or educational content creation.
+
+- **security-audit**: formal compliance-focused security audits using OWASP Top 10 and CVSS. Use ONLY when formal compliance or regulatory requirements demand systematic documentation (SOC2, PCI-DSS, HIPAA, GDPR, ISO 27001). NOT for ad-hoc code reviews or general development work. Defines scope, maps attack surface, enumerates vulnerabilities, assesses risk with CVSS scoring, and generates compliance evidence.
+
+- **testing-agents-with-subagents**: tests agent definitions (both custom .claude/agents/*.md and Task tool subagents) before deployment to verify they maintain purpose focus and behavioral consistency under pressure. Applies RED-GREEN-REFACTOR cycle to agent persona documentation. NOT for functional testing - this tests agent definition integrity.
 
 - **testing-commands-with-subagents**: tests slash command definitions before deployment to verify they maintain step integrity and resist authority pressure. Applies RED-GREEN-REFACTOR cycle: runs baseline without enforcement (watch agents skip steps), writes command addressing skip-step rationalizations, iterates to close authority-override loopholes. Tests authority pressure, time pressure, pragmatism scenarios, and tool restrictions. Used when creating or editing slash command definitions.
 
-
+- **threat-modeling**: systematically identifies and assesses security threats using structured threat analysis framework. Uses STRIDE methodology (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege). Ideal for designing new features with security implications, architecture reviews, authentication/authorization implementation, or handling sensitive data.
 
 ### Skills from Superpowers
 
