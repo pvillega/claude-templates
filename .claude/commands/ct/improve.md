@@ -36,12 +36,11 @@ This command acts as a unified entry point that routes to appropriate skills bas
 ### Quality Improvements (`--type quality`)
 Delegates to:
 - **`duplicate-code-detector` skill** - Identifies code duplication with jscpd analysis
-- **`technical-debt-assessment` skill** - Prioritizes technical debt reduction
 - **`incremental-refactoring` skill** - Applies safe refactoring patterns
 
 Workflow:
 1. Run duplicate-code-detector for duplication analysis
-2. Use technical-debt-assessment for prioritization
+2. Assess technical debt and prioritize improvements
 3. Apply incremental-refactoring for safe implementation
 
 ### Performance Improvements (`--type performance`)
@@ -56,12 +55,11 @@ Workflow:
 
 ### Maintainability Improvements (`--type maintainability`)
 Delegates to:
-- **`technical-debt-assessment` skill** - Complexity analysis and debt quantification
 - **`incremental-refactoring` skill** - Structure improvements and simplification
 - **`architecture-discipline` skill** - Architectural consistency validation
 
 Workflow:
-1. Assess technical debt and complexity metrics
+1. Analyze complexity and identify improvement opportunities
 2. Plan incremental refactoring approach
 3. Apply structure improvements
 4. Validate against architectural principles
@@ -101,7 +99,7 @@ Workflow:
 ```
 /ct:improve src/ --type quality --safe
 # Invokes duplicate-code-detector for duplication analysis
-# Uses technical-debt-assessment for prioritization
+# Assesses technical debt and prioritizes improvements
 # Applies incremental-refactoring with safe mode enabled
 # Improves code structure, reduces technical debt, enhances readability
 ```
@@ -118,7 +116,7 @@ Workflow:
 ### Maintainability Improvements
 ```
 /ct:improve legacy-modules --type maintainability
-# Uses technical-debt-assessment for complexity analysis
+# Analyzes complexity and identifies improvement opportunities
 # Applies incremental-refactoring for structure improvements
 # Validates against architecture-discipline principles
 # Reduces complexity and improves code organization

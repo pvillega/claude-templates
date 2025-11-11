@@ -34,7 +34,7 @@ Key behaviors:
 This command leverages existing skills for systematic investigation:
 
 ### For Bug Investigation (`--type bug`)
-Applies **`root-cause-analysis` skill**:
+Applies systematic debugging approach:
 - Evidence-based investigation methodology
 - Hypothesis generation and testing
 - Systematic root cause identification
@@ -59,7 +59,7 @@ Applies systematic debugging approach:
 ### Bug Investigation (`--type bug`)
 ```
 1. Analyze error context and stack traces
-2. Apply root-cause-analysis skill methodology
+2. Apply systematic debugging methodology
 3. Identify root cause through evidence chain
 4. Propose fixes with impact assessment
 5. Validate fix resolves issue without side effects
@@ -154,7 +154,7 @@ Service validation → Issue resolution → Health check
 ### Code Bug Investigation
 ```
 /ct:troubleshoot "Null pointer exception in user service" --type bug --trace
-# Applies root-cause-analysis skill for systematic investigation
+# Applies systematic debugging for thorough investigation
 # Examines stack traces and error context comprehensively
 # Identifies root cause through evidence-based methodology
 # Provides targeted fix recommendations with validation
@@ -193,7 +193,7 @@ When you invoke `/ct:troubleshoot`:
 
 1. **Intake**: Parse issue description and type flag
 2. **Route**: Determine appropriate investigation approach based on type
-3. **Investigate**: Apply root-cause-analysis or domain-specific methodology
+3. **Investigate**: Apply systematic debugging or domain-specific methodology
 4. **Report**: Generate findings with evidence chain and confidence levels
 5. **Propose**: Suggest fixes with risk assessment and implementation guidance
 6. **Verify**: Confirm resolution if `--fix` flag used, document results
@@ -203,7 +203,6 @@ When you invoke `/ct:troubleshoot`:
 Works synergistically with:
 - **`/ct:research`** - Research external solutions and known issues
 - **`/ct:reflect`** - Validate investigation completeness and task adherence
-- **`root-cause-analysis` skill** - Systematic evidence-based debugging
 - **`performance-optimization` skill** - Performance issue resolution
 - **`/ct:test-*` commands** - Validation after fixes are applied
 
@@ -222,7 +221,7 @@ This command fills the "problem diagnosis and resolution" gap in the command sui
 - Execute systematic issue diagnosis using structured debugging methodologies
 - Provide validated solution approaches with comprehensive problem analysis
 - Apply safe fixes with verification and detailed resolution documentation
-- Leverage root-cause-analysis and performance-optimization skills
+- Leverage performance-optimization skill for performance issues
 
 **Will Not:**
 - Apply risky fixes without proper analysis and user confirmation

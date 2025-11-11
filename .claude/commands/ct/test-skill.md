@@ -1,5 +1,15 @@
 ---
 description: "Test a skill using the testing-skills-with-subagents framework"
+arguments:
+  - name: "skill_name"
+    type: "required positional"
+    description: "The skill to test in namespace format (e.g., superpowers:brainstorming). Must include a namespace prefix."
+    example: "/ct:test-skill superpowers:brainstorming"
+argument-hint: "<namespace:skill-name>"
+allowed-tools:
+  - Skill
+  - Bash
+  - Write
 ---
 
 # Test Skill Command
