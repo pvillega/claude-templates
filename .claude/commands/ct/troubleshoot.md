@@ -1,6 +1,23 @@
 ---
 name: troubleshoot
 description: "Diagnose and resolve issues in code, builds, deployments, and system behavior"
+argument-hint: "[issue] [--type bug|build|performance|deployment] [--trace] [--fix]"
+arguments:
+  - name: issue
+    description: "Description of the problem to diagnose (error messages, symptoms, or issue details)"
+    required: true
+    example: "Null pointer exception in user service"
+flags:
+  - name: "--type"
+    description: "Specifies the troubleshooting domain (bug|build|performance|deployment)"
+    values: ["bug", "build", "performance", "deployment"]
+    default: "bug"
+  - name: "--trace"
+    description: "Enables comprehensive tracing with full stack trace analysis and verbose logging"
+    type: "boolean"
+  - name: "--fix"
+    description: "Automatically applies fixes with validation and rollback capabilities"
+    type: "boolean"
 ---
 
 # /ct:troubleshoot - Issue Diagnosis and Resolution
@@ -100,28 +117,38 @@ Applies systematic debugging approach:
 - **Edit**: Apply fixes when `--fix` flag is used
 - **AskUserQuestion**: Clarify ambiguous error scenarios or fix approaches
 
-## Flags
+## Arguments and Flags
 
-### `--type [bug|build|performance|deployment]`
+### `[issue]` (required)
+Description of the problem to diagnose:
+- Provide error messages, symptoms, or issue details
+- Include relevant context (e.g., stack traces, error logs)
+- Example: `"Null pointer exception in user service"` or `"Build failing with TypeScript errors"`
+- Required for all troubleshooting workflows
+
+### `--type [bug|build|performance|deployment]` (optional)
 Specifies the troubleshooting domain:
-- **bug**: Code defects and runtime errors
+- **bug**: Code defects and runtime errors (default if not specified)
 - **build**: Compilation and build failures
 - **performance**: Performance degradation and bottlenecks
 - **deployment**: Deployment failures and environment issues
+- Default: Inferred from issue description if not provided
 
-### `--trace`
+### `--trace` (optional)
 Enables comprehensive tracing:
 - Full stack trace analysis
 - Detailed execution path examination
 - Verbose logging and state inspection
 - Comprehensive evidence collection
+- Use when issue requires deep investigation
 
-### `--fix`
+### `--fix` (optional)
 Automatically applies fixes:
 - Safe fix application with validation
 - Rollback capabilities for risky changes
 - Comprehensive testing after fix
 - Documentation of changes made
+- Use only when confident in fix approach
 
 ## Key Patterns
 

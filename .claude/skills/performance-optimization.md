@@ -7,13 +7,16 @@ description: Use when optimizing system performance - enforces measurement-drive
 
 ## 🚨 Anti-Rationalization Warning
 
+**CRITICAL: BASELINE MUST BE ESTABLISHED BEFORE ANY CODE CHANGES**
+
 **Never skip measurement because:**
 - 70% of "obvious" bottlenecks are wrong → Profile first
 - 40% of optimizations without baseline cause regressions → Measure before/after
 - User complaints ≠ root cause → Data identifies the problem
+- Manual testing (developer testing) ≠ Measurement → Metrics are required
 
 **Common rationalizations = Failure signals:**
-- "Bottleneck is obvious" | "Too urgent to profile" | "Low-risk change"
+- "Bottleneck is obvious" | "Too urgent to profile" | "Low-risk change" | "We'll measure after" | "Manual testing is enough"
 
 → **STOP. Measure first, optimize second.**
 
@@ -72,9 +75,11 @@ Activate this skill when:
 
 ## Mandatory Requirements
 
+**SEQUENCING CRITICAL: Baseline measurement MUST occur BEFORE any implementation begins.**
+
 Create TodoWrite items for all categories below. Refer to Quality Standards and Completeness Check sections above.
 
-### Baseline Measurement
+### Baseline Measurement (BEFORE Implementation)
 
 - [ ] **Identify performance target**: Which metric? (LCP < 2.5s, API P95 < 500ms, query < 100ms)
 - [ ] **Measure current performance**: Tool + value (Lighthouse: LCP = 4.2s on 3G)
@@ -124,8 +129,10 @@ Create TodoWrite items for all categories below. Refer to Quality Standards and 
 | Thought | Why It Fails | Correct Action |
 |---------|--------------|----------------|
 | "Bottleneck is obvious" | 70% of assumptions wrong | Profile to confirm |
-| "We'll measure after" | Can't validate improvement | Baseline required |
+| "We'll measure after" | Can't validate improvement | Baseline BEFORE implementation |
+| "Measuring only after" | Cannot prove improvement exists | Must have before/after comparison |
 | "Profiling takes too long" | 15 min vs 3 days debugging | Profile first |
+| "Manual testing is enough" | Developer testing ≠ metrics | Use measurement tools |
 
 **If asked to skip requirements:** Politely decline, cite evidence for why measurement-first prevents wasted effort.
 

@@ -1,5 +1,10 @@
 ---
 description: "Fix grammar and spelling mistakes in markdown files using British English standards"
+arguments:
+  - name: "file"
+    type: "optional positional"
+    description: "Specific markdown file to check (e.g., README.md, CONTRIBUTING.md). If omitted, scans git-modified markdown files instead."
+    example: "ct:grammar-check README.md"
 argument-hint: "[optional: file.md - specific file to check, or omit to scan git-modified files]"
 allowed-tools:
   - Bash

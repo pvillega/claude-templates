@@ -1,5 +1,14 @@
 ---
 description: "Test a command using the testing-commands-with-subagents framework"
+arguments:
+  - name: command_name
+    type: string
+    required: true
+    description: "Name of the command to test. Can include the namespace prefix (e.g., 'ct:commit') or just the command name (e.g., 'commit')."
+    examples:
+      - "/ct:test-command ct:commit"
+      - "/ct:test-command commit"
+      - "/ct:test-command test-skill"
 ---
 
 # Test Command

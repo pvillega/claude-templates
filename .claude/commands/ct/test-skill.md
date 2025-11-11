@@ -6,10 +6,6 @@ arguments:
     description: "The skill to test in namespace format (e.g., superpowers:brainstorming). Must include a namespace prefix."
     example: "/ct:test-skill superpowers:brainstorming"
 argument-hint: "<namespace:skill-name>"
-allowed-tools:
-  - Skill
-  - Bash
-  - Write
 ---
 
 # Test Skill Command

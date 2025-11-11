@@ -1,5 +1,13 @@
 ---
 description: "Test an agent using the testing-agents-with-subagents framework"
+arguments:
+  - name: agent_name
+    type: string
+    required: true
+    description: "Name of the agent to test. Can be a custom agent file name (e.g., 'rust-expert' for .claude/agents/rust-expert.md) or a Task tool subagent name (e.g., 'code-reviewer', 'Explore', 'Plan')"
+    examples:
+      - "/ct:test-agent rust-expert"
+      - "/ct:test-agent code-reviewer"
 ---
 
 # Test Agent Command

@@ -1,5 +1,12 @@
 ---
 description: "Test all skills in .claude/skills using parallel subagents and iterative refinement"
+argument-hint: "[optional: iterations - number of test iterations to run; if omitted, continues until context limit or completion criteria]"
+arguments:
+  - name: "iterations"
+    type: "optional positional"
+    description: "Number of iterations to run per skill. If omitted, the command runs up to the context limit (stops before 180K tokens used) with a minimum of 2 iterations guaranteed. Valid range: 1-10."
+    example: "/ct:test-all-skills 3"
+    default: "dynamic (context-dependent, minimum 2)"
 ---
 
 # Test All Skills Command

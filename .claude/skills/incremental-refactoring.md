@@ -30,6 +30,7 @@ From refactoring catalog:
 - Introduce Parameter Object
 - Consolidate Duplicate Conditional Fragments
 Select ONE pattern per iteration
+IMPORTANT: Complete the pattern fully OR commit partial result as separate iteration
 
 ### 3. Apply Transformation
 - Make ONE small change

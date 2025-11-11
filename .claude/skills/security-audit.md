@@ -1,19 +1,28 @@
 ---
 skill: security-audit
-description: Systematic vulnerability assessment using OWASP Top 10, CWE patterns, and compliance standards
+description: Formal compliance-focused security audits (SOC2, PCI-DSS, HIPAA, GDPR) using OWASP Top 10 and CVSS
 category: security
 ---
 
 # Security Audit
 
 ## When to Use
-- Pre-release security assessment
-- Compliance verification (OWASP, PCI-DSS, SOC2)
-- Post-incident security review
-- Periodic security health checks
-- Third-party integration assessment
+Use this skill ONLY when formal compliance or regulatory requirements demand systematic documentation:
+- **Compliance audits** requiring evidence (SOC2, PCI-DSS, HIPAA, GDPR, ISO 27001)
+- **Pre-release security assessments** for regulated industries (healthcare, finance, government)
+- **Post-incident security reviews** requiring formal documentation for stakeholders/regulators
+- **Third-party security due diligence** with contractual audit requirements
+
+## When NOT to Use
+DO NOT use this skill for:
+- Ad-hoc code reviews (default security thinking is sufficient)
+- Pull request security checks (standard review practices apply)
+- General development work (Claude naturally considers security)
+- Quick vulnerability fixes (direct remediation is faster)
 
 ## Process
+
+**Note:** This systematic framework is designed for formal compliance scenarios where documentation and evidence are required. For standard development work, Claude's default security practices are sufficient.
 
 ### 1. Define Scope
 - Components to audit

@@ -1,7 +1,8 @@
 ---
-skill: debate-facilitation
 description: Facilitate productive disagreement to extract insights from multiple perspectives
-category: communication
+argument-hint: "[no arguments required]"
+allowed-tools:
+  - AskUserQuestion
 ---
 
 # Debate Facilitation

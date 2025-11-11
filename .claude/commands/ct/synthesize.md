@@ -1,7 +1,7 @@
 ---
-skill: multi-framework-synthesis
-description: Integrate multiple analytical frameworks into coherent insight through systematic perspective synthesis
-category: analysis
+description: "Integrate multiple analytical frameworks into coherent insight through systematic perspective synthesis"
+arguments: []
+argument-hint: "(no arguments required)"
 ---
 
 # Multi-Framework Synthesis

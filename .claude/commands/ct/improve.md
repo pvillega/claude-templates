@@ -1,6 +1,24 @@
 ---
 name: improve
-description: "Apply systematic improvements to code quality, performance, and maintainability"
+description: "Apply systematic improvements to code quality, performance, and maintainability [optional: target] [--type quality|performance|maintainability|security] [--safe] [--interactive]"
+flags:
+  target:
+    description: "Code path or directory to improve (optional)"
+    required: false
+    example: "src/ or legacy-modules"
+  type:
+    description: "Type of improvement (optional, default: quality)"
+    required: false
+    values: ["quality", "performance", "maintainability", "security"]
+    example: "--type quality"
+  safe:
+    description: "Enable safe refactoring mode with backups and rollback capabilities (optional flag)"
+    required: false
+    example: "--safe"
+  interactive:
+    description: "Enable interactive guidance with confirmations and decision support (optional flag)"
+    required: false
+    example: "--interactive"
 ---
 
 # /ct:improve - Code Improvement
@@ -132,6 +150,15 @@ Workflow:
 ```
 
 ## Flags
+
+### `--type <quality|performance|maintainability|security>`
+Specifies the type of improvement to apply (optional, defaults to quality):
+- **quality**: Reduces code duplication, technical debt, and improves readability
+- **performance**: Identifies bottlenecks and applies optimization patterns
+- **maintainability**: Simplifies complex structures and improves organization
+- **security**: Identifies vulnerabilities and applies security hardening patterns
+
+Each type delegates to specialized skills with domain-specific expertise.
 
 ### `--safe`
 Enables safe refactoring mode:
