@@ -27,6 +27,8 @@ When building a feature, use the [Superpowers](https://github.com/obra/superpowe
 2.  **Context Clearing:** `/clear` (Recommended before implementation)
 3.  **Implementation:** `/superpowers:execute-plan "use subagents to implement @<path>, use context 7"`
 
+NOTE: agents miss things. After development, asking them to review if everything from the plan is implemented is a good idea. Asking it to "Review the code" may discover areas to improve. 
+
 ### Decision Guide
 
 | Current State | Recommended Action |
