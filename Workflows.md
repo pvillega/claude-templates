@@ -23,11 +23,11 @@ Use this workflow when opening a project for the first time.
 When building a feature, use the [Superpowers](https://github.com/obra/superpowers) commands in sequence.
 
 ### The Lifecycle
-1.  **Brainstorming:** `/superpowers:brainstorm "prompt"` or **Planning:** `/superpowers:write-plan "prompt"`
+1.  **Planning:** in `planning` mode run either `/superpowers:brainstorm "ultrathink, <prompt>"` or `/superpowers:write-plan "ultrathink, use tdd, use context 7, use parallel subagents: <prompt>"`
 2.  **Context Clearing:** `/clear` (Recommended before implementation)
-3.  **Implementation:** `/superpowers:execute-plan "use subagents to implement @<path>, use context 7"`
+3.  **Implementation:** in `bypass permissions` mode `/superpowers:execute-plan "use parallel agents to implement @<path>, use context 7, use tdd"`
 
-NOTE: agents miss things. After development, asking them to review if everything from the plan is implemented is a good idea. Asking it to "Review the code" may discover areas to improve. 
+NOTE: agents miss things. After development, asking them to review if everything from the plan is implemented is a good idea. Asking it to "Review the code" may discover areas to improve.
 
 ### Decision Guide
 
