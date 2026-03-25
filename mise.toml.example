@@ -1,7 +1,0 @@
-# Copy this file to mise.toml and fill in your API keys
-# Install mise: https://mise.jdx.dev/getting-started.html
-# Then run: mise trust
-
-[env]
-PERPLEXITY_API_KEY = "your-perplexity-api-key-here"
-TAVILY_API_KEY = "your-tavily-api-key-here"
