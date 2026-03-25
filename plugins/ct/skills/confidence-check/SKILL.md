@@ -1,6 +1,7 @@
 ---
 name: confidence-check
-description: Use before implementing when uncertainty exists. Weighted scoring across 5 checks (requires ≥80%). Triggers: "before implementing", "verify readiness", "should I proceed", "am I ready". If thinking "this is overkill" - use it.
+description: >
+  Use before implementing when uncertainty exists. Weighted scoring across 5 checks (requires 80% or higher). Triggers on before implementing, verify readiness, should I proceed, am I ready. If thinking this is overkill - use it.
 ---
 
 # Confidence Check

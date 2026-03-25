@@ -1,6 +1,7 @@
 ---
 name: performance-optimization
-description: Use when creating performance optimization plan for backend, API, or general system performance. Enforces BASELINE → PROFILE → OPTIMIZE → VALIDATE sequence. Triggers: "optimize API", "backend slow", "API latency", "database performance", "query optimization", "server response time". For "Core Web Vitals" in backend/API context, use this skill. For frontend UI accessibility + performance (WCAG, Lighthouse accessibility), use frontend-production-quality instead. If thinking "bottleneck is obvious" - profile first.
+description: >
+  Use when creating performance optimization plan for backend, API, or general system performance. Enforces BASELINE then PROFILE then OPTIMIZE then VALIDATE sequence. Triggers on optimize API, backend slow, API latency, database performance, query optimization, server response time. For Core Web Vitals in backend/API context, use this skill. For frontend UI accessibility + performance (WCAG, Lighthouse accessibility), use frontend-production-quality instead. If thinking bottleneck is obvious - profile first.
 ---
 
 # Performance Optimization

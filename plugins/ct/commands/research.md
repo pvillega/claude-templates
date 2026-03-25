@@ -6,7 +6,6 @@ allowed-tools:
   - WebSearch
   - WebFetch
   - mcp__tavily__*
-  - mcp__perplexity__*
   - mcp__playwright__*
   - mcp__context7__*
   - Read

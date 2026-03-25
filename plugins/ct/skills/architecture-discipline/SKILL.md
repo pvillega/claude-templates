@@ -1,6 +1,7 @@
 ---
 name: architecture-discipline
-description: Use when designing/modifying system architecture or evaluating technology choices. Enforces 7-section TodoWrite with 22+ items. Triggers: "design architecture", "system design", "architectural decision", "should we use [tech]", "compare [A] vs [B]", "add new service", "microservices", "database choice", "API design", "scale to [X] users", "infrastructure decision". If thinking ANY of these, USE THIS SKILL: "quick recommendation is fine", "obvious choice", "we already know the answer", "just need to pick one", "simple architecture question".
+description: >
+  Use when designing/modifying system architecture or evaluating technology choices. Enforces 7-section TodoWrite with 22+ items. Triggers on design architecture, system design, architectural decision, should we use [tech], compare [A] vs [B], add new service, microservices, database choice, API design, scale to [X] users, infrastructure decision. If thinking any of these, USE THIS SKILL - quick recommendation is fine, obvious choice, we already know the answer, just need to pick one, simple architecture question.
 ---
 
 # Architecture Discipline

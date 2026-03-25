@@ -1,6 +1,7 @@
 ---
 name: threat-modeling
-description: Use when implementing auth, file uploads, payments, or external APIs. Applies STRIDE framework systematically. Triggers: "authentication", "file upload", "payment", "multi-tenant", "external API". If thinking "I know security" - use this anyway.
+description: >
+  Use when implementing auth, file uploads, payments, or external APIs. Applies STRIDE framework systematically. Triggers on authentication, file upload, payment, multi-tenant, external API. If thinking I know security - use this anyway.
 ---
 
 # Threat Modeling

@@ -1,6 +1,7 @@
 ---
 name: incremental-refactoring
-description: Use when IMPLEMENTING refactoring changes. Enforces metrics-driven protocol with before/after measurements. Triggers: "implement refactor", "apply refactoring pattern", "clean up code smell", "extract method", "move method". No exceptions for "simple" refactorings - use this. NOTE: If you need to FIND duplicates first, use duplicate-code-detector, then return here for implementation.
+description: >
+  Use when IMPLEMENTING refactoring changes. Enforces metrics-driven protocol with before/after measurements. Triggers on implement refactor, apply refactoring pattern, clean up code smell, extract method, move method. No exceptions for simple refactorings - use this. NOTE - If you need to FIND duplicates first, use duplicate-code-detector, then return here for implementation.
 ---
 
 # Incremental Refactoring

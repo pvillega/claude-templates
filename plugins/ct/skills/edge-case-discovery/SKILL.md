@@ -1,6 +1,7 @@
 ---
 name: edge-case-discovery
-description: Use when user requests exhaustive edge case analysis. Enforces TodoWrite with 15+ items (5 categories). Triggers: "all edge cases", "what could break", "bulletproof", "failure modes". If thinking "main path is sufficient" - use this.
+description: >
+  Use when user requests exhaustive edge case analysis. Enforces TodoWrite with 15+ items (5 categories). Triggers on all edge cases, what could break, bulletproof, failure modes. If thinking main path is sufficient - use this.
 ---
 
 # Edge Case Discovery
