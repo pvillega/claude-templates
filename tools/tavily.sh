@@ -10,7 +10,7 @@ _run_tavily_installer() {
 install_tavily() {
     echo "Checking for Tavily CLI..."
 
-    if command -v tavily &> /dev/null; then
+    if command -v tvly &> /dev/null; then
         echo "Tavily CLI already installed"
         return 0
     fi
@@ -20,7 +20,7 @@ install_tavily() {
         critical_error "Failed to install Tavily CLI"
     fi
 
-    if ! command -v tavily &> /dev/null; then
+    if ! command -v tvly &> /dev/null; then
         critical_error "Tavily CLI installation appeared to succeed but tavily command is still not available"
     fi
 
@@ -30,7 +30,7 @@ install_tavily() {
 update_tavily() {
     echo "Updating Tavily CLI..."
 
-    if ! command -v tavily &> /dev/null; then
+    if ! command -v tvly &> /dev/null; then
         add_warning "Tavily CLI is not installed, skipping update"
         return 0
     fi
@@ -45,14 +45,14 @@ update_tavily() {
 uninstall_tavily() {
     echo "Removing Tavily CLI..."
 
-    if ! command -v tavily &> /dev/null; then
+    if ! command -v tvly &> /dev/null; then
         echo "Tavily CLI is not installed, nothing to remove"
         return 0
     fi
 
     # Tavily CLI doesn't have a standard uninstall; try removing the binary
     local tavily_path
-    tavily_path=$(command -v tavily 2>/dev/null)
+    tavily_path=$(command -v tvly 2>/dev/null)
     if [ -n "$tavily_path" ]; then
         rm -f "$tavily_path" 2>/dev/null || sudo rm -f "$tavily_path" 2>/dev/null || add_warning "Failed to remove Tavily CLI binary at $tavily_path"
     fi
