@@ -31,6 +31,8 @@ UPDATED_TOOLS=0
 TOTAL_TOOLS=0
 UPDATED_SKILLS=0
 TOTAL_SKILLS=0
+UPDATED_GLOBAL_PKGS=0
+TOTAL_GLOBAL_PKGS=0
 
 add_warning() { WARNINGS+=("$1"); }
 add_error() { ERRORS+=("$1"); }
@@ -60,9 +62,9 @@ update_plugins() {
     local plugin_json
     plugin_json=$(claude plugin list --json 2>/dev/null || echo "[]")
 
-    # Extract plugin identifiers (name@marketplace) from JSON array
+    # Extract plugin identifiers from JSON array (id field contains "name@marketplace")
     local plugin_names
-    plugin_names=$(echo "$plugin_json" | jq -r '.[] | if .marketplace then "\(.name)@\(.marketplace)" else .name end' 2>/dev/null || echo "")
+    plugin_names=$(echo "$plugin_json" | jq -r '.[].id' 2>/dev/null || echo "")
 
     if [ -z "$plugin_names" ]; then
         echo "  No plugins installed."
@@ -161,6 +163,137 @@ update_skills() {
     echo ""
 }
 
+update_global_packages() {
+    echo "Updating globally installed packages (npm, go, rustup)..."
+    echo ""
+
+    # --- npm global packages ---
+    if command -v npm &> /dev/null; then
+        echo "  [npm] Checking outdated global packages..."
+        local npm_outdated
+        npm_outdated=$(npm outdated -g --json 2>/dev/null || echo "{}")
+
+        local npm_packages
+        npm_packages=$(echo "$npm_outdated" | jq -r 'keys[]' 2>/dev/null || echo "")
+
+        if [ -n "$npm_packages" ]; then
+            local npm_count
+            npm_count=$(echo "$npm_packages" | wc -l | tr -d ' ')
+            TOTAL_GLOBAL_PKGS=$((TOTAL_GLOBAL_PKGS + npm_count))
+            echo "  [npm] Found $npm_count outdated package(s):"
+            echo "$npm_packages" | while read -r p; do echo "    - $p"; done
+
+            while IFS= read -r pkg; do
+                [ -z "$pkg" ] && continue
+                echo "  [npm] Updating: $pkg..."
+                if npm install -g "$pkg@latest" 2>/dev/null; then
+                    echo "  [npm] Updated: $pkg"
+                    ((UPDATED_GLOBAL_PKGS++)) || true
+                else
+                    add_warning "Failed to update npm global package: $pkg"
+                fi
+            done <<< "$npm_packages"
+        else
+            echo "  [npm] All global packages are up to date."
+        fi
+    else
+        echo "  [npm] npm not found, skipping."
+    fi
+
+    echo ""
+
+    # --- go install binaries ---
+    if command -v go &> /dev/null; then
+        local gobin="${GOBIN:-$(go env GOPATH)/bin}"
+        echo "  [go] Checking Go binaries in $gobin..."
+
+        if [ -d "$gobin" ]; then
+            local go_binaries
+            go_binaries=()
+
+            # Find binaries that have module info with a known import path
+            for bin in "$gobin"/*; do
+                [ -x "$bin" ] || continue
+                local mod_path
+                mod_path=$(go version -m "$bin" 2>/dev/null | awk '/^\tpath\t/ {print $2}' || echo "")
+                if [ -n "$mod_path" ]; then
+                    go_binaries+=("$mod_path")
+                fi
+            done
+
+            if [ ${#go_binaries[@]} -gt 0 ]; then
+                TOTAL_GLOBAL_PKGS=$((TOTAL_GLOBAL_PKGS + ${#go_binaries[@]}))
+                echo "  [go] Found ${#go_binaries[@]} binary(ies) to update:"
+                for b in "${go_binaries[@]}"; do echo "    - $b"; done
+
+                for mod in "${go_binaries[@]}"; do
+                    echo "  [go] Updating: $mod..."
+                    if go install "${mod}@latest" 2>/dev/null; then
+                        echo "  [go] Updated: $mod"
+                        ((UPDATED_GLOBAL_PKGS++)) || true
+                    else
+                        add_warning "Failed to update Go binary: $mod"
+                    fi
+                done
+            else
+                echo "  [go] No Go binaries with module info found."
+            fi
+        else
+            echo "  [go] GOBIN directory not found at $gobin, skipping."
+        fi
+    else
+        echo "  [go] go not found, skipping."
+    fi
+
+    echo ""
+
+    # --- rustup components ---
+    if command -v rustup &> /dev/null; then
+        echo "  [rustup] Updating Rust toolchain and components..."
+
+        # Update the toolchain itself (includes rustc, cargo, clippy, rustfmt, etc.)
+        if rustup update 2>/dev/null; then
+            echo "  [rustup] Toolchain updated."
+            ((UPDATED_GLOBAL_PKGS++)) || true
+        else
+            add_warning "Failed to run rustup update"
+        fi
+        ((TOTAL_GLOBAL_PKGS++)) || true
+
+        # Update cargo-installed binaries
+        if command -v cargo &> /dev/null; then
+            echo "  [cargo] Checking installed cargo binaries..."
+            local cargo_list
+            cargo_list=$(cargo install --list 2>/dev/null | grep -E '^[a-zA-Z]' | awk '{print $1}' || echo "")
+
+            if [ -n "$cargo_list" ]; then
+                local cargo_count
+                cargo_count=$(echo "$cargo_list" | wc -l | tr -d ' ')
+                TOTAL_GLOBAL_PKGS=$((TOTAL_GLOBAL_PKGS + cargo_count))
+                echo "  [cargo] Found $cargo_count installed crate(s):"
+                echo "$cargo_list" | while read -r c; do echo "    - $c"; done
+
+                while IFS= read -r crate; do
+                    [ -z "$crate" ] && continue
+                    echo "  [cargo] Updating: $crate..."
+                    if cargo install "$crate" 2>/dev/null; then
+                        echo "  [cargo] Updated: $crate"
+                        ((UPDATED_GLOBAL_PKGS++)) || true
+                    else
+                        add_warning "Failed to update cargo crate: $crate"
+                    fi
+                done <<< "$cargo_list"
+            else
+                echo "  [cargo] No cargo-installed binaries found."
+            fi
+        fi
+    else
+        echo "  [rustup] rustup not found, skipping."
+    fi
+
+    echo ""
+}
+
 # ==============================================================================
 # SUMMARY
 # ==============================================================================
@@ -173,6 +306,7 @@ print_summary() {
     echo "  CLI tools updated:      $UPDATED_TOOLS / $TOTAL_TOOLS"
     echo "  Claude plugins updated: $UPDATED_PLUGINS / $TOTAL_PLUGINS"
     echo "  Skills updated:         $UPDATED_SKILLS / $TOTAL_SKILLS"
+    echo "  Global packages updated: $UPDATED_GLOBAL_PKGS / $TOTAL_GLOBAL_PKGS"
     echo ""
 
     if [ ${#WARNINGS[@]} -gt 0 ]; then
@@ -220,4 +354,5 @@ update_tools
 update_marketplaces
 update_plugins
 update_skills
+update_global_packages
 print_summary

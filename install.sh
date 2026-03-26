@@ -88,7 +88,8 @@ print_summary() {
     echo "NEXT STEPS:"
     echo "1. Add the environment variables shown above to your shell config"
     echo "2. Run: source ~/.bashrc  (or ~/.zshrc)"
-    echo "3. Verify setup: claude --version"
+    echo "3. If Claude Code is running, type /reload-plugins to load newly installed plugins"
+    echo "4. Verify setup: claude --version"
     echo ""
     echo "============================================"
     echo ""
@@ -151,10 +152,25 @@ configure_marketplaces() {
     done
 }
 
+# Updates all configured marketplaces to ensure latest plugin lists are available
+update_all_marketplaces() {
+    echo "Updating all configured marketplaces..."
+
+    local output
+    if output=$(claude plugin marketplace update 2>&1); then
+        echo "$output"
+        echo "All marketplaces updated"
+    else
+        echo "$output"
+        add_warning "Failed to update some marketplaces. Plugin installs may fail if marketplace indexes are stale."
+    fi
+}
+
 # Installs Claude plugins from PLUGINS array
 # Uninstalls existing plugins before reinstalling to ensure clean state
 install_plugins() {
     echo "Installing Claude plugins..."
+    local failed_plugins=()
 
     for plugin in "${PLUGINS[@]}"; do
         echo "Processing plugin: $plugin..."
@@ -163,14 +179,27 @@ install_plugins() {
         echo "Uninstalling $plugin (if exists)..."
         claude plugin uninstall "$plugin" 2>/dev/null || true
 
-        # Install plugin
+        # Install plugin, capturing output to show errors
         echo "Installing $plugin..."
-        if ! claude plugin install "$plugin"; then
-            add_warning "Failed to install plugin $plugin"
+        local output
+        if output=$(claude plugin install "$plugin" 2>&1); then
+            echo "$output"
         else
-            echo "Plugin $plugin installed successfully"
+            echo "$output"
+            failed_plugins+=("$plugin")
+            add_warning "Failed to install plugin: $plugin"
         fi
     done
+
+    if [ ${#failed_plugins[@]} -gt 0 ]; then
+        echo ""
+        echo "WARNING: ${#failed_plugins[@]} plugin(s) failed to install:"
+        for p in "${failed_plugins[@]}"; do
+            echo "  - $p"
+        done
+        echo ""
+        echo "Try installing them manually with: claude plugin install <plugin>"
+    fi
 }
 
 # Installs skills globally via skills.sh CLI
@@ -359,6 +388,8 @@ print_lsp_info() {
     echo ""
     echo "Install the plugins and language servers for languages you use:"
     echo ""
+    echo "  OFFICIAL PLUGINS (claude-plugins-official marketplace):"
+    echo ""
     echo "  Language       Plugin Install                                                   Language Server Install"
     echo "  -----------    -----------------------------------------------------------------  -----------------------------------------------"
     echo "  TypeScript/JS  claude plugin install typescript-lsp@claude-plugins-official       npm install -g typescript-language-server typescript"
@@ -373,6 +404,19 @@ print_lsp_info() {
     echo "  Kotlin         claude plugin install kotlin-lsp@claude-plugins-official           brew install kotlin-language-server"
     echo "  Lua            claude plugin install lua-lsp@claude-plugins-official              brew install lua-language-server"
     echo "  Swift          claude plugin install swift-lsp@claude-plugins-official            (included with Xcode or: brew install swift)"
+    echo ""
+    echo "  COMMUNITY / THIRD-PARTY PLUGINS (no official plugin available):"
+    echo ""
+    echo "  Language       Plugin Source                                                      Language Server Install"
+    echo "  -----------    -----------------------------------------------------------------  -----------------------------------------------"
+    echo "  Scala          Piebald-AI/claude-code-lsps marketplace (Metals)                  cs install metals  (requires: brew install coursier/formulas/coursier && cs setup)"
+    echo "  Haskell        m4dc4p/claude-hls (community plugin)                              ghcup install hls  (requires: curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh)"
+    echo "  OCaml          Piebald-AI/claude-code-lsps or boostvolt/claude-code-lsps         opam install ocaml-lsp-server  (requires: brew install opam && opam init)"
+    echo "  Unison         No plugin available yet                                           brew install unisonweb/unison/ucm  (LSP built into UCM: ucm lsp)"
+    echo ""
+    echo "  To use third-party marketplaces, add them first:"
+    echo "    claude plugin marketplace add Piebald-AI/claude-code-lsps"
+    echo "    claude plugin marketplace add boostvolt/claude-code-lsps"
     echo ""
     echo "After installing plugins, restart Claude Code for LSP servers to load."
     echo "Verify with: check ~/.claude/debug/latest for 'Total LSP servers loaded: N'"
@@ -396,7 +440,7 @@ Alternatively, add these to your shell configuration (~/.bashrc or ~/.zshrc):
 
   export TAVILY_API_KEY=\"your-api-key-here\"
 
-Note: You can also authenticate Tavily via 'tvly login' instead of setting the environment variable."
+Note: You can also authenticate Tavily via 'tvly login --api-key \$(echo \$TAVILY_API_KEY)' instead of exporting the environment variable."
 
     echo "Environment variable instructions prepared"
 }
@@ -640,6 +684,10 @@ done
 
 # Configure Claude plugin marketplaces
 configure_marketplaces
+echo ""
+
+# Update all marketplaces before installing plugins
+update_all_marketplaces
 echo ""
 
 # Install Claude plugins
