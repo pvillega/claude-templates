@@ -15,16 +15,18 @@ readonly TOOLS=(
     "jscpd"
     "ctx7"
     "agent_browser"
+    "engram"
 )
 
 # Skills to install globally via skills.sh
 # Simple format: "owner/repo"
 # With flags:    "https://github.com/owner/repo --skill skill-name"
 readonly SKILLS=(
+    "coreyhaines31/marketingskills"
     "https://github.com/upstash/context7 --skill context7-cli"
     "https://github.com/shadcn/ui --skill shadcn"
     "https://github.com/tavily-ai/skills"
-    "coreyhaines31/marketingskills"
+    "https://github.com/planetscale/database-skills --skill postgres"
     "vercel-labs/agent-browser --skill agent-browser"
     "vercel-labs/agent-browser --skill dogfood"
 )
@@ -32,6 +34,7 @@ readonly SKILLS=(
 # Claude plugin marketplaces (format: "owner/repo:name")
 readonly MARKETPLACES=(
     "pvillega/claude-templates:claude-templates"
+    "Gentleman-Programming/engram:engram"
 )
 
 # Claude plugins to install (format: "plugin@marketplace")
@@ -46,4 +49,5 @@ readonly PLUGINS=(
     "claude-code-setup@claude-plugins-official"
     "pr-review-toolkit@claude-plugins-official"
     "ct@claude-templates"
+    "engram@engram"
 )
