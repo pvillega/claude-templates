@@ -72,6 +72,25 @@ Plugins are installed from the [Claude marketplace](https://claude.com/plugins).
 
 Additionally, the **ct** plugin (from this repo) provides specific skills, agents, and commands.
 
+## CLI Tools
+
+The installer sets up the following CLI tools, used by Claude Code for enhanced capabilities:
+
+| Tool | Description | Install Method |
+|------|-------------|----------------|
+| [Claude Code](https://claude.ai) | Anthropic's AI coding assistant | Native installer |
+| [jq](https://jqlang.github.io/jq/) | JSON processor for config merging | Homebrew / apt / dnf / yum |
+| [fd](https://github.com/sharkdp/fd) | Fast `find` alternative (aliased as `find`) | Homebrew / apt / dnf / yum |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) | Fast `grep` alternative (aliased as `grep`) | Homebrew / apt / dnf / yum |
+| [rtk](https://github.com/rtk-ai/rtk) | Token-optimized CLI proxy (60-90% savings) | Homebrew / install script |
+| [gh](https://cli.github.com/) | GitHub CLI for PR/issue management | Homebrew / apt / dnf / yum |
+| [Tavily CLI](https://cli.tavily.com/) | AI-optimized web search | Native installer |
+| [jscpd](https://github.com/kucherenko/jscpd) | Copy/paste detection | npm |
+| [Context7 CLI](https://github.com/upstash/context7) | Library documentation fetcher | npm |
+| [agent-browser](https://github.com/vercel-labs/agent-browser) | AI-first browser automation (50+ commands) | npm + browser install |
+
+Tools are configured in the `TOOLS` array in [config.sh](config.sh). Each tool has an install, update, and uninstall script in the [tools/](tools/) directory.
+
 ## Skills
 
 Skills are installed globally from [skills.sh](https://skills.sh) using the `skills` CLI. They provide reusable capabilities that enhance Claude's behavior.
@@ -82,8 +101,10 @@ Skills are installed globally from [skills.sh](https://skills.sh) using the `ski
 | [shadcn](https://skills.sh/shadcn/ui/shadcn) | Manages shadcn/ui components: search registries, add components, view docs, preview changes | Component lifecycle commands |
 | [tavily-ai/skills](https://skills.sh/tavily-ai/skills) | Collection of 11 skills: search, research, extract, crawl, map, and best practices for Tavily web search | `search`, `research`, `extract`, `crawl` |
 | [marketingskills](https://skills.sh/coreyhaines31/marketingskills) | Collection of 33 marketing skills: SEO audit, copywriting, content strategy, pricing, analytics, ads, email sequences, CRO, and more | Skill-specific triggers (e.g., `seo-audit`, `copywriting`) |
+| [agent-browser](https://skills.sh/vercel-labs/agent-browser/agent-browser) | AI-first browser automation for navigation, form filling, screenshots, and data extraction | `agent-browser open <url>`, `agent-browser snapshot` |
+| [dogfood](https://skills.sh/vercel-labs/agent-browser/dogfood) | Internal testing skill for agent-browser | Automatic |
 
-Skills are installed globally (`-g`) so they are available in all projects. To add more skills, edit the `SKILLS` array in [install.sh](install.sh) or install manually:
+Skills are installed globally (`-g`) so they are available in all projects. To add more skills, edit the `SKILLS` array in [config.sh](config.sh) or install manually:
 
 ```bash
 npx skills add <owner/repo> -g --all
