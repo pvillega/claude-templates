@@ -28,6 +28,10 @@ install_playwright_cli() {
     fi
 
     echo "Playwright CLI installed successfully"
+
+    echo "Installing required browsers (Firefox, WebKit)..."
+    playwright-cli install-browser firefox || add_warning "Failed to install Firefox browser"
+    playwright-cli install-browser webkit || add_warning "Failed to install WebKit browser"
 }
 
 update_playwright_cli() {
@@ -47,6 +51,10 @@ update_playwright_cli() {
 
 uninstall_playwright_cli() {
     echo "Removing Playwright CLI..."
+
+    echo "Removing installed browsers (Firefox, WebKit)..."
+    playwright-cli uninstall-browser firefox 2>/dev/null || true
+    playwright-cli uninstall-browser webkit 2>/dev/null || true
 
     if ! npm uninstall -g @playwright/cli 2>/dev/null; then
         sudo npm uninstall -g @playwright/cli 2>/dev/null || add_warning "Failed to uninstall @playwright/cli"
