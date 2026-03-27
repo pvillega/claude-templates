@@ -7,6 +7,7 @@
 readonly TOOLS=(
     "claude_code"
     "jq"
+    "fd"
     "gh"
     "tavily"
     "jscpd"
