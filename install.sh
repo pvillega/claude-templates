@@ -377,6 +377,46 @@ add_shell_alias() {
     fi
 }
 
+# Adds the 'find=fd' alias to ~/.bashrc and ~/.zshrc if fd is installed
+add_find_alias() {
+    if ! command -v fd &> /dev/null; then
+        echo "fd is not installed, skipping find alias configuration"
+        return 0
+    fi
+
+    echo "Configuring find -> fd alias..."
+    local alias_line="alias find='fd'"
+    local added=false
+
+    for rc_file in "$HOME/.bashrc" "$HOME/.zshrc"; do
+        if [ ! -f "$rc_file" ]; then
+            echo "  $rc_file does not exist, skipping"
+            continue
+        fi
+
+        if grep -qF "alias find=" "$rc_file"; then
+            echo "  Alias 'find' already present in $rc_file, skipping"
+        else
+            echo "" >> "$rc_file"
+            echo "# Use fd as find replacement (added by claude-templates install.sh)" >> "$rc_file"
+            echo "$alias_line" >> "$rc_file"
+            echo "  Added 'find' alias to $rc_file"
+            added=true
+        fi
+    done
+
+    if [ "$added" = true ]; then
+        echo ""
+        echo "  NOTE: Run 'source ~/.bashrc' (or ~/.zshrc) or open a new terminal for the alias to take effect."
+    fi
+
+    # Message for other shells
+    echo ""
+    echo "  For other shells (fish, nushell, etc.), add the equivalent alias manually:"
+    echo "    fish:    alias find fd; funcsave find"
+    echo "    nushell: alias find = fd  (add to config.nu)"
+}
+
 # Prints LSP plugin and language server installation reference
 print_lsp_info() {
     echo "============================================"
@@ -708,6 +748,10 @@ echo ""
 
 # Add shell alias
 add_shell_alias
+echo ""
+
+# Add find -> fd alias
+add_find_alias
 echo ""
 
 # Prepare environment variable instructions
