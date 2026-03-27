@@ -13,7 +13,6 @@ readonly TOOLS=(
     "gh"
     "tavily"
     "jscpd"
-    "playwright_cli"
     "ctx7"
 )
 
@@ -21,11 +20,12 @@ readonly TOOLS=(
 # Simple format: "owner/repo"
 # With flags:    "https://github.com/owner/repo --skill skill-name"
 readonly SKILLS=(
-    "https://github.com/microsoft/playwright-cli --skill playwright-cli"
     "https://github.com/upstash/context7 --skill context7-cli"
     "https://github.com/shadcn/ui --skill shadcn"
     "https://github.com/tavily-ai/skills"
     "coreyhaines31/marketingskills"
+    "vercel-labs/agent-browser --skill agent-browser"
+    "vercel-labs/agent-browser --skill dogfood"
 )
 
 # Claude plugin marketplaces (format: "owner/repo:name")

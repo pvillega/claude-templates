@@ -78,7 +78,6 @@ Skills are installed globally from [skills.sh](https://skills.sh) using the `ski
 
 | Skill | Description | Trigger |
 |-------|-------------|---------|
-| [playwright-cli](https://skills.sh/microsoft/playwright-cli/playwright-cli) | Browser automation with 40+ commands for navigation, interaction, form filling, and web testing | `playwright-cli open`, `playwright-cli goto <url>` |
 | [context7-cli](https://skills.sh/upstash/context7/context7-cli) | Fetches up-to-date library documentation and manages AI coding skills | `ctx7 library <name> <query>`, `ctx7 docs <id> <query>` |
 | [shadcn](https://skills.sh/shadcn/ui/shadcn) | Manages shadcn/ui components: search registries, add components, view docs, preview changes | Component lifecycle commands |
 | [tavily-ai/skills](https://skills.sh/tavily-ai/skills) | Collection of 11 skills: search, research, extract, crawl, map, and best practices for Tavily web search | `search`, `research`, `extract`, `crawl` |
