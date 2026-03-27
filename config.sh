@@ -14,6 +14,7 @@ readonly TOOLS=(
     "tavily"
     "jscpd"
     "ctx7"
+    "agent_browser"
 )
 
 # Skills to install globally via skills.sh
