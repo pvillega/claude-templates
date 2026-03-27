@@ -53,14 +53,14 @@ uninstall_claude_code() {
     # Native install places the binary at ~/.claude/local/claude
     local claude_bin="$HOME/.claude/local/claude"
     if [ -f "$claude_bin" ]; then
-        rm -f "$claude_bin" 2>/dev/null || sudo rm -f "$claude_bin" 2>/dev/null || add_warning "Failed to remove $claude_bin"
+        rm -f "$claude_bin" 2>/dev/null || add_warning "Failed to remove $claude_bin (may need elevated privileges)"
     fi
 
     # Remove the symlink (typically /usr/local/bin/claude)
     local claude_link
     claude_link=$(command -v claude 2>/dev/null)
     if [ -n "$claude_link" ] && [ -L "$claude_link" ]; then
-        rm -f "$claude_link" 2>/dev/null || sudo rm -f "$claude_link" 2>/dev/null || add_warning "Failed to remove symlink $claude_link"
+        rm -f "$claude_link" 2>/dev/null || add_warning "Failed to remove symlink $claude_link (may need elevated privileges)"
     fi
 
     if command -v claude &> /dev/null; then

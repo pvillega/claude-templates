@@ -54,7 +54,7 @@ uninstall_tavily() {
     local tavily_path
     tavily_path=$(command -v tvly 2>/dev/null)
     if [ -n "$tavily_path" ]; then
-        rm -f "$tavily_path" 2>/dev/null || sudo rm -f "$tavily_path" 2>/dev/null || add_warning "Failed to remove Tavily CLI binary at $tavily_path"
+        rm -f "$tavily_path" 2>/dev/null || add_warning "Failed to remove Tavily CLI binary at $tavily_path (may need elevated privileges)"
     fi
 
     echo "Tavily CLI removal complete"
