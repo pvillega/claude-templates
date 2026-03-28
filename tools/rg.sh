@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # ripgrep - fast grep alternative (https://github.com/BurntSushi/ripgrep)
-# Requires: OS_TYPE variable set to "macos" or "linux"
 # Requires: critical_error, add_warning functions from parent script
 install_rg() {
     echo "Checking for rg..."
@@ -11,36 +10,9 @@ install_rg() {
         return 0
     fi
 
-    echo "rg not found. Installing ripgrep..."
-    local os_type="${1:-$OS_TYPE}"
-
-    if [ "$os_type" = "macos" ]; then
-        if ! command -v brew &> /dev/null; then
-            critical_error "Homebrew is required to install ripgrep on macOS but is not installed. Please install Homebrew first: https://brew.sh"
-        fi
-        echo "Installing ripgrep via Homebrew..."
-        if ! brew install ripgrep; then
-            critical_error "Failed to install ripgrep via Homebrew"
-        fi
-    else
-        if command -v apt-get &> /dev/null; then
-            echo "Installing ripgrep via apt-get..."
-            if ! (sudo apt-get update && sudo apt-get install -y ripgrep); then
-                critical_error "Failed to install ripgrep via apt-get"
-            fi
-        elif command -v dnf &> /dev/null; then
-            echo "Installing ripgrep via dnf..."
-            if ! sudo dnf install -y ripgrep; then
-                critical_error "Failed to install ripgrep via dnf"
-            fi
-        elif command -v yum &> /dev/null; then
-            echo "Installing ripgrep via yum..."
-            if ! sudo yum install -y ripgrep; then
-                critical_error "Failed to install ripgrep via yum"
-            fi
-        else
-            critical_error "Could not find a supported package manager (apt-get, dnf, or yum) to install ripgrep. Please install ripgrep manually: https://github.com/BurntSushi/ripgrep#installation"
-        fi
+    echo "rg not found. Installing ripgrep via Homebrew..."
+    if ! brew install ripgrep; then
+        critical_error "Failed to install ripgrep via Homebrew"
     fi
 
     if ! command -v rg &> /dev/null; then
@@ -91,26 +63,7 @@ update_rg() {
         return 0
     fi
 
-    local os_type="${1:-$OS_TYPE}"
-
-    if [ "$os_type" = "macos" ]; then
-        if command -v brew &> /dev/null; then
-            brew upgrade ripgrep 2>/dev/null || echo "ripgrep already up to date"
-        else
-            add_warning "Cannot update ripgrep: Homebrew not found"
-        fi
-    else
-        if command -v apt-get &> /dev/null; then
-            sudo apt-get update && sudo apt-get install --only-upgrade -y ripgrep 2>/dev/null || add_warning "Failed to update ripgrep via apt-get"
-        elif command -v dnf &> /dev/null; then
-            sudo dnf upgrade -y ripgrep 2>/dev/null || add_warning "Failed to update ripgrep via dnf"
-        elif command -v yum &> /dev/null; then
-            sudo yum upgrade -y ripgrep 2>/dev/null || add_warning "Failed to update ripgrep via yum"
-        else
-            add_warning "Cannot update ripgrep: no supported package manager found"
-        fi
-    fi
-
+    brew upgrade ripgrep 2>/dev/null || echo "ripgrep already up to date"
     echo "ripgrep update complete"
 }
 
@@ -122,25 +75,7 @@ uninstall_rg() {
         return 0
     fi
 
-    local os_type="${1:-$OS_TYPE}"
-
-    if [ "$os_type" = "macos" ]; then
-        if command -v brew &> /dev/null; then
-            brew uninstall ripgrep 2>/dev/null || add_warning "Failed to uninstall ripgrep via Homebrew"
-        else
-            add_warning "Cannot uninstall ripgrep: Homebrew not found"
-        fi
-    else
-        if command -v apt-get &> /dev/null; then
-            sudo apt-get remove -y ripgrep 2>/dev/null || add_warning "Failed to uninstall ripgrep via apt-get"
-        elif command -v dnf &> /dev/null; then
-            sudo dnf remove -y ripgrep 2>/dev/null || add_warning "Failed to uninstall ripgrep via dnf"
-        elif command -v yum &> /dev/null; then
-            sudo yum remove -y ripgrep 2>/dev/null || add_warning "Failed to uninstall ripgrep via yum"
-        else
-            add_warning "Cannot uninstall ripgrep: no supported package manager found"
-        fi
-    fi
+    brew uninstall ripgrep 2>/dev/null || add_warning "Failed to uninstall ripgrep via Homebrew"
 
     # Remove grep -> rg alias from shell RC files
     echo "Removing grep -> rg alias..."
