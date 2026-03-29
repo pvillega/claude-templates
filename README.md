@@ -86,7 +86,7 @@ Plugins are installed from the [Claude marketplace](https://claude.com/plugins).
 | [Commit Commands](https://claude.com/plugins/commit-commands) | Automates commit messages, pushing, and PR creation with style analysis | `/commit`, `/commit-push-pr` |
 | [Claude Code Setup](https://claude.com/plugins/claude-code-setup) | Recommends tailored automations (MCP servers, skills, hooks, subagents) | `recommend automations for this project` |
 | [PR Review Toolkit](https://claude.com/plugins/pr-review-toolkit) | Code quality analysis with six specialized agents for comments, tests, types, etc. | Natural language PR review requests |
-| [Engram](https://github.com/Gentleman-Programming/engram) | Persistent memory for AI coding agents — survives session ends and compactions via SQLite + FTS5 | `mem_save`, `mem_search`, `mem_context` (MCP tools) |
+| [Engram](https://github.com/Gentleman-Programming/engram) | Persistent memory for AI coding agents — survives session ends and compactions via SQLite + FTS5. **Note:** the installer disables Claude's built-in auto-memory (`autoMemoryEnabled: false`) to avoid duplication — engram's selective retrieval and automatic decay make it the better choice. Re-evaluate once Claude's planned "dream" consolidation feature ships. | `mem_save`, `mem_search`, `mem_context` (MCP tools) |
 
 Additionally, the **ct** plugin (from this repo) provides custom skills and agents:
 

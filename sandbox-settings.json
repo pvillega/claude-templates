@@ -1,6 +1,7 @@
 {
   "alwaysThinkingEnabled": true,
   "voiceEnabled": true,
+  "autoMemoryEnabled": false,
   "hooks": {
     "SessionStart": [
       {
