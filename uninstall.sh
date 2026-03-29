@@ -143,6 +143,28 @@ uninstall_plugins() {
             fi
         fi
     done
+
+    # Also remove any LSP plugins the user may have installed manually
+    echo "  Checking for installed LSP plugins..."
+    local lsp_plugins
+    lsp_plugins=$(claude plugin list 2>/dev/null | grep -oE '[a-z]+-lsp@[^ ]+' || true)
+
+    if [ -n "$lsp_plugins" ]; then
+        while IFS= read -r lsp_plugin; do
+            if [ "$DRY_RUN" = true ]; then
+                echo "  [dry-run] Would uninstall LSP plugin: $lsp_plugin"
+            else
+                echo "  Uninstalling LSP plugin: $lsp_plugin..."
+                if claude plugin uninstall "$lsp_plugin" 2>/dev/null; then
+                    echo "  Removed LSP plugin: $lsp_plugin"
+                else
+                    add_warning "Could not uninstall LSP plugin $lsp_plugin"
+                fi
+            fi
+        done <<< "$lsp_plugins"
+    else
+        echo "  No LSP plugins found."
+    fi
 }
 
 remove_marketplaces() {
