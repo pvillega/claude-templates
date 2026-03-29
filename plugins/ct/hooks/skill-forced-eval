@@ -4,7 +4,6 @@
 
 set -euo pipefail
 
-# Build the forced-eval instruction
 instruction='INSTRUCTION: MANDATORY SKILL ACTIVATION SEQUENCE
 
 Step 1 - EVALUATE (do this in your response):
@@ -18,28 +17,9 @@ Only after Step 2 is complete, proceed with implementation.
 
 CRITICAL: The evaluation in Step 1 is WORTHLESS unless you ACTIVATE the matching skills in Step 2. Do NOT skip activation for brevity, simplicity, or because you think no skills are relevant. If even one skill might apply, activate it.'
 
-# Escape string for JSON embedding using bash parameter substitution
-escape_for_json() {
-    local s="$1"
-    s="${s//\\/\\\\}"
-    s="${s//\"/\\\"}"
-    s="${s//$'\n'/\\n}"
-    s="${s//$'\r'/\\r}"
-    s="${s//$'\t'/\\t}"
-    printf '%s' "$s"
-}
-
-escaped=$(escape_for_json "$instruction")
-
-# Output JSON for the appropriate platform
-# Claude Code reads hookSpecificOutput.additionalContext
-# Cursor reads additional_context
-if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
-  printf '{\n  "additional_context": "%s"\n}\n' "$escaped"
-elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ]; then
-  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "UserPromptSubmit",\n    "additionalContext": "%s"\n  }\n}\n' "$escaped"
-else
-  printf '{\n  "additional_context": "%s"\n}\n' "$escaped"
-fi
-
-exit 0
+jq -n --arg ctx "$instruction" '{
+  hookSpecificOutput: {
+    hookEventName: "UserPromptSubmit",
+    additionalContext: $ctx
+  }
+}'
