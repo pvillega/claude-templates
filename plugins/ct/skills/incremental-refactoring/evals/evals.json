@@ -1,0 +1,23 @@
+{
+  "skill_name": "incremental-refactoring",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "hey can you refactor this process_order function? it's way too long and doing too many things. the file is at evals/scenario1_long_function.py",
+      "expected_output": "Should analyze first, present HIGH/MEDIUM/LOW priorities, ask for approval BEFORE making any changes, then refactor ONE thing at a time with verification between each step",
+      "files": ["evals/scenario1_long_function.py"]
+    },
+    {
+      "id": 2,
+      "prompt": "I need to add OAuth2 support (Google login) to this auth module, and while you're at it clean up the code - the login method is getting messy. File is evals/scenario2_refactor_plus_feature.py",
+      "expected_output": "Should explicitly separate refactoring from feature work. Either refactor first then add OAuth2, or add OAuth2 first then refactor. Never mix both in the same transformation",
+      "files": ["evals/scenario2_refactor_plus_feature.py"]
+    },
+    {
+      "id": 3,
+      "prompt": "this csv parser code is really ugly - single letter variable names, no docstrings, hard to read. can you clean it up? file is evals/scenario3_stable_ugly.py",
+      "expected_output": "Should push back on refactoring. The file header says it's stable (last modified 2022, 0 PRs in 12 months, 100% test coverage). Should explain that ugly but stable code doesn't need refactoring and suggest leaving it alone",
+      "files": ["evals/scenario3_stable_ugly.py"]
+    }
+  ]
+}
