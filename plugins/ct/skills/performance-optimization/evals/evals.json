@@ -1,0 +1,47 @@
+{
+  "skill_name": "performance-optimization",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "IMPORTANT: This is a real scenario. You must choose and act. Don't ask hypothetical questions - make the actual decision.\n\nYou're a senior developer working on a Node.js API. Your manager just messaged: \"The /api/orders endpoint is taking 8 seconds. Customers are complaining. The CEO saw it in a demo. Fix it by end of day.\"\n\nYou look at the code and immediately spot the problem - there's a nested loop doing N+1 queries against PostgreSQL. It's obviously the bottleneck. You've seen this pattern a hundred times.\n\nYou have 3 hours left in the day. Your options:\n\nA) Run pg_stat_statements and application profiling first to get baseline metrics, identify the actual bottleneck with data, then fix it, then re-measure\nB) Fix the obvious N+1 query immediately (you're 95% sure it's the problem), manually check it's faster, and move on\nC) Fix the N+1 query, then run profiling after to document the improvement\n\nChoose A, B, or C. Explain your reasoning. Then describe step-by-step what you would actually do, including: the specific tools you'd use, the specific measurements you'd take, the fix you'd implement, and how you'd validate the fix worked.",
+      "expected_output": "Agent chooses A. Describes full execution: proper baseline tool, profiling, fix, and validation with same tool/conditions.",
+      "files": [],
+      "expectations": [
+        "Agent chooses option A (baseline and profile BEFORE fixing)",
+        "Agent does NOT choose B or C",
+        "Agent names a specific load testing tool for baseline (k6, wrk, vegeta, or hey — not curl)",
+        "Agent names a specific database profiling tool (pg_stat_statements, EXPLAIN ANALYZE)",
+        "Agent describes the actual fix they would implement (e.g., replacing N+1 with JOIN or batch query)",
+        "Agent describes a validation step that uses the SAME tool and conditions as the baseline measurement"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "IMPORTANT: This is a real scenario. You must choose and act. Don't ask hypothetical questions - make the actual decision.\n\nYou just spent 6 hours refactoring a critical microservice to improve performance. You replaced synchronous HTTP calls with async, added connection pooling, and restructured the data access layer. You're confident it's faster based on your experience.\n\nProblem: You forgot to take baseline measurements before you started. It's Friday 5pm. The changes need to go through code review Monday morning. Your teammate asks: \"What's the before/after improvement?\"\n\nYour options:\n\nA) Be honest - say you don't have baseline numbers, deploy to staging over the weekend, and gather \"after\" metrics. Estimate the \"before\" from production logs if possible.\nB) Roll back your changes on a branch, measure the old code, then switch back to your changes and measure again to get a proper before/after comparison.\nC) Use production monitoring dashboards (DataDog/NewRelic) to pull historical latency data as your \"before\" baseline, then deploy your changes to staging and measure \"after.\"\nD) Present the changes as a refactoring improvement and focus the code review on code quality rather than performance numbers. Measure performance after it's deployed.\n\nChoose A, B, C, or D. Explain your reasoning. Then describe step-by-step EXACTLY what you would do to get proper before/after numbers: the git commands, the tools you'd run, the metrics you'd capture, and how you'd present the results in the PR.",
+      "expected_output": "Agent chooses B. Describes concrete git commands to roll back, specific tools to measure, metrics captured, and how to present results.",
+      "files": [],
+      "expectations": [
+        "Agent chooses option B (roll back, measure old code, re-apply, measure new code)",
+        "Agent explicitly rejects option C (production dashboards are not a controlled baseline)",
+        "Agent describes specific git commands to roll back (git stash, git checkout, git branch, or similar)",
+        "Agent names a specific load testing or profiling tool they would use for measurement",
+        "Agent specifies concrete metrics to capture (p50/p95/p99 latency, throughput, error rate, or similar)",
+        "Agent describes running the SAME test against both old and new code for valid comparison"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "IMPORTANT: This is a real scenario. You must choose and act. Don't ask hypothetical questions - make the actual decision.\n\nYou're a backend developer. Your production API has been getting slower over the past month. The p95 latency on /api/search went from 200ms to 1.8 seconds. Your team has been discussing it and there are three competing theories:\n\n- Dev A (senior, 10 years experience): \"It's the Elasticsearch queries. I rewrote the search module 6 weeks ago. We need to revert my changes.\"\n- Dev B (mid-level): \"It's the new logging middleware we added last sprint. It's synchronous and writing to disk on every request.\"\n- Dev C (junior): \"I noticed the database connection pool is maxing out during peak hours. Maybe we need to increase the pool size.\"\n\nYour manager says: \"Dev A is probably right, he knows the search code best. Just revert his changes and see if it helps. We need this fixed by tomorrow.\"\n\nYour options:\n\nA) Revert Dev A's changes as the manager suggests — he's senior and knows the code best\nB) Profile the system first to determine which theory (if any) is correct before making changes\nC) Revert Dev A's changes AND add the logging middleware fix since both seem reasonable\nD) Increase the connection pool size since it's the quickest change and might help\n\nChoose A, B, C, or D. Explain your reasoning. Then describe your complete plan: what you'd measure, what tools you'd use, how you'd identify the actual bottleneck, and what you'd do once you find it.",
+      "expected_output": "Agent chooses B. Resists both authority pressure and 'try everything' approach. Describes structured profiling plan with specific tools.",
+      "files": [],
+      "expectations": [
+        "Agent chooses option B (profile first before any changes)",
+        "Agent does NOT just agree with the manager or Dev A without data",
+        "Agent explains that multiple competing theories require profiling to determine the actual cause",
+        "Agent names specific tools for profiling the system (APM, pg_stat_statements, Elasticsearch slow log, application profiling)",
+        "Agent describes capturing a baseline measurement of the current degraded state BEFORE making any changes",
+        "Agent describes how they would validate the fix once the actual bottleneck is identified"
+      ]
+    }
+  ]
+}
