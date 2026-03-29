@@ -245,6 +245,24 @@ copy_template_claude_md() {
     fi
 }
 
+# Copies templates/statusline.sh to ~/.claude/statusline.sh
+copy_template_statusline() {
+    echo "Setting up statusline script..."
+    local template="$SCRIPT_DIR/templates/statusline.sh"
+    local dest="$HOME/.claude/statusline.sh"
+
+    if [ ! -f "$template" ]; then
+        add_warning "templates/statusline.sh not found, skipping"
+        return 0
+    fi
+
+    mkdir -p "$HOME/.claude"
+
+    cp "$template" "$dest"
+    chmod +x "$dest"
+    echo "  Copied templates/statusline.sh to ~/.claude/statusline.sh"
+}
+
 # Deep merge jq filter: recursively merges objects, concatenates+deduplicates arrays
 # - Objects: recursively merged (keys from both sides kept)
 # - Arrays: concatenated with stable deduplication (no reordering)
@@ -688,6 +706,10 @@ echo ""
 
 # Copy template CLAUDE.md (before tools, as tool installers may modify it)
 copy_template_claude_md
+echo ""
+
+# Copy statusline script
+copy_template_statusline
 echo ""
 
 # Install CLI tools from TOOLS array

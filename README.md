@@ -206,6 +206,18 @@ claude plugin marketplace add boostvolt/claude-code-lsps
 
 After installing, restart Claude Code. Verify with: check `~/.claude/debug/latest` for `Total LSP servers loaded: N`.
 
+## Status Line
+
+A custom status line script (`templates/statusline.sh`) is installed to `~/.claude/statusline.sh` and configured via `sandbox-settings.json`. It displays up to three lines:
+
+| Line | Content | Details |
+|------|---------|---------|
+| 1 | `📁 folder │ 🌿 branch │ 💭 mode` | Current directory, git branch, thinking mode |
+| 2 | `Model │ ▓▓▓░░░░░ 15% [1M] │ 5h: 12% │ 7d: 8%` | Model name, context usage bar, 5-hour and 7-day rate limits |
+| 3 | `🤖 agent │ 🌳 worktree (branch)` | Only shown when an agent or worktree is active |
+
+The context bar and rate limits are color-coded: green (< 70%), yellow (70–89%), red (90%+).
+
 ## Shell Alias Awareness
 
 A `SessionStart` hook in `~/.claude/settings.json` automatically loads your shell aliases into Claude's context at the start of every session. This prevents issues where Claude uses a command (e.g., `grep`) that is aliased to a different tool (e.g., `rg`) with incompatible flags.
@@ -220,6 +232,7 @@ The `install.sh` script adds a line to your `~/.bashrc` and/or `~/.zshrc` that e
 - **[update.sh](update.sh)** - Updates all installed plugins, skills, and npm packages
 - **[plugins/ct/](plugins/ct/)** - The local Claude Code plugin (skills, commands, agents)
 - **[templates/CLAUDE.md](templates/CLAUDE.md)** - Template project instructions
+- **[templates/statusline.sh](templates/statusline.sh)** - Custom status line (folder, branch, model, context, rate limits, agent/worktree)
 - **[sandbox-settings.json](sandbox-settings.json)** - Sandbox security configuration
 - **[mise.toml.example](mise.toml.example)** - Environment variable template for API keys
 
