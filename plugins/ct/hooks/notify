@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Notification hook: fires a native OS notification when Claude needs attention.
+# macOS: display notification with sound via osascript
+# Linux desktop: notify-send (requires libnotify)
+# Linux headless (SSH/tmux): terminal bell fallback
+
+set -euo pipefail
+
+OS="$(uname -s)"
+
+case "$OS" in
+    Darwin)
+        osascript -e 'display notification "Claude needs your attention" with title "Claude Code" sound name "Glass"'
+        ;;
+    Linux)
+        if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
+            if command -v notify-send >/dev/null 2>&1; then
+                notify-send "Claude Code" "Claude needs your attention"
+            else
+                printf '\a'
+            fi
+        else
+            printf '\a'
+        fi
+        ;;
+    *)
+        printf '\a'
+        ;;
+esac
