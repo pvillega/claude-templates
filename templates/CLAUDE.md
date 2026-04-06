@@ -17,6 +17,18 @@ Current time: $(date)
 - Never skip hook instructions for brevity, simplicity, or because "no
   skills are relevant."
 
+## Completion Standards
+
+Before finishing a task, verify:
+- Do not claim issues are "pre-existing" or "out of scope" to avoid fixing them
+- Do not say "too many issues" as a reason to stop
+- Do not defer work to follow-ups the user didn't request
+- Do not list problems without fixing them
+- Do not skip test/lint failures with excuses
+- If changes need to be committed/pushed, do it — don't ask "want me to do that?"
+
+If you catch yourself rationalizing incomplete work, go back and finish it.
+
 ## Core Principles
 
 <clarify_first>
