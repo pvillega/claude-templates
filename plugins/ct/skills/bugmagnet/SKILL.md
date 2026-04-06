@@ -54,17 +54,9 @@ Categorise: **High** (core, errors, boundaries) → **Medium** (interactions, st
 
 ## Phase 3: Test Implementation (✍️ WRITE)
 
-For each test, highest priority first:
-
-1. Write single test (or 2-3 related)
-2. Name describes outcome: "returns X when Y", "throws error when Z"
-3. Run immediately
-
-**On failure:** test expectation wrong → update test. Bug discovered → create skipped test with documentation. Need more context → try 2 more variations.
+For each test, highest priority first: write single test (or 2-3 related), name describes outcome ("returns X when Y"), run immediately. **Maximum 3 attempts per test** — document and move on.
 
 **When bug found:** create minimal reproduction, explore surrounding territory (bugs cluster), document in skipped test — **DO NOT FIX, only document.** Include: brief description, root cause, code location, expected vs actual, proposed fix.
-
-**Maximum 3 attempts per test** — document and move on.
 
 **STOP** — Ask user if they want advanced coverage. *(Skip in autonomous mode — proceed to advanced if high-priority gaps remain.)*
 

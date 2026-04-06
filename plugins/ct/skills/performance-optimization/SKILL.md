@@ -59,34 +59,20 @@ A `curl` wall-clock time is NOT a baseline. Use:
 
 ### 3. Optimization Strategy
 
-- Prioritize by measured impact (e.g., "3.1s → 0.2s = 94% reduction in query time")
-- Evaluate 2-3 approaches with tradeoffs (complexity, maintainability, cache invalidation cost)
+- Evaluate 2-3 approaches with tradeoffs
 - State expected improvement with rationale
 
 ### 4. Implementation
 
-- Describe the specific change (e.g., "replace N+1 loop with single JOIN query", "add composite index on (user_id, created_at)")
-- Show before/after code or configuration
+- Minimal change — fix the measured bottleneck, don't refactor the neighborhood
 - Local verification against same dataset/conditions as baseline
-- Keep the change minimal — fix the measured bottleneck, don't refactor the neighborhood
 
 ### 5. Validation
 
 - **Re-measure with same tool, same conditions, same environment** as step 1
-- Compare before/after with specific numbers (e.g., "p95: 4.2s → 380ms, throughput: 85 → 620 req/s")
+- Compare before/after with specific numbers
 - Check no regressions in other endpoints, error rates, or resource usage
 - Record results in PR description with tool, conditions, and numbers
-
----
-
-## Verification Checkpoint
-
-Before marking complete, ALL must be true:
-1. Baseline measured with specific tool + value BEFORE code changes
-2. Profile identifies bottleneck with timing and % of total
-3. Strategy evaluated 2+ approaches
-4. Validation re-measured with same tool/conditions as baseline
-5. Before/after numbers recorded in PR description
 
 ---
 

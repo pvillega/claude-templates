@@ -52,26 +52,11 @@ Only enter Phase 2 after the user has responded with approval.
 9. Decide next step from observation of current state, not from an upfront plan
 10. Stop when high-impact items are done -- perfect code is not the goal
 
-## When NOT to Refactor
-
-- Code that rarely changes and works fine (stability > aesthetics)
-- Low-impact cosmetic improvements
-- Code with unclear requirements (wrong abstraction risk)
-- When the user needs a feature, bug fix, or rewrite
-
-**"Ugly" is not sufficient reason if the code is stable, tested, and rarely touched.**
-
 ## Quick Reference
 
-| Smell | Transformation | guide.md |
-|-------|---------------|----------|
-| Long function (>50 lines) | Extract Method | Yes |
-| Duplicated code | Extract Method, Unify | Yes |
-| Deep nesting (>3 levels) | Guard Clauses | Yes |
-| Unclear name | Rename | Yes |
-| Complex expression | Extract Variable | Yes |
-| Code in wrong file | Move Function | Yes |
-| Loop does too much | Split Loop | Yes |
+See [guide.md](guide.md) for the full smell → transformation catalog with examples.
+
+**Push back on refactoring** when code is stable, tested, rarely touched, or has unclear requirements. "Ugly" alone is not sufficient reason.
 
 ## Red Flags -- STOP If You Think Any of These
 

@@ -23,158 +23,45 @@ description: >
 
 Before enumerating threats, map the system. Skip this and you will miss threats.
 
-### Identify Trust Boundaries
-
-A trust boundary exists wherever data crosses between zones of different trust levels:
-
-| Boundary Type | Example | Why It Matters |
-|---------------|---------|----------------|
-| Network | Internet to DMZ, DMZ to internal | Untrusted input enters |
-| Process | User browser to API server | Different privilege levels |
-| Data store | App to database, app to cache | Persistence layer access |
-| Service | Your service to third-party API | Different security postures |
-| Account | Tenant A data vs Tenant B data | Isolation requirements |
-
-### Build the DFD
-
-For each component, document:
-- **External entities**: Users, third-party services, browsers, mobile apps
-- **Processes**: API servers, background workers, message consumers
-- **Data stores**: Databases, caches, file storage, message queues
-- **Data flows**: Label each arrow with what data moves and the protocol (HTTPS, gRPC, SQL)
-- **Trust boundaries**: Draw lines between zones; every crossing is a threat surface
-
-### Map Entry/Exit Points
-
-| Entry Point | Data Accepted | Trust Level |
-|-------------|---------------|-------------|
-| Public API endpoint | User input (JSON) | Untrusted |
-| Webhook receiver | Third-party payloads | Semi-trusted |
-| Admin dashboard | Staff input | Trusted but verified |
-| Message queue consumer | Internal events | Trusted |
-| File upload endpoint | Binary data | Untrusted |
+1. Identify all **trust boundaries** (network, process, data store, service, account)
+2. Build a DFD: external entities, processes, data stores, data flows (label protocol), trust boundary lines
+3. Map entry/exit points with trust levels (untrusted, semi-trusted, trusted)
 
 ---
 
 ## Phase 2: STRIDE Threat Enumeration
 
-Apply each category to **every trust boundary crossing** identified in Phase 1.
+Apply each category to **every trust boundary crossing** identified in Phase 1. For each category, ask the questions below and document threats found.
 
 ### S - Spoofing Identity
 
-Can an attacker pretend to be someone or something they are not?
-
-| # | Question | Attack Pattern |
-|---|----------|---------------|
-| 1 | Can credentials be stolen via phishing or credential stuffing? | Brute force, credential reuse from breaches |
-| 2 | Can session tokens be hijacked (XSS, network sniffing, fixation)? | Session fixation, cookie theft |
-| 3 | Can API keys be extracted from client-side code or logs? | Key leakage in JS bundles, error logs |
-| 4 | Can webhook senders be impersonated (missing signature verification)? | Forged webhook payloads |
-| 5 | Can service-to-service calls be spoofed (no mutual TLS)? | Internal network attacker |
-| 6 | Can OAuth tokens be forged or replayed across tenants? | Token confusion, issuer mismatch |
-| 7 | Can DNS or IP be spoofed to redirect traffic? | DNS rebinding, SSRF |
-| 8 | Can email/SMS verification be bypassed? | SIM swap, email takeover |
-
-**OWASP**: A07:2021 (Identification and Authentication Failures), CWE-287, CWE-384
+Credential stuffing/brute force | Session hijacking (XSS, fixation) | API key extraction from client/logs | Webhook sender impersonation | Service-to-service spoofing (no mTLS) | OAuth token forgery/replay | DNS/IP spoofing (SSRF) | SMS/email verification bypass
 
 ### T - Tampering with Data
 
-Can an attacker modify data they should not be able to?
-
-| # | Question | Attack Pattern |
-|---|----------|---------------|
-| 1 | Can request bodies be modified in transit (no TLS, no integrity check)? | MITM, parameter manipulation |
-| 2 | Can hidden form fields or client-side state be tampered with? | Mass assignment, hidden field manipulation |
-| 3 | Can database records be modified via SQL injection? | SQLi in dynamic queries |
-| 4 | Can file contents be replaced or modified after upload? | TOCTOU race, path traversal overwrite |
-| 5 | Can JWT claims be modified (weak signing, algorithm confusion)? | `alg:none` attack, key confusion |
-| 6 | Can message queue payloads be altered? | Compromised queue access |
-| 7 | Can configuration or environment variables be modified? | Env injection, config file tampering |
-| 8 | Can audit logs be altered or deleted to hide tracks? | Log injection, log file tampering |
-
-**OWASP**: A03:2021 (Injection), A08:2021 (Software and Data Integrity Failures), CWE-89, CWE-352
+Request body modification (no TLS/integrity) | Mass assignment/hidden fields | SQL injection | File overwrite (TOCTOU, path traversal) | JWT algorithm confusion (`alg:none`) | Queue payload alteration | Config/env injection | Audit log tampering
 
 ### R - Repudiation
 
-Can an attacker deny performing an action with no way to prove otherwise?
-
-| # | Question | Attack Pattern |
-|---|----------|---------------|
-| 1 | Are all authentication events logged (login, logout, failed attempts)? | No audit trail for account compromise |
-| 2 | Are data modifications logged with who/what/when/before/after? | Cannot prove unauthorized changes |
-| 3 | Are financial transactions logged with immutable records? | Disputed charges with no evidence |
-| 4 | Can log entries be forged via log injection? | Injecting fake log lines via user input |
-| 5 | Are logs stored in a tamper-evident system (append-only, signed)? | Attacker deletes evidence |
-| 6 | Is there sufficient context in logs to reconstruct events? | Incomplete forensic trail |
-
-**OWASP**: A09:2021 (Security Logging and Monitoring Failures), CWE-778
+Missing auth event logging | No data modification audit trail | No immutable financial records | Log injection | Logs not tamper-evident | Insufficient forensic context
 
 ### I - Information Disclosure
 
-Can an attacker access data they should not see?
-
-| # | Question | Attack Pattern |
-|---|----------|---------------|
-| 1 | Do error messages reveal stack traces, SQL queries, or internal paths? | Verbose errors in production |
-| 2 | Are API responses over-fetching (returning fields the client does not need)? | GraphQL introspection, REST over-exposure |
-| 3 | Can directory listing or source maps expose internal structure? | `.map` files, directory traversal |
-| 4 | Is sensitive data logged (passwords, tokens, PII in plain text)? | Log aggregator compromise |
-| 5 | Can timing attacks reveal valid usernames or secret values? | User enumeration via response time |
-| 6 | Is data encrypted at rest (database, backups, file storage)? | Stolen disk/backup exposure |
-| 7 | Can SSRF be used to access internal metadata endpoints? | Cloud metadata API (169.254.169.254) |
-| 8 | Are secrets stored in code, env vars, or config files without a vault? | Git history exposure, env dump |
-
-**OWASP**: A01:2021 (Broken Access Control), A02:2021 (Cryptographic Failures), CWE-200, CWE-209
+Verbose error messages | API over-fetching | Source maps/directory listing | PII in logs | Timing attacks (user enumeration) | No encryption at rest | SSRF to metadata endpoints | Secrets in code/env
 
 ### D - Denial of Service
 
-Can an attacker disrupt availability for legitimate users?
-
-| # | Question | Attack Pattern |
-|---|----------|---------------|
-| 1 | Are there rate limits on all public endpoints? | Volumetric flooding |
-| 2 | Can large payloads exhaust memory (unbounded JSON, huge file uploads)? | Zip bombs, billion laughs XML |
-| 3 | Can expensive queries be triggered (unindexed search, N+1, regex DoS)? | ReDoS, slow query flooding |
-| 4 | Can a single tenant monopolize shared resources? | Noisy neighbor in multi-tenant |
-| 5 | Can background jobs be flooded to block the queue? | Queue saturation |
-| 6 | Are there circuit breakers for downstream dependencies? | Cascade failure |
-| 7 | Can account lockout be weaponized against legitimate users? | Locking out victim accounts |
-| 8 | Is there graceful degradation when dependencies fail? | Hard dependency on non-critical service |
-
-**OWASP**: CWE-400, CWE-770
+Missing rate limits | Unbounded payloads (zip bombs) | Expensive queries (ReDoS, N+1) | Noisy neighbor | Queue flooding | No circuit breakers | Account lockout weaponization | No graceful degradation
 
 ### E - Elevation of Privilege
 
-Can an attacker gain access beyond what they are authorized for?
-
-| # | Question | Attack Pattern |
-|---|----------|---------------|
-| 1 | Are authorization checks enforced server-side on every request? | IDOR, missing function-level access control |
-| 2 | Can users access other users' data by changing IDs in URLs/params? | Insecure Direct Object Reference |
-| 3 | Can a regular user access admin endpoints? | Missing role checks |
-| 4 | Can deserialization or template injection achieve code execution? | Pickle/YAML deserialization, SSTI |
-| 5 | Can file uploads lead to code execution (unrestricted file types)? | Web shell upload |
-| 6 | Can dependency vulnerabilities be exploited for RCE? | Known CVE in transitive dependency |
-| 7 | Can container escape or shared infrastructure be exploited? | Kubernetes pod escape, shared tmp |
-| 8 | Can OAuth scope escalation grant broader permissions than intended? | Scope creep, consent screen bypass |
-
-**OWASP**: A01:2021 (Broken Access Control), A08:2021 (Software and Data Integrity Failures), CWE-269, CWE-863
+Missing server-side authz | IDOR via ID manipulation | Missing role checks on admin endpoints | Deserialization/SSTI RCE | Unrestricted file upload (web shell) | Known CVEs in dependencies | Container escape | OAuth scope escalation
 
 ---
 
 ## Phase 3: Risk Scoring (DREAD)
 
-Score each identified threat using DREAD (each dimension 1-3):
-
-| Dimension | 1 (Low) | 2 (Medium) | 3 (High) |
-|-----------|---------|------------|----------|
-| **D**amage | Minor inconvenience | Data loss, partial breach | Full system compromise, PII breach |
-| **R**eproducibility | Requires specific conditions | Reproducible with some effort | Trivially reproducible |
-| **E**xploitability | Requires deep expertise/insider access | Requires moderate skill | Script kiddie can do it |
-| **A**ffected users | Single user | Subset of users | All users |
-| **D**iscoverability | Requires source code access | Discoverable with testing | Publicly visible |
-
-**Total = sum of 5 dimensions (range 5-15)**
+Score each threat: **D**amage, **R**eproducibility, **E**xploitability, **A**ffected users, **D**iscoverability (each 1-3). Total = sum (range 5-15).
 
 | Score | Priority | Action |
 |-------|----------|--------|
@@ -182,11 +69,7 @@ Score each identified threat using DREAD (each dimension 1-3):
 | 8-11 | High | Fix before release. Requires control. |
 | 5-7 | Medium | Track. Fix in next sprint. Accept with documented rationale. |
 
-### Calibration Tips
-
-- If you score most threats the same, you are not differentiating enough. Re-examine Reproducibility and Exploitability.
-- Compare your scores against known CVEs (e.g., Log4Shell would be 15/15, a minor info disclosure via error message might be 7/15).
-- When in doubt, score higher. Downgrading after review is cheaper than missing a real threat.
+When in doubt, score higher. If most threats score the same, you're not differentiating enough.
 
 ---
 
@@ -435,19 +318,6 @@ Examples of non-automatable actions (leave in the file):
 - Organizational decisions (acceptable risk, compliance sign-off)
 
 The goal: after this skill runs, the user has both a committed record of what needs doing AND as many controls as possible already in place.
-
----
-
-## Response Templates
-
-**"This is over-engineering for a simple feature"**
-> Security bugs cost 30x more post-release than during design. STRIDE takes 30-60 minutes and prevents deployment blockers. Which trust boundaries in your DFD have zero threats? Start there.
-
-**"We'll add security later"**
-> Security is not a feature you bolt on. Architectural decisions (data flow, trust boundaries, auth model) are expensive to change. Identify the top 3 DREAD-scored threats now, implement those controls, and track the rest.
-
-**"We already have a WAF/firewall"**
-> Network controls address only one trust boundary. STRIDE covers application-level threats: business logic flaws, authorization bugs, data leakage in APIs. WAFs do not prevent IDOR or privilege escalation.
 
 ---
 
