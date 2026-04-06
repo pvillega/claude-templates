@@ -86,12 +86,10 @@ Plugins are installed from the [Claude marketplace](https://claude.com/plugins).
 | [Superpowers](https://claude.com/plugins/superpowers) | Structured software development: TDD, debugging, brainstorming, subagent code review | `/brainstorming`, `/execute-plan` |
 | [Frontend Design](https://claude.com/plugins/frontend-design) | Generates production-grade frontend interfaces with bold aesthetic choices | Automatic |
 | [Code Review](https://claude.com/plugins/code-review) | PR analysis with five specialized agents checking compliance, bugs, and git history | `/code-review` |
-| [CLAUDE.md Management](https://claude.com/plugins/claude-md-management) | Audits and improves CLAUDE.md files, captures learnings from sessions | `audit my CLAUDE.md`, `/revise-claude-md` |
 | [Security Guidance](https://claude.com/plugins/security-guidance) | Warns about security vulnerabilities when editing files (injection, XSS, etc.) | Automatic (pre-tool hook) |
 | [Skill Creator](https://claude.com/plugins/skill-creator) | Create, evaluate, improve, and benchmark skills | `/skill-creator` |
 | [Commit Commands](https://claude.com/plugins/commit-commands) | Automates commit messages, pushing, and PR creation with style analysis | `/commit`, `/commit-push-pr` |
 | [Claude Code Setup](https://claude.com/plugins/claude-code-setup) | Recommends tailored automations (MCP servers, skills, hooks, subagents) | `recommend automations for this project` |
-| [PR Review Toolkit](https://claude.com/plugins/pr-review-toolkit) | Code quality analysis with six specialized agents for comments, tests, types, etc. | Natural language PR review requests |
 | [Hookify](https://claude.com/plugins/hookify) | Create custom hooks from natural language — regex pattern matching, no coding required | `/hookify Warn me when...` |
 | [Engram](https://github.com/Gentleman-Programming/engram) | Persistent memory for AI coding agents — survives session ends and compactions via SQLite + FTS5. **Note:** the installer disables Claude's built-in auto-memory (`autoMemoryEnabled: false`) to avoid duplication — engram's selective retrieval and automatic decay make it the better choice. Re-evaluate once Claude's planned "dream" consolidation feature ships. | `mem_save`, `mem_search`, `mem_context` (MCP tools) |
 
@@ -108,6 +106,7 @@ Additionally, the **ct** plugin (from this repo) provides custom skills and agen
 | performance-optimization | Performance analysis and optimization guidance | Performance tasks |
 | threat-modeling | STRIDE-based threat modeling for security analysis | Security review tasks |
 | audit-skills | Audits all installed skills for redundancy with built-in model knowledge | `/audit-skills` (manual only) |
+| revise-claude-md | Captures session learnings and proposes CLAUDE.md updates. Adapted from the removed [claude-md-management](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management) plugin. | `/revise-claude-md` (manual only) |
 
 ### ct Agents
 
