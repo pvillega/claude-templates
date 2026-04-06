@@ -42,7 +42,6 @@ readonly SKILLS=(
 # Claude plugin marketplaces (format: "owner/repo:name")
 readonly MARKETPLACES=(
     "pvillega/claude-templates:claude-templates"
-    "Gentleman-Programming/engram:engram"
 )
 
 # Claude plugins to install (format: "plugin@marketplace")
@@ -50,13 +49,10 @@ readonly PLUGINS=(
     "superpowers@claude-plugins-official"
     "frontend-design@claude-plugins-official"
     "code-review@claude-plugins-official"
-    "claude-md-management@claude-plugins-official"
     "security-guidance@claude-plugins-official"
     "commit-commands@claude-plugins-official"
     "skill-creator@claude-plugins-official"
     "claude-code-setup@claude-plugins-official"
-    "pr-review-toolkit@claude-plugins-official"
     "hookify@claude-plugins-official"
-    "engram@engram"
     "ct@claude-templates"
 )
