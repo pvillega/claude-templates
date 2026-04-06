@@ -107,6 +107,7 @@ Additionally, the **ct** plugin (from this repo) provides custom skills and agen
 | incremental-refactoring | Guided refactoring in small, testable steps | Refactoring tasks |
 | performance-optimization | Performance analysis and optimization guidance | Performance tasks |
 | threat-modeling | STRIDE-based threat modeling for security analysis | Security review tasks |
+| audit-skills | Audits all installed skills for redundancy with built-in model knowledge | `/audit-skills` (manual only) |
 
 ### ct Agents
 
