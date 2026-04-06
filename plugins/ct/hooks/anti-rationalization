@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# PreToolUse hook (matcher: TaskUpdate): blocks task completion when the
+# assistant's recent messages contain rationalization patterns.
+#
+# Reads the JSONL transcript to extract the last assistant message, then
+# checks for phrases that indicate incomplete work being waved away.
+
+set -euo pipefail
+
+INPUT=$(cat)
+
+# Only act when marking a task as completed
+STATUS=$(echo "$INPUT" | jq -r '.tool_input.status // empty')
+if [[ "$STATUS" != "completed" ]]; then
+  exit 0
+fi
+
+TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // empty')
+if [[ -z "$TRANSCRIPT" || ! -f "$TRANSCRIPT" ]]; then
+  exit 0
+fi
+
+# Extract the last assistant message from the JSONL transcript
+LAST_MSG=$(tac "$TRANSCRIPT" \
+  | jq -r 'select(.role == "assistant") | .message.content // empty' 2>/dev/null \
+  | head -1)
+
+if [[ -z "$LAST_MSG" ]]; then
+  exit 0
+fi
+
+# Rationalization patterns (case-insensitive)
+PATTERNS=(
+  'pre-existing'
+  'pre existing'
+  'out of scope'
+  'too many issues'
+  'too many errors'
+  'beyond the scope'
+  'outside the scope'
+  'follow-up task'
+  'follow up task'
+  'separate follow-up'
+  'separate follow up'
+  'address later'
+  'fix later'
+  'defer to'
+  'leave for now'
+  'not going to fix'
+  'skip for now'
+)
+
+LOWER_MSG=$(echo "$LAST_MSG" | tr '[:upper:]' '[:lower:]')
+
+for pattern in "${PATTERNS[@]}"; do
+  if [[ "$LOWER_MSG" == *"$pattern"* ]]; then
+    echo "Anti-rationalization check failed: detected '$pattern' in recent response. Do not mark this task complete if work remains unfinished. Go back and finish the work, or explain to the user why completion is genuinely blocked." >&2
+    exit 2
+  fi
+done
+
+exit 0
