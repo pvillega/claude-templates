@@ -81,44 +81,19 @@ Tavily requires an API key. You can configure it via:
 
 Plugins are installed from the [Claude marketplace](https://claude.com/plugins). They provide commands, agents, skills, and MCP server configurations.
 
-| Plugin | Description | Trigger |
-|--------|-------------|---------|
-| [Superpowers](https://claude.com/plugins/superpowers) | Structured software development: TDD, debugging, brainstorming, subagent code review | `/brainstorming`, `/execute-plan` |
-| [Frontend Design](https://claude.com/plugins/frontend-design) | Generates production-grade frontend interfaces with bold aesthetic choices | Automatic |
-| [Code Review](https://claude.com/plugins/code-review) | PR analysis with five specialized agents checking compliance, bugs, and git history | `/code-review` |
-| [Security Guidance](https://claude.com/plugins/security-guidance) | Warns about security vulnerabilities when editing files (injection, XSS, etc.) | Automatic (pre-tool hook) |
-| [Skill Creator](https://claude.com/plugins/skill-creator) | Create, evaluate, improve, and benchmark skills | `/skill-creator` |
-| [Commit Commands](https://claude.com/plugins/commit-commands) | Automates commit messages, pushing, and PR creation with style analysis | `/commit`, `/commit-push-pr` |
-| [Claude Code Setup](https://claude.com/plugins/claude-code-setup) | Recommends tailored automations (MCP servers, skills, hooks, subagents) | `recommend automations for this project` |
-| [Hookify](https://claude.com/plugins/hookify) | Create custom hooks from natural language — regex pattern matching, no coding required | `/hookify Warn me when...` |
-| [Engram](https://github.com/Gentleman-Programming/engram) | Persistent memory for AI coding agents — survives session ends and compactions via SQLite + FTS5. **Note:** the installer disables Claude's built-in auto-memory (`autoMemoryEnabled: false`) to avoid duplication — engram's selective retrieval and automatic decay make it the better choice. Re-evaluate once Claude's planned "dream" consolidation feature ships. | `mem_save`, `mem_search`, `mem_context` (MCP tools) |
+| Plugin | Provides | Description | Trigger |
+|--------|----------|-------------|---------|
+| [Superpowers](https://github.com/obra/superpowers) | 14 skills, 1 agent | Structured dev workflows: TDD, debugging, brainstorming, planning, worktrees, code review | `/brainstorming`, `/tdd`, auto |
+| [Frontend Design](https://claude.com/plugins/frontend-design) | 1 skill | Production-grade frontend UI generation with bold aesthetic choices | Automatic on UI work |
+| [Code Review](https://claude.com/plugins/code-review) | 5 agents, 1 command | PR analysis with five parallel agents checking compliance, bugs, and git history | `/code-review` |
+| [Security Guidance](https://claude.com/plugins/security-guidance) | 1 hook | PreToolUse hook warning about security vulnerabilities on file edits (injection, XSS) | Automatic (pre-Edit/Write) |
+| [Commit Commands](https://claude.com/plugins/commit-commands) | 3 commands | Git commit, push, PR creation with style analysis; branch cleanup | `/commit`, `/commit-push-pr`, `/clean_gone` |
+| [Skill Creator](https://claude.com/plugins/skill-creator) | 1 skill, 1 agent | Create, evaluate, improve, and benchmark skills | `/skill-creator` |
+| [Claude Code Setup](https://claude.com/plugins/claude-code-setup) | 1 skill | Recommends tailored automations (MCP servers, skills, hooks, subagents) for a project | `recommend automations` |
+| [Hookify](https://claude.com/plugins/hookify) | 1 skill, 1 agent, 4 commands | Create custom hooks from natural language or conversation analysis | `/hookify`, `/hookify:list` |
+| [Engram](https://github.com/Gentleman-Programming/engram) | 1 skill, MCP server | Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memory (`autoMemoryEnabled: false`) — engram's selective retrieval and automatic decay make it the better choice. | `mem_save`, `mem_search` (auto + manual) |
 
-Additionally, the **ct** plugin (from this repo) provides custom skills and agents:
-
-### ct Skills
-
-| Skill | Description | Trigger |
-|-------|-------------|---------|
-| bugmagnet | Systematic test coverage analysis and edge case discovery using a comprehensive checklist | `"find holes in my tests"`, `"what could go wrong"`, `"edge cases"` |
-| fix-loop | Iterative review-fix cycle: runs code-reviewer, fixes critical findings, verifies tests, repeats until clean (max 5 iterations) | `"review and fix"`, `"find and fix bugs"` |
-| duplicate-code-detector | Detects copy-paste duplication in codebases | Automatic |
-| incremental-refactoring | Guided refactoring in small, testable steps | Refactoring tasks |
-| performance-optimization | Performance analysis and optimization guidance | Performance tasks |
-| threat-modeling | STRIDE-based threat modeling for security analysis | Security review tasks |
-| audit-skills | Audits all installed skills for redundancy with built-in model knowledge | `/audit-skills` (manual only) |
-| revise-claude-md | Captures session learnings and proposes CLAUDE.md updates. Adapted from the removed [claude-md-management](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management) plugin. | `/revise-claude-md` (manual only) |
-
-### ct Agents
-
-| Agent | Description |
-|-------|-------------|
-| code-reviewer | Autonomous code review agent focused on seeking disconfirmation — analyses for best practices, security, performance, FP patterns, and test coverage gaps. Invokes bugmagnet for edge case discovery. |
-| fixer | Applies targeted minimal fixes for critical code review findings, verifies tests pass, reverts on failure. Used by the fix-loop skill. |
-| code-simplifier | Reviews code for simplification opportunities |
-| deep-research | Deep codebase research and analysis |
-| refactor-scan | Scans for refactoring opportunities |
-
-Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
+The **ct** plugin (from this repo) adds 8 skills, 5 agents, and 2 commands for code quality, security, and refactoring workflows. See [SKILLS.md](SKILLS.md) for the complete list. Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
 
 ## CLI Tools
 
@@ -143,26 +118,22 @@ Tools are configured in the `TOOLS` array in [config.sh](config.sh). Each tool h
 
 ## Skills
 
-Skills are installed globally from [skills.sh](https://skills.sh) using the `skills` CLI. They provide reusable capabilities that enhance Claude's behavior.
+This template installs **87 global skills** from [skills.sh](https://skills.sh) plus plugin-provided skills, organized by purpose:
 
-| Skill | Description | Trigger |
-|-------|-------------|---------|
-| [context7-cli](https://skills.sh/upstash/context7/context7-cli) | Fetches up-to-date library documentation and manages AI coding skills | `ctx7 library <name> <query>`, `ctx7 docs <id> <query>` |
-| [shadcn](https://skills.sh/shadcn/ui/shadcn) | Manages shadcn/ui components: search registries, add components, view docs, preview changes | Component lifecycle commands |
-| [tavily-ai/skills](https://skills.sh/tavily-ai/skills) | Collection of 11 skills: search, research, extract, crawl, map, and best practices for Tavily web search | `search`, `research`, `extract`, `crawl` |
-| [marketingskills](https://skills.sh/coreyhaines31/marketingskills) | Collection of 33 marketing skills: SEO audit, copywriting, content strategy, pricing, analytics, ads, email sequences, CRO, and more | Skill-specific triggers (e.g., `seo-audit`, `copywriting`) |
-| [postgres](https://skills.sh/planetscale/database-skills/postgres) | PostgreSQL database management, queries, schema design, and optimization | Database-related tasks |
-| [agent-browser](https://skills.sh/vercel-labs/agent-browser/agent-browser) | AI-first browser automation for navigation, form filling, screenshots, and data extraction | `agent-browser open <url>`, `agent-browser snapshot` |
-| [dogfood](https://skills.sh/vercel-labs/agent-browser/dogfood) | Internal testing skill for agent-browser | Automatic |
-| [security-review](https://skills.sh/getsentry/skills/security-review) | Security-focused code review | Security review tasks |
-| [find-bugs](https://skills.sh/getsentry/skills/find-bugs) | Bug detection and analysis | Bug hunting tasks |
-| [gha-security-review](https://skills.sh/getsentry/skills/gha-security-review) | GitHub Actions security review | GHA workflow tasks |
-| [skill-scanner](https://skills.sh/getsentry/skills/skill-scanner) | Scans and evaluates installed skills | Skill management tasks |
-| [obsidian-cli](https://skills.sh/kepano/obsidian-skills/obsidian-cli) | Obsidian vault interaction via the official CLI (v1.12+) — file ops, search, daily notes, tags, properties, sync | `obsidian` CLI tasks |
-| [obsidian-markdown](https://skills.sh/kepano/obsidian-skills/obsidian-markdown) | Obsidian-flavored markdown conventions — wiki links, callouts, embeds, block references | Writing Obsidian markdown |
-| [defuddle](https://skills.sh/kepano/obsidian-skills/defuddle) | Clean content extraction from web pages using Obsidian's web clipper engine | Web content extraction |
+| Category | Count | Sources | Highlights |
+|----------|-------|---------|------------|
+| Code Quality & Review | 9 | getsentry/skills | find-bugs, security-review, Django reviews, GHA security |
+| Development Workflow | 16 | getsentry/skills, vercel-labs | commits, PRs, branches, docs, presentations, skill authoring |
+| Web Research & Docs | 11 | tavily-ai, upstash/context7, kepano | search, research, extract, crawl, library docs |
+| Browser Automation | 8 | vercel-labs, microsoft | browser testing, Electron apps, Slack, QA |
+| Databases | 4 | planetscale | PostgreSQL, MySQL, Vitess, Neki |
+| Knowledge Management | 5 | kepano/obsidian-skills | Obsidian CLI, markdown, Bases, Canvas, web extraction |
+| UI Components | 1 | shadcn/ui | Component management and debugging |
+| Marketing & Growth | 34 | coreyhaines31/marketingskills | SEO, copywriting, CRO, pricing, ads, email, analytics |
 
-Skills are installed globally (`-g`) so they are available in all projects. To add more skills, edit the `SKILLS` array in [config.sh](config.sh) or install manually:
+See **[SKILLS.md](SKILLS.md)** for the complete inventory and **[WORKFLOWS.md](WORKFLOWS.md)** for task-driven usage guidance.
+
+Skills are installed globally (`-g`) so they are available in all projects. To add more, edit the `SKILLS` array in [config.sh](config.sh) or install manually:
 
 ```bash
 npx skills add <owner/repo> -g --all
@@ -239,6 +210,8 @@ The `install.sh` script adds a line to your `~/.bashrc` and/or `~/.zshrc` that e
 
 ## Other Contents
 
+- **[SKILLS.md](SKILLS.md)** - Complete inventory of all plugins, skills, agents, commands, and MCP servers
+- **[WORKFLOWS.md](WORKFLOWS.md)** - Task-driven guide: "when I need X, use Y"
 - **[install.sh](install.sh)** - Setup script (marketplace, plugins, skills, sandbox settings)
 - **[update.sh](update.sh)** - Updates all installed plugins, skills, and npm packages
 - **[uninstall.sh](uninstall.sh)** - Removes all plugins, skills, tools, settings, and shell aliases
