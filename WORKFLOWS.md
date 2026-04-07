@@ -20,6 +20,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Look up library docs | context7-cli | Say `use context7 for <library>`, or mention `ctx7`/`context7` |
 | Search the web | tavily-cli | `search for X`, `look up X`, or `research X in depth` |
 | Extract content from a URL | defuddle | Auto-activated when a URL is provided to read or analyze |
+| Build with Claude API/SDK | claude-api | Auto-activated when code imports `anthropic` or `@anthropic-ai/sdk` |
 
 ## Reviewing & Fixing Code
 
@@ -35,6 +36,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Audit accessibility | ct:wcag-audit | `check accessibility` — static analysis + axe-core runtime audit |
 | Check test quality with mutations | ct:mutation-testing | `run mutation testing` — diff-scoped, auto-detects language |
 | Set up complexity linting | ct:lint-guard | `set up linting` — 17-language detection, strict complexity rules, Stop hook |
+| Quick cleanup of changed code | simplify | `/simplify` — reviews for reuse, quality, efficiency and fixes issues |
 
 ## Refactoring & Performance
 
@@ -66,6 +68,8 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | When I need to... | Use | How |
 |---|---|---|
 | Deep codebase research | ct:deep-research agent | Dispatched for complex multi-file investigations |
+| Systematic research | ct:research | Say `research X` — scientific methodology with evidence-based synthesis |
+| Map a website's URLs | tavily-map | Say `list URLs on <domain>` or `find pages on <site>` |
 | Automate browser tasks | agent-browser | Say `open <url>`, `click`, `fill form`, or any browser interaction |
 | Visual UI testing / regression | agent-browser | `diff screenshot --baseline before.png`, `diff url <staging> <prod>`, viewport testing across breakpoints |
 | Test a web app (QA) | dogfood | Say `dogfood this app`, `QA this`, or `exploratory test` |
@@ -77,6 +81,8 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Save a decision or learning | engram | `mem_save` — auto via hooks, or manual |
 | Recall previous work | engram | `mem_search` — searches across all sessions |
 | Reflect on session learnings | /reflect | `/reflect` — generate structured proposals, `/reflect review` — approve into CLAUDE.md |
+| Run a command on a schedule | loop | `/loop 5m /foo` — repeats a prompt or slash command at an interval |
+| Schedule remote agents | schedule | `/schedule` — create cron-scheduled agents that run automatically |
 | Navigate code semantically | gabb MCP | Say `find symbol X` or `show structure of file`; auto-used for code navigation |
 
 ## Meta / Setup
@@ -88,6 +94,9 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Create hooks from patterns | hookify | `/hookify` or say `create a hook to prevent X` |
 | Update CLAUDE.md with learnings | ct:revise-claude-md | `/revise-claude-md` |
 | Audit installed skills | ct:audit-skills | `/audit-skills` |
+| Configure settings.json | update-config | Say `configure hooks`, `update settings`, or `add automation` |
+| Customize keyboard shortcuts | keybindings-help | Say `rebind keys`, `change shortcuts`, or `customize keybindings` |
+| Create or modify skills | skill-creator | Say `create a skill` or `modify skill` — includes evals and benchmarking |
 
 ## Other Domains
 
@@ -97,5 +106,5 @@ PostgreSQL skill from PlanetScale. Triggered on any database-related task — sc
 
 ### Obsidian
 
-CLI interaction and Obsidian-flavored markdown. Triggered when working with `.md` files in Obsidian vaults or using `obsidian` CLI commands.
+CLI interaction and Obsidian-flavored markdown. Triggered when working with `.md` files in Obsidian vaults or using `obsidian` CLI commands. The `obsidian-markdown` skill activates for syntax-specific tasks (wikilinks, callouts, embeds, properties).
 

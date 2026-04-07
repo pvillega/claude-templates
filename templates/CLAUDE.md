@@ -57,6 +57,16 @@ Prefer LSP (goToDefinition, findReferences, hover) first for exact results. Fall
 
 Every implementation plan's final task must dispatch the `evaluator` agent against the project root for dynamic QA (run the app, test UX flows, score). If evaluator reports any criterion below 5/10, fix the issues before proceeding to `finishing-a-development-branch`.
 
+## Code Editing
+
+<comprehensive_bulk_changes>
+When making bulk code changes (replacing constants, fixing imports, etc.), always do a comprehensive scan for ALL instances of the pattern — not just the obvious ones. Check for related variants (URLs, endpoints, tokens) beyond the initially identified items.
+</comprehensive_bulk_changes>
+
+<match_existing_patterns>
+When the user references a pattern from the main or develop branch (e.g., validation style, helper functions) while working in another branch, always check the main or develop branch first to match the existing approach exactly. Don't invent alternative implementations.
+</match_existing_patterns>
+
 ## Git Operations
 
 - Delete: your changes OK | others' work → ask first
