@@ -15,13 +15,13 @@ This is the complete inventory of every plugin, skill, agent, command, hook, MCP
   - [CT](#ct-9-skills-6-agents-2-commands)
   - [Engram](#engram-1-skill-mcp-server)
 - [Global Skills](#global-skills)
-  - [Code Quality & Review](#code-quality--review-9-skills)
-  - [Development Workflow](#development-workflow-16-skills)
-  - [Web Research & Documentation](#web-research--documentation-11-skills)
-  - [Browser Automation](#browser-automation-8-skills)
-  - [Databases](#databases-4-skills)
-  - [Knowledge Management](#knowledge-management-5-skills)
+  - [Code Quality & Review](#code-quality--review-4-skills)
+  - [Web Research & Documentation](#web-research--documentation-9-skills)
+  - [Browser Automation](#browser-automation-2-skills)
+  - [Databases](#databases-1-skill)
+  - [Knowledge Management](#knowledge-management-2-skills)
   - [UI Components](#ui-components-1-skill)
+  - [Code Navigation](#code-navigation-1-skill)
 - [MCP Servers](#mcp-servers)
 - [CLI Tools](#cli-tools)
 
@@ -161,43 +161,18 @@ Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memo
 
 ## Global Skills
 
-53 skills installed via `skills.sh`, organized into 7 categories.
+**47 skills total** — 27 from plugins (see [Plugins](#plugins) above) and 20 from [skills.sh](https://skills.sh) + tools (below).
 
-### Code Quality & Review (9 skills)
+### Code Quality & Review (4 skills)
 
 | Name                  | Source          | Description                                                     |
 | --------------------- | --------------- | --------------------------------------------------------------- |
 | find-bugs             | getsentry/skills| Find bugs, security vulnerabilities, and code quality issues in branch changes |
 | security-review       | getsentry/skills| Security-focused code review for vulnerabilities (OWASP)        |
-| django-access-review  | getsentry/skills| Django IDOR and access control security review                  |
-| django-perf-review    | getsentry/skills| Django N+1 queries and performance review                       |
 | gha-security-review   | getsentry/skills| GitHub Actions workflow security review                         |
 | skill-scanner         | getsentry/skills| Scan agent skills for security issues                           |
-| code-review           | getsentry/skills| Code review for security, performance, testing, and design      |
-| code-simplifier       | getsentry/skills| Simplify code for clarity, consistency, and maintainability     |
-| claude-settings-audit | getsentry/skills| Analyze repo and recommend Claude Code settings.json permissions|
 
-### Development Workflow (15 skills)
-
-| Name                  | Source          | Description                                                     |
-| --------------------- | --------------- | --------------------------------------------------------------- |
-| commit                | getsentry/skills| Sentry-convention commit messages with proper format and issue refs |
-| create-branch         | getsentry/skills| Create git branches following Sentry naming conventions          |
-| pr-writer             | getsentry/skills| Sentry-convention PR titles, descriptions, and issue references  |
-| create-pr             | getsentry/skills| Alias for pr-writer                                             |
-| iterate-pr            | getsentry/skills| Iterate on a PR until CI passes — feedback-fix-push-wait cycle   |
-| gh-review-requests    | getsentry/skills| Fetch pending GitHub PR review notifications                     |
-| agents-md             | getsentry/skills| Create and maintain AGENTS.md documentation                      |
-| doc-coauthoring       | getsentry/skills| Structured workflow for co-authoring documentation               |
-| blog-writing-guide    | getsentry/skills| Write Sentry engineering blog posts following standards           |
-| brand-guidelines      | getsentry/skills| Write copy following Sentry brand guidelines                     |
-| presentation-creator  | getsentry/skills| Create data-driven slides with React, Vite, and Recharts         |
-| skill-writer          | getsentry/skills| Create, synthesize, and improve agent skills                     |
-| skill-creator         | getsentry/skills| Alias for skill-writer                                           |
-| sred-project-organizer| getsentry/skills| Organize projects into SRED format for submission                |
-| sred-work-summary     | getsentry/skills| Annual work summary grouped into SRED projects                   |
-
-### Web Research & Documentation (11 skills)
+### Web Research & Documentation (9 skills)
 
 | Name                 | Source              | Description                                                  |
 | -------------------- | ------------------- | ------------------------------------------------------------ |
@@ -209,47 +184,39 @@ Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memo
 | tavily-cli           | tavily-ai/skills    | Full Tavily CLI: search, extract, crawl, research            |
 | tavily-best-practices| tavily-ai/skills    | Production Tavily integration patterns and reference          |
 | context7-cli         | upstash/context7    | Fetch library docs via ctx7 CLI                              |
-| context7-mcp         | upstash/context7    | Library/framework API references and code examples           |
-| find-docs            | upstash/context7    | Retrieve up-to-date docs for any developer technology        |
 | defuddle             | kepano/obsidian-skills | Extract clean markdown from web pages (saves tokens vs WebFetch) |
 
-### Browser Automation (8 skills)
+### Browser Automation (2 skills)
 
 | Name             | Source                      | Description                                                    |
 | ---------------- | --------------------------- | -------------------------------------------------------------- |
 | agent-browser    | vercel-labs/agent-browser   | Browser automation CLI for AI agents (50+ commands)            |
-| playwright-cli   | microsoft/playwright-cli    | Browser testing, form filling, screenshots, data extraction    |
 | dogfood          | vercel-labs/agent-browser   | Systematically explore and test web apps for bugs/UX issues    |
-| electron         | vercel-labs/agent-browser   | Automate Electron apps (VS Code, Slack, Discord, Figma, etc.) |
-| slack            | vercel-labs/agent-browser   | Interact with Slack workspaces via browser automation          |
-| agentcore        | vercel-labs/agent-browser   | Run agent-browser on AWS Bedrock AgentCore cloud browsers      |
-| vercel-sandbox   | vercel-labs/agent-browser   | Browser automation inside Vercel Sandbox microVMs              |
-| dev              | microsoft/playwright-cli    | playwright-cli repository maintenance workflows                |
 
-### Databases (4 skills)
+### Databases (1 skill)
 
 | Name     | Source                      | Description                                                     |
 | -------- | --------------------------- | --------------------------------------------------------------- |
 | postgres | planetscale/database-skills | PostgreSQL optimization, query tuning, and troubleshooting      |
-| mysql    | planetscale/database-skills | MySQL/InnoDB schema, indexing, query tuning, and operations     |
-| vitess   | planetscale/database-skills | Vitess best practices, sharding, and VSchema configuration      |
-| neki     | planetscale/database-skills | Neki sharded Postgres product overview and scaling guidance     |
 
-### Knowledge Management (5 skills)
+### Knowledge Management (2 skills)
 
 | Name              | Source                  | Description                                                     |
 | ----------------- | ----------------------- | --------------------------------------------------------------- |
 | obsidian-cli      | kepano/obsidian-skills  | Obsidian vault interaction: read, create, search, manage notes  |
 | obsidian-markdown | kepano/obsidian-skills  | Obsidian-flavored markdown: wikilinks, callouts, embeds, properties |
-| obsidian-bases    | kepano/obsidian-skills  | Create Obsidian Bases (.base files) with views, filters, formulas |
-| json-canvas       | kepano/obsidian-skills  | Create/edit JSON Canvas files (.canvas) for visual maps         |
-| defuddle          | kepano/obsidian-skills  | Extract clean markdown from web pages *(also listed under Web Research)* |
 
 ### UI Components (1 skill)
 
 | Name   | Source    | Description                                                    |
 | ------ | --------- | -------------------------------------------------------------- |
 | shadcn | shadcn/ui | Manage shadcn/ui components: search registries, add, debug, style |
+
+### Code Navigation (1 skill)
+
+| Name | Source        | Description                                                     |
+| ---- | ------------- | --------------------------------------------------------------- |
+| gabb | gabb-software | Teaches when to use gabb_structure for efficient file exploration |
 
 ---
 

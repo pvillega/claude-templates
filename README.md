@@ -42,6 +42,7 @@ The installer requires the following to be available before running:
 - **curl** — for downloading installers
 - **npm** — for installing Node.js-based tools and skills
 - **[Homebrew](https://brew.sh)** — package manager for CLI tools (macOS and Linux)
+- **[Docker](https://www.docker.com/)** *(optional)* — required by some security skills (not installed by the installer)
 
 Homebrew is available on both macOS and Linux. To install:
 
@@ -117,17 +118,18 @@ Tools are configured in the `TOOLS` array in [config.sh](config.sh). Each tool h
 
 ## Skills
 
-This template installs **53 global skills** from [skills.sh](https://skills.sh) plus plugin-provided skills, organized by purpose:
+This template provides **47 skills total** — 27 from [plugins](#plugins) (Superpowers 14, CT 9, plus Frontend Design, Claude Code Setup, Hookify, Engram) and 20 global skills from [skills.sh](https://skills.sh) + tools:
 
 | Category | Count | Sources | Highlights |
 |----------|-------|---------|------------|
-| Code Quality & Review | 9 | getsentry/skills | find-bugs, security-review, Django reviews, GHA security |
-| Development Workflow | 15 | getsentry/skills | commits, PRs, branches, docs, presentations, skill authoring |
-| Web Research & Documentation | 11 | tavily-ai, upstash/context7, kepano | search, research, extract, crawl, library docs |
-| Browser Automation | 8 | vercel-labs, microsoft | browser testing, Electron apps, Slack, QA |
-| Databases | 4 | planetscale | PostgreSQL, MySQL, Vitess, Neki |
-| Knowledge Management | 5 | kepano/obsidian-skills | Obsidian CLI, markdown, Bases, Canvas, web extraction |
+| Code Quality & Review | 4 | getsentry/skills | find-bugs, security-review, GHA security, skill-scanner |
+| Web Research & Documentation | 9 | tavily-ai, upstash/context7, kepano | search, research, extract, crawl, library docs |
+| Browser Automation | 2 | vercel-labs | agent-browser, dogfood (QA) |
+| Databases | 1 | planetscale | PostgreSQL |
+| Knowledge Management | 2 | kepano/obsidian-skills | Obsidian CLI, markdown |
 | UI Components | 1 | shadcn/ui | Component management and debugging |
+| Code Navigation | 1 | gabb-software | Semantic file exploration |
+
 See **[SKILLS.md](SKILLS.md)** for the complete inventory and **[WORKFLOWS.md](WORKFLOWS.md)** for task-driven usage guidance.
 
 Skills are installed globally (`-g`) so they are available in all projects. To add more, edit the `SKILLS` array in [config.sh](config.sh) or install manually:
