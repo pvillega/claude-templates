@@ -46,7 +46,6 @@ readonly SKILLS=(
 # Claude plugin marketplaces (format: "owner/repo:name")
 readonly MARKETPLACES=(
     "pvillega/claude-templates:claude-templates"
-    "semgrep/mcp-marketplace:semgrep"
 )
 
 # Claude plugins to install (format: "plugin@marketplace")
@@ -59,6 +58,5 @@ readonly PLUGINS=(
     "claude-code-setup@claude-plugins-official"
     "hookify@claude-plugins-official"
     "skill-creator@claude-plugins-official"
-    "semgrep-plugin@semgrep"
     "ct@claude-templates"
 )
