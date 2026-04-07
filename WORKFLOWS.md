@@ -12,7 +12,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 
 **HINT**: you can use `hookify` (see [Meta](#meta--setup) section) to add hooks to control behaviours specific to your project. Hooks always execute, unlike `CLAUDE.md` statements, and can be useful if you use non-default build tools or settings.
 
-**NOTE:** Repository-specific optimization dramatically outperforms general optimization. It is a good idea to run `/claude-automation-recommender` on a project if you haven't done it, and cherrypick ideas. Just beware it may recommend MCP for which you already have a skill, like Context7.
+**NOTE:** Repository-specific optimization dramatically outperforms general optimization. It is a good idea to run `/claude-automation-recommender` on a project if you haven't done it, and cherry-pick ideas. Just beware it may recommend MCP for which you already have a skill, like Context7.
 
 ## Writing Code
 
