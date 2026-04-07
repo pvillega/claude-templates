@@ -200,7 +200,7 @@ uninstall_skills() {
         else
             echo "  Removing skill: $skill..."
             # shellcheck disable=SC2086
-            if npx skills remove $skill -g 2>/dev/null; then
+            if npx skills remove $skill -g --agent claude-code -y 2>/dev/null; then
                 echo "  Removed skill: $skill"
             else
                 add_warning "Failed to remove skill: $skill (may need manual removal)"

@@ -216,7 +216,7 @@ install_skills() {
         echo ""
         echo "Installing skill: $skill (global)..."
         # shellcheck disable=SC2086
-        if ! npx skills add $skill -g --all; then
+        if ! npx skills add $skill -g --agent claude-code -y; then
             add_warning "Failed or skipped skill: $skill"
         else
             echo "Skill $skill installed successfully"

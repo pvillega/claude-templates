@@ -152,7 +152,7 @@ update_skills() {
     for skill in "${SKILLS[@]}"; do
         echo "  Updating: $skill..."
         # shellcheck disable=SC2086
-        if npx skills add $skill -g --all 2>/dev/null; then
+        if npx skills add $skill -g --agent claude-code -y 2>/dev/null; then
             echo "  Updated: $skill"
             ((UPDATED_SKILLS++)) || true
         else
