@@ -93,6 +93,7 @@ Plugins are installed from the [Claude marketplace](https://claude.com/plugins).
 | [Hookify](https://claude.com/plugins/hookify) | 1 skill, 1 agent, 4 commands | Create custom hooks from natural language or conversation analysis | `/hookify`, `/hookify:list` |
 | [Skill Creator](https://claude.com/plugins/skill-creator) | 1 skill | Create, modify, and measure skill performance with evals and variance analysis | `/skill-creator` |
 | [Engram](https://github.com/Gentleman-Programming/engram) | 1 skill, MCP server | Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memory (`autoMemoryEnabled: false`) — engram's selective retrieval and automatic decay make it the better choice. | `mem_save`, `mem_search` (auto + manual) |
+| [Semgrep](https://semgrep.dev/docs/mcp) | 1 hook, 1 skill, MCP server | PostToolUse SAST + Supply Chain + Secrets scanning on every file edit (free OSS rules) | Automatic (post-Edit/Write) |
 
 The **ct** plugin (from this repo) adds 12 skills, 6 agents, and 2 commands for code quality, security, and refactoring workflows. See [SKILLS.md](SKILLS.md) for the complete list. Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
 
@@ -116,8 +117,20 @@ The installer sets up the following CLI tools, used by Claude Code for enhanced 
 | [Gabb](https://github.com/gabb-software/gabb-cli) | Local code indexer for semantic code understanding (MCP server) | Homebrew |
 | [axe-core CLI](https://github.com/dequelabs/axe-core) + [Pa11y](https://github.com/pa11y/pa11y) | WCAG accessibility auditing (runtime + batch) | npm |
 | [Nuclei](https://github.com/projectdiscovery/nuclei) + [ZAP](https://www.zaproxy.org/) | DAST security scanning (fast + deep) | Homebrew + Docker |
+| [Semgrep](https://semgrep.dev) | OSS SAST scanner (used by Semgrep plugin for PostToolUse security scanning) | Homebrew |
+| [Gitleaks](https://github.com/gitleaks/gitleaks) | Secret detection via global git pre-commit hook | Homebrew |
 
 Tools are configured in the `TOOLS` array in [config.sh](config.sh). Each tool has an install, update, and uninstall script in the [tools/](tools/) directory.
+
+### Security Scanning
+
+Two layers of automated security scanning are installed:
+
+**Semgrep Plugin** (Claude Code PostToolUse) — scans every file after Claude edits it using Semgrep Code (SAST), Supply Chain (dependency CVEs), and Secrets detection. Uses free community rules (~2,800 rules, no account required). For enhanced detection with 20,000+ rules, optionally run `/semgrep-plugin:setup-semgrep-plugin` to create a free Semgrep account.
+
+**Gitleaks** (git pre-commit hook) — scans staged changes for secrets before every `git commit`. Defense-in-depth alongside Semgrep Secrets. Skip with `SKIP_GITLEAKS=1 git commit -m "..."`.
+
+> **Note:** The global git hooks path (`core.hooksPath`) is set to `~/.git-hooks/`. This overrides per-repo `.git/hooks/` directories, but the hook script chains to repo-local hooks as a fallback. If you use the pre-commit framework in some repos, the chain-through ensures those hooks still run.
 
 ## Skills
 
