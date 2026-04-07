@@ -79,6 +79,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 |---|---|---|
 | Save a decision or learning | engram | `mem_save` — auto via hooks, or manual |
 | Recall previous work | engram | `mem_search` — searches across all sessions |
+| Reflect on session learnings | /reflect | `/reflect` — generate structured proposals, `/reflect review` — approve into CLAUDE.md |
 | Navigate code semantically | gabb MCP | `gabb_symbol` for definitions, `gabb_structure` for file layout |
 
 ## Meta / Setup
@@ -89,7 +90,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Scan skill for security issues | skill-scanner | `scan this skill` |
 | Recommend project automations | claude-code-setup | `recommend automations for this project` |
 | Create hooks from patterns | /hookify | Analyzes conversation for behaviors to prevent |
-| Update CLAUDE.md with learnings | /revise-claude-md | End-of-session updates |
+| Update CLAUDE.md with learnings | /revise-claude-md | End-of-session ad hoc updates |
 | Audit installed skills | /audit-skills | Check for redundancy with model knowledge |
 
 ## Other Domains

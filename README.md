@@ -93,7 +93,7 @@ Plugins are installed from the [Claude marketplace](https://claude.com/plugins).
 | [Hookify](https://claude.com/plugins/hookify) | 1 skill, 1 agent, 4 commands | Create custom hooks from natural language or conversation analysis | `/hookify`, `/hookify:list` |
 | [Engram](https://github.com/Gentleman-Programming/engram) | 1 skill, MCP server | Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memory (`autoMemoryEnabled: false`) — engram's selective retrieval and automatic decay make it the better choice. | `mem_save`, `mem_search` (auto + manual) |
 
-The **ct** plugin (from this repo) adds 8 skills, 5 agents, and 2 commands for code quality, security, and refactoring workflows. See [SKILLS.md](SKILLS.md) for the complete list. Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
+The **ct** plugin (from this repo) adds 9 skills, 5 agents, and 2 commands for code quality, security, and refactoring workflows. See [SKILLS.md](SKILLS.md) for the complete list. Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
 
 ## CLI Tools
 
