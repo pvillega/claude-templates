@@ -95,8 +95,8 @@ fi
 if [ -f "${CWD}/pom.xml" ] || [ -f "${CWD}/build.gradle" ] || \
    [ -f "${CWD}/build.gradle.kts" ]; then
   DETECTED_LANGS+=("Java")
-  if [ -f "${CWD}/pmd.xml" ] || compgen -G "${CWD}/**/pmd.xml" > /dev/null 2>&1 || \
-     [ -f "${CWD}/checkstyle.xml" ] || compgen -G "${CWD}/**/checkstyle.xml" > /dev/null 2>&1; then
+  if [ -f "${CWD}/pmd.xml" ] || find "${CWD}" -name "pmd.xml" -maxdepth 3 2>/dev/null | grep -q . || \
+     [ -f "${CWD}/checkstyle.xml" ] || find "${CWD}" -name "checkstyle.xml" -maxdepth 3 2>/dev/null | grep -q .; then
     CONFIGURED_LINTERS+=("PMD/Checkstyle (Java)")
   else
     MISSING_LINTERS+=("Java")
@@ -137,7 +137,7 @@ fi
 
 # Kotlin
 if [ -f "${CWD}/detekt.yml" ] || [ -f "${CWD}/detekt-config.yml" ] || \
-   compgen -G "${CWD}/src/**/*.kt" > /dev/null 2>&1; then
+   find "${CWD}/src" -name "*.kt" -maxdepth 5 2>/dev/null | grep -q .; then
   DETECTED_LANGS+=("Kotlin")
   if [ -f "${CWD}/detekt.yml" ] || [ -f "${CWD}/detekt-config.yml" ]; then
     CONFIGURED_LINTERS+=("detekt (Kotlin)")
