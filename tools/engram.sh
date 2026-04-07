@@ -4,7 +4,7 @@
 # Requires: critical_error, add_warning functions from parent script
 #
 # Engram hooks are managed in plugins/ct/hooks/engram/ (part of the ct plugin).
-# The MCP server is registered via ~/.claude/mcp/engram.json (set up by this script).
+# The MCP server is registered via `claude mcp add` (user scope).
 # The engram@engram plugin is NOT used — MCP + hooks in ct provide everything needed.
 
 # Upstream repo path for hook scripts
@@ -55,11 +55,10 @@ update_engram() {
 uninstall_engram() {
     echo "Removing engram..."
 
-    # Remove MCP config
-    if [ -f "$HOME/.claude/mcp/engram.json" ]; then
-        rm -f "$HOME/.claude/mcp/engram.json"
-        echo "Removed engram MCP config"
-    fi
+    # Remove MCP registration
+    claude mcp remove --scope user engram 2>/dev/null && echo "Removed engram MCP server" || true
+    # Clean up legacy config if present
+    rm -f "$HOME/.claude/mcp/engram.json" 2>/dev/null
 
     if ! command -v engram &> /dev/null; then
         echo "engram is not installed, nothing to remove"
@@ -72,11 +71,9 @@ uninstall_engram() {
 
 # --- Internal helpers ---
 
-# Register engram as a standalone MCP server via ~/.claude/mcp/engram.json.
+# Register engram as a standalone MCP server via `claude mcp add` (user scope).
 # Uses the absolute binary path so it survives brew upgrades.
 _engram_setup_mcp() {
-    local mcp_dir="$HOME/.claude/mcp"
-    local mcp_file="$mcp_dir/engram.json"
     local engram_bin
     engram_bin=$(command -v engram 2>/dev/null)
 
@@ -85,20 +82,18 @@ _engram_setup_mcp() {
         return 0
     fi
 
-    mkdir -p "$mcp_dir"
+    # Remove any existing registration first to avoid duplicates
+    claude mcp remove --scope user engram 2>/dev/null || true
 
-    # Write MCP config with absolute path to binary
-    cat > "$mcp_file" <<EOF
-{
-  "args": [
-    "mcp",
-    "--tools=agent"
-  ],
-  "command": "$engram_bin"
-}
-EOF
+    # Register with user scope so it's available in all projects
+    if claude mcp add --transport stdio --scope user engram -- "$engram_bin" mcp --tools=agent; then
+        echo "Registered engram MCP server (user scope)"
+    else
+        add_warning "Failed to register engram MCP server via claude mcp add"
+    fi
 
-    echo "Registered engram MCP server at $mcp_file"
+    # Clean up legacy config if present
+    rm -f "$HOME/.claude/mcp/engram.json" 2>/dev/null
 }
 
 # Sync engram hooks to all relevant locations:
