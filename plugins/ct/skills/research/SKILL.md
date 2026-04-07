@@ -6,7 +6,7 @@ description: >
   Use this skill when the user asks to research a topic, investigate something,
   find out about recent developments, compare approaches, or needs information
   from multiple sources synthesized with citations.
-tools: WebSearch, WebFetch, mcp__tavily__*, mcp__playwright__*, mcp__context7__*, Read, Grep
+tools: WebSearch, WebFetch, Agent, Skill, mcp__tavily__*, mcp__playwright__*, mcp__context7__*, Read, Grep
 ---
 
 # Systematic Research
@@ -86,18 +86,15 @@ Think like a research scientist crossed with an investigative journalist:
 
 ### Parallel Optimization
 
-**NEVER search sequentially when you can search in parallel**
+**NEVER search sequentially when you can search in parallel.** Use Agent subagents to run multiple research threads concurrently — each subagent investigates one facet of the question, then you synthesize their findings.
 
-✅ **Good**: Search multiple queries concurrently
-```
-Search for: "quantum computing 2025", "quantum supremacy recent", "quantum algorithms practical"
-All at once in parallel
-```
+### Leveraging Tools
 
-❌ **Bad**: Search → wait → search → wait → search
-```
-Search "quantum computing" → wait for results → read → search "quantum algorithms" → wait...
-```
+- **Tavily MCP** (`mcp__tavily__*`) — use for web search, content extraction, and site crawling
+- **Tavily skills** — invoke `tavily-search` or `tavily-extract` via the Skill tool for specialized operations
+- **Agent subagents** — dispatch parallel research threads for independent questions
+- **Playwright MCP** — for JavaScript-heavy sites that need browser rendering
+- **Context7 MCP** — for technical library documentation
 
 ### Extraction Routing
 
