@@ -6,7 +6,7 @@ description: >
   Use this skill when the user asks to research a topic, investigate something,
   find out about recent developments, compare approaches, or needs information
   from multiple sources synthesized with citations.
-tools: WebSearch, WebFetch, Agent, Skill, mcp__tavily__*, mcp__playwright__*, mcp__context7__*, Read, Grep
+tools: WebSearch, WebFetch, Agent, Skill, Read, Grep
 ---
 
 # Systematic Research
@@ -90,17 +90,15 @@ Think like a research scientist crossed with an investigative journalist:
 
 ### Leveraging Tools
 
-- **Tavily MCP** (`mcp__tavily__*`) — use for web search, content extraction, and site crawling
-- **Tavily skills** — invoke `tavily-search` or `tavily-extract` via the Skill tool for specialized operations
+- **WebSearch / WebFetch** — primary tools for web research and content extraction
+- **Tavily skills** — invoke `tavily-search` or `tavily-extract` via the Skill tool for specialized operations (if installed)
 - **Agent subagents** — dispatch parallel research threads for independent questions
-- **Playwright MCP** — for JavaScript-heavy sites that need browser rendering
-- **Context7 MCP** — for technical library documentation
+- **Browser skills** — invoke `agent-browser` via the Skill tool for JavaScript-heavy sites (if installed)
 
 ### Extraction Routing
 
-- **Static HTML** → Tavily extraction
-- **JavaScript-heavy sites** → Playwright
-- **Technical documentation** → Context7
+- **Static HTML** → WebFetch or Tavily extraction (via Skill tool)
+- **JavaScript-heavy sites** → agent-browser skill (via Skill tool)
 - **Local files/codebase** → Native tools (Read, Grep, etc.)
 
 ### Learning Integration
