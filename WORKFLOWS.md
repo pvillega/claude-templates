@@ -32,6 +32,8 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Security review | security-review + security-guidance | Say `security review`, `find vulnerabilities`, or `audit security`; hook auto-warns on edits |
 | Find bugs in branch changes | find-bugs | Say `find bugs in my changes` or `review changes` |
 | GHA workflow security | gha-security-review | Say `review my GitHub Actions` or `audit workflows` |
+| Audit accessibility | ct:wcag-audit | `check accessibility` — static analysis + axe-core runtime audit |
+| Check test quality with mutations | ct:mutation-testing | `run mutation testing` — diff-scoped, auto-detects language |
 
 ## Refactoring & Performance
 
@@ -56,6 +58,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | When I need to... | Use | How |
 |---|---|---|
 | Threat model a feature | ct:threat-modeling | Auto-activated for auth, payments, webhooks, OAuth; or say `threat model this` |
+| Scan running app for vulnerabilities | ct:dast-scan | `scan for vulnerabilities` — Nuclei fast scan + ZAP deep scan |
 
 ## Research & Browser
 

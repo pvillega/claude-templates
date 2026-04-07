@@ -12,7 +12,7 @@ This is the complete inventory of every plugin, skill, agent, command, hook, MCP
   - [Commit Commands](#commit-commands-3-commands)
   - [Claude Code Setup](#claude-code-setup-1-skill)
   - [Hookify](#hookify-1-skill-1-agent-4-commands)
-  - [CT](#ct-9-skills-6-agents-2-commands)
+  - [CT](#ct-12-skills-6-agents-2-commands)
   - [Engram](#engram-1-skill-mcp-server)
 - [Global Skills](#global-skills)
   - [Code Quality & Review](#code-quality--review-4-skills)
@@ -120,7 +120,7 @@ Create custom hooks from natural language or conversation analysis.
 | /hookify:list          | command | List all configured hookify rules                                |
 | /hookify:configure     | command | Enable/disable hookify rules                                     |
 
-### CT (9 skills, 6 agents, 2 commands)
+### CT (12 skills, 6 agents, 2 commands)
 
 Code quality, security, refactoring, and development workflows.
 
@@ -130,13 +130,16 @@ Code quality, security, refactoring, and development workflows.
 | ------------------------- | ------- | ------------------------------------------------------------------------------ |
 | audit-skills              | skill   | Review installed skills for redundancy with model knowledge                    |
 | bugmagnet                 | skill   | Discover edge cases and test coverage gaps through systematic analysis         |
+| dast-scan                 | skill   | Dynamic security scanning — Nuclei (fast) + ZAP Docker (deep, opt-in)          |
 | duplicate-code-detector   | skill   | Find duplicated code using jscpd, classify and plan refactoring                |
 | fix-loop                  | skill   | Iterative review-fix cycle — code-reviewer, fixer, verify, repeat until clean  |
 | incremental-refactoring   | skill   | Refactor one transformation at a time, high-impact focus                       |
+| mutation-testing          | skill   | Diff-scoped mutation testing — Stryker, mutmut, cargo-mutants, PIT             |
 | performance-optimization  | skill   | Baseline, profile, optimize backend/API/database performance                   |
 | reflect                   | skill   | Self-reflection after work sessions — structured proposals with review gate    |
 | revise-claude-md          | skill   | Update CLAUDE.md with session learnings                                        |
 | threat-modeling           | skill   | STRIDE framework threat analysis for auth, payments, APIs, webhooks            |
+| wcag-audit                | skill   | WCAG accessibility auditing — static analysis + axe-core runtime               |
 | code-reviewer             | agent   | Autonomous code review seeking disconfirmation — best practices, security, performance |
 | code-simplifier           | agent   | Simplify code for clarity while preserving functionality                       |
 | deep-research             | agent   | Structured research specialist for external knowledge gathering                |

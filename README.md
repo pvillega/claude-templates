@@ -93,7 +93,7 @@ Plugins are installed from the [Claude marketplace](https://claude.com/plugins).
 | [Hookify](https://claude.com/plugins/hookify) | 1 skill, 1 agent, 4 commands | Create custom hooks from natural language or conversation analysis | `/hookify`, `/hookify:list` |
 | [Engram](https://github.com/Gentleman-Programming/engram) | 1 skill, MCP server | Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memory (`autoMemoryEnabled: false`) — engram's selective retrieval and automatic decay make it the better choice. | `mem_save`, `mem_search` (auto + manual) |
 
-The **ct** plugin (from this repo) adds 9 skills, 6 agents, and 2 commands for code quality, security, and refactoring workflows. See [SKILLS.md](SKILLS.md) for the complete list. Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
+The **ct** plugin (from this repo) adds 12 skills, 6 agents, and 2 commands for code quality, security, and refactoring workflows. See [SKILLS.md](SKILLS.md) for the complete list. Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
 
 ## CLI Tools
 
@@ -113,6 +113,8 @@ The installer sets up the following CLI tools, used by Claude Code for enhanced 
 | [agent-browser](https://github.com/vercel-labs/agent-browser) | AI-first browser automation (50+ commands) | npm + browser install |
 | [Engram](https://github.com/Gentleman-Programming/engram) | Persistent memory for AI agents (SQLite + FTS5) | Homebrew |
 | [Gabb](https://github.com/gabb-software/gabb-cli) | Local code indexer for semantic code understanding (MCP server) | Homebrew |
+| [axe-core CLI](https://github.com/dequelabs/axe-core) + [Pa11y](https://github.com/pa11y/pa11y) | WCAG accessibility auditing (runtime + batch) | npm |
+| [Nuclei](https://github.com/projectdiscovery/nuclei) + [ZAP](https://www.zaproxy.org/) | DAST security scanning (fast + deep) | Homebrew + Docker |
 
 Tools are configured in the `TOOLS` array in [config.sh](config.sh). Each tool has an install, update, and uninstall script in the [tools/](tools/) directory.
 
