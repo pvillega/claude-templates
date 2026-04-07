@@ -219,17 +219,17 @@ if [ ${#DETECTED_LANGS[@]} -eq 0 ]; then
 fi
 
 # Build output message
-LANG_LIST=$(IFS=', '; echo "${DETECTED_LANGS[*]}")
+LANG_LIST=$(printf '%s, ' "${DETECTED_LANGS[@]}" | sed 's/, $//')
 
 MSG="Lint Guard: Detected languages in this project: ${LANG_LIST}."
 
 if [ ${#CONFIGURED_LINTERS[@]} -gt 0 ]; then
-  CONFIGURED_LIST=$(IFS=', '; echo "${CONFIGURED_LINTERS[*]}")
+  CONFIGURED_LIST=$(printf '%s, ' "${CONFIGURED_LINTERS[@]}" | sed 's/, $//')
   MSG+=$'\nExisting linter configs: '"${CONFIGURED_LIST}."
 fi
 
 if [ ${#MISSING_LINTERS[@]} -gt 0 ]; then
-  MISSING_LIST=$(IFS=', '; echo "${MISSING_LINTERS[*]}")
+  MISSING_LIST=$(printf '%s, ' "${MISSING_LINTERS[@]}" | sed 's/, $//')
   MSG+=$'\nMissing linter configs: '"${MISSING_LIST}."
 fi
 
