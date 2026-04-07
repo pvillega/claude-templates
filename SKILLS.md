@@ -13,7 +13,7 @@ This is the complete inventory of every plugin, skill, agent, command, hook, MCP
   - [Claude Code Setup](#claude-code-setup-1-skill)
   - [Hookify](#hookify-1-skill-1-agent-4-commands)
   - [Skill Creator](#skill-creator-1-skill)
-  - [CT](#ct-13-skills-6-agents)
+  - [CT](#ct-14-skills-6-agents)
   - [Engram](#engram-1-skill-mcp-server)
 - [Global Skills](#global-skills)
   - [Code Quality & Review](#code-quality--review-4-skills)
@@ -131,7 +131,7 @@ Create, modify, and measure skill performance with evals and variance analysis.
 | -------------- | ----- | ------------------------------------------------------------------------ |
 | skill-creator  | skill | Create new skills, modify existing ones, run evals, benchmark performance |
 
-### CT (13 skills, 6 agents)
+### CT (14 skills, 6 agents)
 
 Code quality, security, refactoring, and development workflows.
 
@@ -145,6 +145,7 @@ Code quality, security, refactoring, and development workflows.
 | duplicate-code-detector   | skill   | Find duplicated code using jscpd, classify and plan refactoring                |
 | fix-loop                  | skill   | Iterative review-fix cycle — code-reviewer, fixer, verify, repeat until clean  |
 | incremental-refactoring   | skill   | Refactor one transformation at a time, high-impact focus                       |
+| lint-guard                | skill   | Set up strict complexity linting — 17 languages, auto-detection, Stop hook     |
 | mutation-testing          | skill   | Diff-scoped mutation testing — Stryker, mutmut, cargo-mutants, PIT             |
 | performance-optimization  | skill   | Baseline, profile, optimize backend/API/database performance                   |
 | reflect                   | skill   | Self-reflection after work sessions — structured proposals with review gate    |
@@ -174,7 +175,7 @@ Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memo
 
 ## Global Skills
 
-**51 skills total** — 31 from plugins (see [Plugins](#plugins) above) and 20 from [skills.sh](https://skills.sh) + tools (below).
+**52 skills total** — 32 from plugins (see [Plugins](#plugins) above) and 20 from [skills.sh](https://skills.sh) + tools (below).
 
 ### Code Quality & Review (4 skills)
 
