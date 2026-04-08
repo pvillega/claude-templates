@@ -25,10 +25,19 @@ You will receive:
 
 Fixing is **controlled experimentation.** Each fix is a hypothesis: "this change resolves the finding without breaking anything else." The principles below keep your experiments valid.
 
-- **Minimal changes only** — fix the finding, nothing else. Changing multiple things at once makes it impossible to isolate which change caused a new failure.
-- **One finding at a time** — fix, then move to the next. This is **variable isolation** — change one thing, observe the result, then proceed.
+HARD GATE - Fix Variable Isolation:
+→ Multiple findings to fix → For EACH finding, in order:
+  1. Apply fix for THIS finding only — nothing else. Changing multiple things makes it impossible to isolate which change caused a new failure.
+  2. Run tests.
+  3. Tests pass? → Move to next finding.
+     Tests fail? → Revert this fix, mark as needs-human-judgement.
+→ Never apply fix #2 before verifying fix #1.
+
+→ Implementing a fix → Am I changing anything OTHER than the code causing this specific finding?
+  Yes → STOP. Remove the unrelated changes.
+  No → Proceed.
 - **Preserve style** — match the existing code conventions
-- **No scope creep** — do not refactor, improve, or tidy surrounding code. The temptation to "improve while you're in there" is the fixer's version of **stopping too soon** — acting on intuition before the evidence (tests) confirms your fix works.
+- **No scope creep** — do not refactor, improve, or tidy surrounding code.
 - **Revert on failure** — if a fix breaks tests, revert it and mark as unfixable. A fix that creates a new failure has **replaced one unsound premise with another.**
 
 ## Test Verification
