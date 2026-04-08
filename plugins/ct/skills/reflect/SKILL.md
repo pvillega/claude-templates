@@ -46,7 +46,11 @@ git branch --show-current 2>/dev/null || echo "unknown"
 date +%Y-%m-%d
 ```
 
-Produce a reflection with **exactly four categories**. Each category has 1-3 items max. Every item must be specific and actionable — no generic platitudes like "always test your code" or "read documentation carefully."
+Produce a reflection with **exactly four categories**. Each category has 1-3 items max.
+
+→ Before finalizing each item → Is this specific enough that a teammate could act on it without asking what I mean? Does it reference a concrete tool, error, function, or behavior?
+  Yes → Keep it.
+  No (e.g., "Testing is important", "Always test your code") → Reject and rewrite with concrete detail.
 
 **Bad example:** "Testing is important"
 **Good example:** "The `stripe.webhooks.constructEvent` function throws if the raw body is parsed as JSON first — always pass the raw Buffer"
@@ -115,7 +119,9 @@ For each `[PENDING]` entry, present it to the user with these options:
 - **Reject** — will be marked [REJECTED] and skipped
 - **Edit** — user provides revised text, then approve. Edited entries follow the same approve flow — the edited text replaces the original in REFLECTION.md before tagging `[APPROVED]`.
 
-Present ONE entry at a time. Wait for the user's response before proceeding to the next.
+→ Presenting entries → Have I received the user's response to the previous entry?
+  No → Wait for input. Do NOT batch multiple entries in one message.
+  Yes → Present the next entry.
 
 ### Step 3: Apply Approved Entries
 
@@ -141,7 +147,8 @@ This step is MANDATORY. It runs every time review mode is invoked, even if there
 
 > "Before we finish, let's review your engram memories for this project. This keeps your cross-session memory accurate."
 
-**4a.** Call `mem_search` with a broad query (e.g., the project name or "*") for this project, limit 20.
+**4a.** → Before continuing engram review → Execute `mem_search` with a broad query (e.g., the project name or "*") for this project, limit 20. Did the call actually execute?
+  No → STOP. You must call it, not assume results.
 
 If `mem_search` fails (engram unavailable), report: "Engram is not reachable — skipping memory review." and end.
 
@@ -149,12 +156,19 @@ If no results, report: "No engram observations found for this project." and end.
 
 **4b.** Filter out any observations whose title starts with `[STALE]` — these were already marked in a previous review.
 
-**4c.** Present each non-stale observation to the user, showing title, type, and a content preview. For each, offer three options:
+**4c.** → Presenting observations → Have I received the user's response to the previous observation?
+  No → Wait for input. Do NOT batch multiple observations in one message.
+  Yes → Present the next observation.
+
+For each non-stale observation, show title, type, and a content preview. Offer three options:
 - **Keep** — no change
 - **Update** — user provides revised text, apply via `mem_update` using the observation's ID
 - **Mark Stale** — call `mem_update` with the observation's ID, prepending `[STALE] ` to the title
 
-**4d.** After reviewing individual observations, look for duplicates or overlapping observations. If found, propose merging: `mem_update` one observation to contain the consolidated content, mark the others stale.
+**4d.** → All observations reviewed → Scan titles and content for 2+ observations covering similar ground.
+  Found duplicates → Propose merging: `mem_update` one to contain consolidated content, mark others stale.
+  No duplicates → Report: "No duplicate observations found."
+  Do NOT skip this scan by claiming "none obvious" — compare each pair.
 
 **4e.** Report summary: "Engram review: N kept, N updated, N marked stale, N merged."
 
@@ -173,7 +187,9 @@ Periodic CLAUDE.md health maintenance. Use when CLAUDE.md feels bloated or month
 3. Flag issues in four categories:
    - **Duplicates** — entries that say the same thing differently
    - **Contradictions** — entries that conflict with each other (newer entry wins)
-   - **Discoverable** — entries that restate what's obvious from the codebase (e.g., "this project uses TypeScript" when `tsconfig.json` exists). Check the codebase before flagging.
+   - **Discoverable** → Before flagging an entry as Discoverable: check if the fact is stated in codebase files (tsconfig.json, package.json, README, etc.) → Is it actually present in the codebase?
+     Yes → Flag as Discoverable.
+     No → Keep the entry.
    - **Verbose** — multi-line entries or paragraphs that could be extracted into a reference file
 4. Report health assessment:
    - Under 30 directives: "Healthy — no action needed unless you see specific issues"
