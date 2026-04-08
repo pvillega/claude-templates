@@ -196,6 +196,12 @@ Apply all approved changes to CLAUDE.md. For extractions:
 2. Write the extracted content into it
 3. Replace the verbose section in CLAUDE.md with the `@path` import
 
+<HARD-GATE>
+
 ### Step 4: Engram Consolidation
 
-Run the same engram review as Review Mode Step 4 (search, present, keep/update/mark stale, merge duplicates, report summary). The same hard gate applies — this step cannot be skipped.
+This step is MANDATORY — the same hard gate as Review Mode Step 4 applies. Do not skip.
+
+Run the same engram review as Review Mode Step 4: call `mem_search` broadly, filter `[STALE]` observations, present each to user (Keep/Update/Mark Stale), propose merging duplicates, report summary.
+
+</HARD-GATE>
