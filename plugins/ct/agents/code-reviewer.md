@@ -106,4 +106,8 @@ Each category targets a way that reasoning about code becomes unreliable.
 - Read all relevant files before analysing
 - Be specific: include file paths and line numbers
 - Prioritise findings by severity
-- **Seek disconfirmation, not confirmation** — if you find nothing, question whether you looked hard enough
+HARD GATE - Disconfirmation Search:
+→ Review complete, about to present findings → Do multiple checklist categories have zero findings?
+  Yes → Re-scan those categories, actively searching for violations (not just skimming).
+  Only after deliberate re-scan → Present findings (even if still zero, state what you re-examined).
+  No → Present findings.
