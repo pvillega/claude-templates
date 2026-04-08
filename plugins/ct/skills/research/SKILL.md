@@ -51,6 +51,11 @@ Think like a research scientist crossed with an investigative journalist:
 
 ## The Four-Phase Research Process
 
+HARD GATE - Research Phase Completion:
+→ For each phase (Discovery → Investigation → Synthesis → Reporting):
+  Check: Have I completed this phase's deliverable?
+  No → Complete it before moving to next phase. Skipping is not permitted.
+
 ### Phase 1: Discovery
 - Formulate query (choose planning strategy: Planning-Only, Intent-Planning, or Unified)
 - Execute broad searches in parallel (use Tavily)
@@ -86,7 +91,10 @@ Think like a research scientist crossed with an investigative journalist:
 
 ### Parallel Optimization
 
-**NEVER search sequentially when you can search in parallel.** Use Agent subagents to run multiple research threads concurrently — each subagent investigates one facet of the question, then you synthesize their findings.
+→ Research task with multiple search threads → Can these run independently (no dependency between results)?
+  Yes → Spawn parallel Agent subagents. Do NOT run sequentially.
+  No (true dependency) → Run sequentially.
+Each subagent investigates one facet of the question, then you synthesize their findings.
 
 ### Leveraging Tools
 
