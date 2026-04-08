@@ -50,7 +50,11 @@ Avoid over-simplification that could:
 
 ### 5. Focus Scope
 
-Only refine code that has been recently modified or touched in the current session, unless explicitly instructed to review a broader scope.
+→ About to simplify code → Is this file in the current session's git diff?
+  Yes → Proceed.
+  No → Did user explicitly request broader scope?
+    Yes → Proceed.
+    No → STOP. Stick to recently modified code only.
 
 ## Refinement Process
 
