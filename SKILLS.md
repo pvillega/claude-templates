@@ -13,7 +13,7 @@ This is the complete inventory of every plugin, skill, agent, command, hook, MCP
   - [Claude Code Setup](#claude-code-setup-1-skill)
   - [Hookify](#hookify-1-skill-1-agent-4-commands)
   - [Skill Creator](#skill-creator-1-skill)
-  - [CT](#ct-14-skills-6-agents)
+  - [CT](#ct-13-skills-6-agents)
   - [Engram](#engram-1-skill-mcp-server)
 - [Global Skills](#global-skills)
   - [Code Quality & Review](#code-quality--review-4-skills)
@@ -141,7 +141,7 @@ Create, modify, and measure skill performance with evals and variance analysis.
 | -------------- | ----- | ------------------------------------------------------------------------ |
 | skill-creator  | skill | Create new skills, modify existing ones, run evals, benchmark performance |
 
-### CT (14 skills, 6 agents)
+### CT (13 skills, 6 agents)
 
 Code quality, security, refactoring, and development workflows.
 
@@ -184,7 +184,7 @@ Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memo
 
 ## Global Skills
 
-**52 skills total** — 32 from plugins (see [Plugins](#plugins) above) and 20 from [skills.sh](https://skills.sh) + tools (below).
+**47 skills total** — 32 from plugins (see [Plugins](#plugins) above) and 15 from [skills.sh](https://skills.sh) + tools (below).
 
 ### Code Quality & Review (4 skills)
 

@@ -89,7 +89,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 |---|---|---|
 | Save a decision or learning | engram | `mem_save` — auto via hooks, or manual |
 | Recall previous work | engram | `mem_search` — searches across all sessions |
-| Reflect on session learnings | /reflect | `/reflect` — generate structured proposals, `/reflect review` — approve into CLAUDE.md |
+| Reflect on session learnings | /reflect | `/reflect` — generate structured proposals, `/reflect review` — approve into CLAUDE.md, `/reflect consolidate` — CLAUDE.md health audit and pruning |
 | Run a command on a schedule | loop | `/loop 5m /foo` — repeats a prompt or slash command at an interval |
 | Schedule remote agents | schedule | `/schedule` — create cron-scheduled agents that run automatically |
 | Navigate code semantically | gabb MCP | Say `find symbol X` or `show structure of file`; auto-used for code navigation |
@@ -105,7 +105,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Configure settings.json | update-config | Say `configure hooks`, `update settings`, or `add automation` |
 | Customize keyboard shortcuts | keybindings-help | Say `rebind keys`, `change shortcuts`, or `customize keybindings` |
 | Create or modify skills | skill-creator | Say `create a skill` or `modify skill` — includes evals and benchmarking |
-| Reflect on session learnings | /reflect | `/reflect` — generate proposals, `/reflect review` — approve into CLAUDE.md |
+| Reflect on session learnings | /reflect | `/reflect` — generate proposals, `/reflect review` — approve into CLAUDE.md, `/reflect consolidate` — CLAUDE.md health audit |
 
 ## Other Domains
 

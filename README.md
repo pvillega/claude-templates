@@ -94,7 +94,7 @@ Plugins are installed from the [Claude marketplace](https://claude.com/plugins).
 | [Skill Creator](https://claude.com/plugins/skill-creator) | 1 skill | Create, modify, and measure skill performance with evals and variance analysis | `/skill-creator` |
 | [Engram](https://github.com/Gentleman-Programming/engram) | 1 skill, MCP server | Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memory (`autoMemoryEnabled: false`) — engram's selective retrieval and automatic decay make it the better choice. | `mem_save`, `mem_search` (auto + manual) |
 
-The **ct** plugin (from this repo) adds 12 skills, 6 agents, and 2 commands for code quality, security, and refactoring workflows. See [SKILLS.md](SKILLS.md) for the complete list. Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
+The **ct** plugin (from this repo) adds 13 skills and 6 agents for code quality, security, and refactoring workflows. See [SKILLS.md](SKILLS.md) for the complete list. Some skills and agents were adapted from [channingwalton/dotfiles](https://github.com/channingwalton/dotfiles).
 
 ## CLI Tools
 
@@ -133,7 +133,7 @@ Two layers of automated security scanning are installed:
 
 ## Skills
 
-This template provides **46 skills total** — 31 from [plugins](#plugins) (Superpowers 14, CT 12, plus Frontend Design, Claude Code Setup, Hookify, Skill Creator, Engram) and 15 global skills from [skills.sh](https://skills.sh) + tools:
+This template provides **47 skills total** — 32 from [plugins](#plugins) (Superpowers 14, CT 13, plus Frontend Design, Claude Code Setup, Hookify, Skill Creator, Engram) and 15 global skills from [skills.sh](https://skills.sh) + tools:
 
 | Category | Count | Sources | Highlights |
 |----------|-------|---------|------------|
