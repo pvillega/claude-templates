@@ -234,6 +234,12 @@ A `SessionStart` hook in `~/.claude/settings.json` automatically loads your shel
 
 The `install.sh` script adds a line to your `~/.bashrc` and/or `~/.zshrc` that exports aliases to `~/.claude/shell-aliases.txt` on every new shell. The hook then reads this file at session start.
 
+**If you install new tools or update aliases**, regenerate the file by running:
+
+```bash
+./export-aliases.sh
+```
+
 **If you use a different shell** (fish, nushell, etc.), add the equivalent of `alias > ~/.claude/shell-aliases.txt` to your shell's config file so the aliases are kept up to date.
 
 ## Other Contents
@@ -243,6 +249,7 @@ The `install.sh` script adds a line to your `~/.bashrc` and/or `~/.zshrc` that e
 - **[install.sh](install.sh)** - Setup script (marketplace, plugins, skills, sandbox settings)
 - **[update.sh](update.sh)** - Updates all installed plugins, skills, and npm packages
 - **[uninstall.sh](uninstall.sh)** - Removes all plugins, skills, tools, settings, and shell aliases
+- **[export-aliases.sh](export-aliases.sh)** - Regenerates `~/.claude/shell-aliases.txt` (run after installing new tools)
 - **[plugins/ct/](plugins/ct/)** - The local Claude Code plugin (skills, commands, agents)
 - **[templates/CLAUDE.md](templates/CLAUDE.md)** - Template project instructions
 - **[templates/statusline.sh](templates/statusline.sh)** - Custom status line (folder, branch, model, context, rate limits, agent/worktree)

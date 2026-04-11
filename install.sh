@@ -364,9 +364,7 @@ configure_shell_alias_export() {
     done
 
     # Generate the file now so the current install works immediately
-    mkdir -p "$HOME/.claude"
-    alias > "$HOME/.claude/shell-aliases.txt" 2>/dev/null || true
-    echo "  Generated ~/.claude/shell-aliases.txt"
+    "$SCRIPT_DIR/export-aliases.sh"
 }
 
 # Adds the 'cl' alias to ~/.bashrc and ~/.zshrc if not already present
