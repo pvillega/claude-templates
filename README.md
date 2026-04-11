@@ -202,6 +202,20 @@ After installing, restart Claude Code. Verify with: check `~/.claude/debug/lates
 
 The sandbox settings enable the experimental **Agent Teams** feature (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`), which allows Claude to coordinate multiple agents working together on complex tasks.
 
+## Thinking Configuration
+
+The sandbox settings configure extended thinking for maximum depth:
+
+| Setting | Value | Effect |
+|---------|-------|--------|
+| `alwaysThinkingEnabled` | `true` | Extended thinking is always on — Claude never skips the thinking step |
+| `thinkingLevel` | `"high"` | Default effort level is high (equivalent to `/effort high` every session) |
+| `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` | `"1"` | Prevents Claude from dynamically lowering thinking effort for "simple" tasks |
+
+Together these ensure Claude always thinks deeply, regardless of perceived task complexity. To temporarily lower effort in a session, use `/effort medium` or `/effort low`.
+
+> **Note:** There is a tier above `high` called **ultrathink**, which removes the thinking budget cap entirely. It cannot be set via `thinkingLevel` or `/effort` — it is triggered per-turn by including "ultrathink" or "megathink" in your prompt.
+
 ## Status Line
 
 A custom status line script (`templates/statusline.sh`) is installed to `~/.claude/statusline.sh` and configured via `sandbox-settings.json`. It displays up to three lines:
