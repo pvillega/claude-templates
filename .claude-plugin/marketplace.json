@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "ct",
-      "version": "1.3.2",
+      "version": "1.3.3",
       "description": "Battle-tested skills, agents, and commands for Claude Code — TDD, debugging, code review, and parallel workflows",
       "source": {
         "source": "git-subdir",
