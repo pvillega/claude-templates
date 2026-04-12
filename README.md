@@ -4,6 +4,8 @@
 
 A curated setup for Claude Code combining **plugins** (from the Claude marketplace) and **skills** (from [skills.sh](https://skills.sh)) with sandbox safety guards. Designed for YOLO mode (`--dangerously-skip-permissions`).
 
+**NOTE:** This may be updated at any time as I tweak things to fit my own workflows, so I recommend you to fork it and adapt it to your own usage patterns.
+
 ## Quick Start
 
 ```bash
@@ -59,7 +61,7 @@ Using agents without restrictions on tools poses some dangers. It could impact f
 
 As a consequence, using Claude Code from your local environment by itself is risky. At this point in time there are multiple alternatives, so this template doesn't enforce any preferences.
 
-What it does, though, it to restrict very dangerous commands (like `git push --force`)
+What it does, though, is to restrict very dangerous commands (like `git push --force`).
 
 ## Setup
 

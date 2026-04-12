@@ -10,7 +10,7 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Start isolated feature work | superpowers:using-git-worktrees | Auto-activated when executing plans |
 | Find available tools/skills | SKILLS.md + this file | Reference docs at repo root |
 
-**HINT**: you can use `hookify` (see [Meta](#meta--setup) section) to add hooks to control behaviours specific to your project. Hooks always execute, unlike `CLAUDE.md` statements, and can be useful if you use non-default build tools or settings.
+**HINT**: you can use `hookify` (see [Meta](#meta--setup) section) to add hooks to control behaviors specific to your project. Hooks always execute, unlike `CLAUDE.md` statements, and can be useful if you use non-default build tools or settings.
 
 **NOTE:** Repository-specific optimization dramatically outperforms general optimization. It is a good idea to run `/claude-automation-recommender` on a project if you haven't done it, and cherry-pick ideas. Just beware it may recommend MCP for which you already have a skill, like Context7.
 
