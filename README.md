@@ -133,13 +133,13 @@ Two layers of automated security scanning are installed:
 
 ## Skills
 
-This template provides **47 skills total** — 32 from [plugins](#plugins) (Superpowers 14, CT 13, plus Frontend Design, Claude Code Setup, Hookify, Skill Creator, Engram) and 15 global skills from [skills.sh](https://skills.sh) + tools:
+This template provides **48 skills total** — 32 from [plugins](#plugins) (Superpowers 14, CT 13, plus Frontend Design, Claude Code Setup, Hookify, Skill Creator, Engram) and 16 global skills from [skills.sh](https://skills.sh) + tools:
 
 | Category | Count | Sources | Highlights |
 |----------|-------|---------|------------|
 | Code Quality & Review | 4 | getsentry/skills | find-bugs, security-review, GHA security, skill-scanner |
 | Web Research & Documentation | 4 | tavily-ai, upstash/context7, kepano | tavily-cli, tavily-map, library docs |
-| Browser Automation | 2 | vercel-labs | agent-browser, dogfood (QA) |
+| Browser Automation | 3 | vercel-labs, anthropics | agent-browser, dogfood (QA), webapp-testing |
 | Databases | 1 | planetscale | PostgreSQL |
 | Knowledge Management | 2 | kepano/obsidian-skills | Obsidian CLI, markdown |
 | UI Components | 1 | shadcn/ui | Component management and debugging |
@@ -209,12 +209,11 @@ The sandbox settings configure extended thinking for maximum depth:
 | Setting | Value | Effect |
 |---------|-------|--------|
 | `alwaysThinkingEnabled` | `true` | Extended thinking is always on — Claude never skips the thinking step |
-| `thinkingLevel` | `"high"` | Default effort level is high (equivalent to `/effort high` every session) |
-| `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` | `"1"` | Prevents Claude from dynamically lowering thinking effort for "simple" tasks |
+| `effortLevel` | `"high"` | Default effort level is high (equivalent to `/effort high` every session) |
 
 Together these ensure Claude always thinks deeply, regardless of perceived task complexity. To temporarily lower effort in a session, use `/effort medium` or `/effort low`.
 
-> **Note:** There is a tier above `high` called **ultrathink**, which removes the thinking budget cap entirely. It cannot be set via `thinkingLevel` or `/effort` — it is triggered per-turn by including "ultrathink" or "megathink" in your prompt.
+> **Note:** There is a tier above `high` called **ultrathink**, which removes the thinking budget cap entirely. It cannot be set via `effortLevel` or `/effort` — it is triggered per-turn by including "ultrathink" or "megathink" in your prompt.
 
 ## Status Line
 

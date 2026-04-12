@@ -41,6 +41,7 @@ readonly SKILLS=(
     "https://github.com/kepano/obsidian-skills --skill obsidian-cli"
     "https://github.com/kepano/obsidian-skills --skill obsidian-markdown"
     "https://github.com/kepano/obsidian-skills --skill defuddle"
+    "https://smithery.ai/skills/anthropics/webapp-testing"
 )
 
 # Claude plugin marketplaces (format: "owner/repo:name")
