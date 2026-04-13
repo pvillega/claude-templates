@@ -211,11 +211,14 @@ The sandbox settings configure extended thinking for maximum depth:
 | Setting | Value | Effect |
 |---------|-------|--------|
 | `alwaysThinkingEnabled` | `true` | Extended thinking is always on — Claude never skips the thinking step |
-| `effortLevel` | `"high"` | Default effort level is high (equivalent to `/effort high` every session) |
+| `effortLevel` | `"high"` | Highest persistent setting (accepts `"low"`, `"medium"`, `"high"` only) |
+| `CLAUDE_CODE_EFFORT_LEVEL` | `"max"` | Env var override that bumps effort to `max` at runtime |
 
-Together these ensure Claude always thinks deeply, regardless of perceived task complexity. To temporarily lower effort in a session, use `/effort medium` or `/effort low`.
+Together these ensure Claude always thinks at maximum depth, regardless of perceived task complexity. To temporarily lower effort in a session, use `/effort medium` or `/effort low`.
 
-> **Note:** There is a tier above `high` called **ultrathink**, which removes the thinking budget cap entirely. It cannot be set via `effortLevel` or `/effort` — it is triggered per-turn by including "ultrathink" or "megathink" in your prompt.
+> **Note:** The `effortLevel` JSON setting does **not** accept `"max"` — only `"low"`, `"medium"`, and `"high"`. The `max` level is available via the `CLAUDE_CODE_EFFORT_LEVEL` environment variable, the `--effort` CLI flag, or the `/effort` session command. The env var takes precedence over the JSON setting when both are present.
+
+> **Note:** Including "ultrathink" or "megathink" in your prompt triggers max-level thinking for that single turn without changing your persistent effort setting. With `CLAUDE_CODE_EFFORT_LEVEL=max` already set, ultrathink has no additional effect.
 
 ## Status Line
 
