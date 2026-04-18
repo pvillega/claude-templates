@@ -21,6 +21,7 @@ readonly TOOLS=(
     "semgrep"
     "tac"
     "tavily"
+    "uv"
     "wcag"
 )
 
