@@ -71,7 +71,9 @@ _setup_gitleaks_hook() {
         git config --global core.hooksPath "$_GITLEAKS_HOOKS_DIR"
     elif [ "$current_hooks_path" != "$_GITLEAKS_HOOKS_DIR" ]; then
         add_warning "core.hooksPath is already set to '$current_hooks_path' (not $_GITLEAKS_HOOKS_DIR). Gitleaks hook will be installed there instead."
-        target_dir="$current_hooks_path"
+        # git config stores ~ literally; expand leading tilde before passing to mkdir
+        # (bash does NOT expand ~ inside variables; would create a literal `~` dir in cwd).
+        target_dir="${current_hooks_path/#\~/$HOME}"
         mkdir -p "$target_dir"
     fi
     local target_hook="$target_dir/pre-commit"
@@ -117,6 +119,8 @@ uninstall_gitleaks() {
     # Clean up the pre-commit hook
     local hooks_path
     hooks_path=$(git config --global core.hooksPath 2>/dev/null || echo "$_GITLEAKS_HOOKS_DIR")
+    # git config stores ~ literally; expand so `test -f` finds the actual file.
+    hooks_path="${hooks_path/#\~/$HOME}"
     local target_hook="$hooks_path/pre-commit"
 
     if [ -f "$target_hook" ]; then
