@@ -43,6 +43,16 @@
             "statusMessage": "Detecting project linters..."
           }
         ]
+      },
+      {
+        "matcher": "startup|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f \"$HOME/.claude/shell-aliases.txt\" ] && echo '## Active Shell Aliases' && cat \"$HOME/.claude/shell-aliases.txt\"",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
