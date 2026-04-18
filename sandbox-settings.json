@@ -2,9 +2,9 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "voiceEnabled": true,
-  "autoMemoryEnabled": false,
+  "autoMemoryEnabled": true,
   "hooks": {
     "SessionStart": [
       {
@@ -60,7 +60,6 @@
       "Bash(git filter-repo:*)",
       "Bash(git update-ref -d:*)"
     ],
-    "ask": [
-    ]
+    "ask": []
   }
 }
