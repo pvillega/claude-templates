@@ -112,6 +112,8 @@ Report: "Lint Guard setup skipped. The `.claude/.no-lint-setup` marker will prev
 
 Stop here — do not proceed to Step 4.
 
+**Scope gate (before Step 4):** List the languages detected in Step 1 literally in your response. Install and configure ONLY for those languages. Do NOT pre-emptively configure languages absent from the project, even if this SKILL.md documents them.
+
 ### Step 4: Install and Configure Linters
 
 For each language the user approved, install the linter and write strict configs.
@@ -710,6 +712,8 @@ Write `.claude/linters.json` with entries for each configured linter, using the 
 ```
 
 ### Step 6: Install Stop Hook
+
+Only install the Stop hook if the user explicitly approved lint-guard in the earlier approval step (Step 3). If they declined or deferred, skip hook installation entirely.
 
 Copy the `lint-on-stop.sh` template to the project and register it:
 

@@ -20,8 +20,9 @@ Before scanning, verify the target is reachable and gather information.
    - If no server found → STOP: "No running server detected. Start your dev server and provide the URL."
 
 2. **Check for OpenAPI/Swagger spec** (enables API-specific scanning):
-   - Try common paths: `/openapi.json`, `/swagger.json`, `/api-docs`, `/docs/openapi.json`, `/api/openapi.json`
-   - If found → note for ZAP API scan mode in Tier 2
+   - **Step 1 — infer likely paths from context.** Detect the framework from response headers (`Server`, `X-Powered-By`), HTML at `/`, or repo files (`package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`). Enumerate the paths conventional for that framework. Examples of current conventions to draw from (NOT an exhaustive list — frameworks add new ones over time, so supplement with anything you know for the detected stack): FastAPI (`/openapi.json`, `/docs/openapi.json`, `/redoc`), Swagger UI (`/swagger.json`, `/api-docs`, `/swagger/v1/swagger.json`), NestJS (`/api`, `/api-json`), Express + swagger-ui-express (`/api-docs`, `/api-docs.json`), Spring (`/v3/api-docs`, `/v2/api-docs`), Django REST Framework (`/openapi`, `/schema`), Laravel + L5-Swagger (`/api/documentation`, `/docs`), ASP.NET (`/swagger/v1/swagger.json`), Stoplight/Redocly/Scalar UIs (`/openapi.yaml`, `/openapi.yml`). If the framework is unknown, start with the generic defaults: `/openapi.json`, `/swagger.json`, `/api-docs`, `/docs/openapi.json`, `/api/openapi.json`.
+   - **Step 2 — probe in order.** Test each candidate with `curl -s -o /dev/null -w "%{http_code}"`. Stop at first HTTP 200. Cap at 10 probe attempts total — if none hit by then, report "no OpenAPI spec found at conventional paths" and move on (do NOT crawl the app to find one).
+   - If found → note the path + content-type for ZAP API scan mode in Tier 2.
 
 3. **Check for authenticated endpoints:**
    - Try a few API paths and look for 401/403 responses

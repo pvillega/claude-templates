@@ -13,14 +13,7 @@ HARD GATE - Task Planning:
   No → STOP. Create tasks before any analysis.
   Yes → Proceed.
 
-**TodoWrite:** Create 28+ items covering:
-1. Data Flow Diagram with trust boundaries (4+ items)
-2. Threat enumeration per STRIDE category (12+ items, 2+ per category)
-3. Risk scoring with DREAD (3+ items)
-4. Controls and mitigations (3+ items)
-5. Verification checkpoint (2+ items)
-6. Write SECURITY-ACTIONS.md with manual actions (2+ items)
-7. Auto-implement automatable fixes (2+ items)
+**TodoWrite:** create one item per phase (minimum 5 items, one per STRIDE phase). Add more items only if the feature has >3 entry points OR >2 trust boundaries. Do NOT pad to 28 for a simple webhook / single-endpoint feature.
 
 ---
 
@@ -305,7 +298,7 @@ Include in this file anything that cannot be automated: infrastructure changes, 
 After writing the actions file, look at the mitigations and identify which ones can be implemented directly in code right now. For each automatable fix:
 
 1. **Plan the implementation** — use available planning skills to create a structured implementation plan for the security controls
-2. **Implement using subagents** — dispatch independent fixes in parallel where possible (e.g., adding rate limiting, input validation schemas, security headers can all be done independently)
+2. **Implement using subagents** — dispatch up to 5 subagents in ONE message, one per independent fix (fixes that touch disjoint files). If >5 fixes, batch sequentially (5 per batch, wait for each batch before dispatching the next). Do NOT dispatch dependent fixes in parallel — the second must see the first's edits.
 3. **Mark completed items** — check off items in `SECURITY-ACTIONS.md` as they are implemented, with a note about what was done
 
 Examples of automatable fixes:

@@ -152,6 +152,8 @@ This step is MANDATORY. It runs every time review mode is invoked, even if there
 **4a.** → Before continuing engram review → Execute `mem_search` with a broad query (e.g., the project name or "*") for this project, limit 20. Did the call actually execute?
   No → STOP. You must call it, not assume results.
 
+This `mem_search` call is the ENTIRE POINT of review mode. It runs even when no pending reflections exist, because stale engram observations accumulate independently of reflections. The mandate is load-bearing; do not skip for 'nothing to do' heuristics.
+
 If `mem_search` fails (engram unavailable), report: "Engram is not reachable — skipping memory review." and end.
 
 If no results, report: "No engram observations found for this project." and end.
@@ -161,6 +163,8 @@ If no results, report: "No engram observations found for this project." and end.
 **4c.** → Presenting observations → Have I received the user's response to the previous observation?
   No → Wait for input. Do NOT batch multiple observations in one message.
   Yes → Present the next observation.
+
+If the search returns >20 observations, present the top 20 by last-updated timestamp and ask the user whether to continue through the remainder. Do not process >20 in one session without explicit confirmation.
 
 For each non-stale observation, show title, type, and a content preview. Offer three options:
 - **Keep** — no change

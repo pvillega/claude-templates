@@ -3,8 +3,8 @@ name: research
 description: >
   Use ONLY when the user explicitly requests multi-source research synthesis with citations
   — e.g., "/ct:research X", "research X in depth with citations", "investigate Y across
-  authoritative sources", "compare approaches and cite sources". Applies scientific methodology
-  with multi-hop reasoning and evidence-based synthesis; uses tavily-cli and WebSearch under the hood.
+  authoritative sources", "compare approaches and cite sources". Applies systematic methodology
+  with multi-hop reasoning and evidence-based synthesis.
   DO NOT trigger for: simple factual questions, single-source lookups, casual "research this"
   one-liners, codebase exploration, or informal fact-finding. For those, use WebSearch /
   tavily-cli / WebFetch directly.
@@ -17,47 +17,32 @@ tools: WebSearch, WebFetch, Agent, Skill, Read, Grep
 
 Use when:
 - User explicitly requests research or investigation (`/ct:research` command)
-- Encountering questions that require exploring multiple sources
-- Needing to synthesize information from diverse sources
-- Current events or real-time information requests
-- Academic or technical research contexts
-- Complex information needs that go beyond your knowledge cutoff
+- Questions that require exploring multiple sources
+- Synthesising information from diverse sources
+- Current events or real-time information beyond your knowledge cutoff
 - Multiple competing claims need verification and synthesis
-
-**Examples:**
-- "Research the latest developments in quantum computing"
-- "Investigate what caused the recent market volatility"
-- "Find out how other companies have solved this architectural problem"
-- "What are the current best practices for X?"
 
 ## When NOT to Use This Skill
 
-Don't use when:
 - Simple factual questions within your knowledge base
 - User explicitly wants just your existing knowledge
-- Code implementation tasks (use other skills like TDD, debugging)
-- The question can be answered by reading local codebase files
+- Code implementation tasks (use TDD, debugging skills)
+- Questions answerable by reading local codebase files
 - Pure brainstorming or ideation (use brainstorming skill)
 
 ## Boundaries (DO NOT)
 
 - **Do NOT write implementation code or code examples** — this skill gathers external knowledge; hand off to implementation skills/agents.
 - **Do NOT make architectural or technology decisions for the user** — present findings neutrally; defer the choice.
-- **Do NOT skip workflow steps or citation requirements** — all four phases are mandatory regardless of query simplicity. Simple queries mean less *time* per step, not fewer steps.
-- **Do NOT provide "best guess" recommendations when authoritative sources are unavailable** — move the gap to the Open Questions section instead of filling with general knowledge.
+- **Do NOT skip workflow steps or citation requirements** — all four phases are mandatory regardless of query simplicity.
+- **Do NOT provide "best guess" recommendations when authoritative sources are unavailable** — move the gap to Open Questions instead.
 - **Do NOT use general-knowledge statements as findings** — every factual claim must cite an authoritative source or be moved to Open Questions.
 
-## Core Approach
+## Hard Caps
 
-Think like a research scientist crossed with an investigative journalist:
-
-- **Apply systematic methodology**, not random searching
-- **Follow evidence chains**, don't cherry-pick convenient results
-- **Question sources critically**, check for bias and credibility
-- **Synthesize findings coherently**, resolve contradictions
-- **Adapt your approach** based on what you discover
-
-**Research is iterative, not linear.** Be prepared to replan based on findings.
+- **Maximum sources per topic: 25** — stop collecting beyond this unless the user explicitly extends.
+- **Maximum depth levels: 2** — do not recursively follow citation trails beyond 2 levels.
+- **Maximum report length: 8000 words** — state this at the top of the report. If research exceeds this, split into sections and deliver in parts.
 
 ## The Four-Phase Research Process
 
@@ -67,154 +52,96 @@ HARD GATE - Research Phase Completion:
   No → Complete it before moving to next phase. Skipping is not permitted.
 
 ### Phase 1: Discovery
-- Restate the question in one sentence; list unknowns; flag blocking assumptions
-- Choose depth: `quick` (single authoritative source), `standard` (2-3 sources cross-referenced), `deep` (multi-hop investigation with contradictions resolved), `exhaustive` (comprehensive survey with confidence levels per claim)
-- Formulate query (choose planning strategy: Planning-Only, Intent-Planning, or Unified)
-- Execute broad searches in parallel (use Tavily)
-- Assess sources (credibility, bias, recency)
-- Self-reflect: confidence level, need to adjust?
+
+- Restate the question in one sentence; list unknowns; flag blocking assumptions.
+- Choose depth: `quick` (1 authoritative source), `standard` (2-3 sources cross-referenced), `deep` (multi-hop with contradictions resolved), `exhaustive` (survey with per-claim confidence).
+- Formulate queries.
+- Execute broad searches in parallel (via `tavily-cli` skill and/or WebSearch).
+- Assess sources: credibility, bias, recency.
+
+Trigger check: If the first batch of searches returns 0 results from authoritative sources (primary/official docs, peer-reviewed, reputable news), reformulate queries with different terms before proceeding to Phase 2.
 
 ### Phase 2: Investigation
-- Apply multi-hop reasoning (entity expansion, temporal progression, conceptual deepening, causal chains)
-- Route extractions (HTML→Tavily, JS→Playwright, docs→Context7, local→native)
-- Collect evidence with citations
-- Self-reflect: answering core question? Gaps? Confidence? Replan if needed.
+
+- Apply multi-hop reasoning: entity expansion, temporal progression, conceptual deepening, causal chains.
+- Route extractions:
+  - Static HTML → WebFetch, or via the `tavily-cli` skill (invoked through the Skill tool).
+  - JavaScript-heavy sites → via the `agent-browser` skill (invoked through the Skill tool).
+  - Library/framework docs → via the `context7-cli` skill (invoked through the Skill tool).
+  - Local files/codebase → Read, Grep.
+- Collect evidence with citations (URL + title + access date).
+
+Trigger check: If any source contradicts another source, state the contradiction in the report and prefer the more authoritative (primary source > secondary > tertiary). Do not silently pick one.
 
 ### Phase 3: Synthesis
-- Connect information across sources
-- Identify patterns, contradictions, gaps
-- Distinguish facts from interpretation
+
+- Connect information across sources.
+- Identify patterns, contradictions, gaps.
+- Distinguish facts from interpretation.
 
 HARD GATE - Citation-or-gap rule:
 → About to include a factual claim in the synthesis → Is this from an authoritative source I can cite?
   Yes → Include with citation.
   No → Am I tempted to say "probably" / "likely" / "typically"? → STOP. Move to Open Questions section instead. Explicitly state the gap rather than filling with general knowledge.
 
-- Self-reflect: synthesis coherent? Evidence sufficient?
+Trigger check: If you have <2 sources for a claim flagged as "key finding", downgrade it to a single-source observation in the report, or move it to Open Questions.
 
 ### Phase 4: Reporting
-- Present findings with confidence levels
-- Cite all sources
-- Acknowledge limitations
-- Provide actionable insights
 
-**Report template (default structure):**
+- Present findings with confidence levels.
+- Cite every factual claim.
+- Acknowledge limitations.
+
+**Report template:**
 
 ```
-🧭 Goal: <one-line restatement of the question>
+Report cap: 8000 words. If research exceeds this, split into sections and deliver in parts.
 
-📊 Findings
-- <bullet>
-- <bullet>
+## Goal
+<one-line restatement of the question>
 
-🔗 Sources
+## Findings
+- <bullet with inline citation [1]>
+- <bullet with inline citation [2]>
+
+## Sources
 | # | URL | Title | Credibility | Note |
 |---|-----|-------|-------------|------|
 
-🚧 Open questions / suggested follow-up
+## Open questions / suggested follow-up
 - <explicit gap or uncertainty>
 ```
 
-## Tool Orchestration Guidelines
-
-### Search Strategy
-
-1. **Start broad**: Use Tavily for initial landscape mapping
-2. **Identify patterns**: Look for recurring authoritative sources
-3. **Go deep**: Extract detailed information from promising sources
-4. **Follow leads**: Investigate interesting connections discovered
-
-### Parallel Optimization
+## Parallel Agent Fan-Out
 
 → Research task with multiple search threads → Can these run independently (no dependency between results)?
-  Yes → Spawn parallel Agent subagents. Do NOT run sequentially.
+  Yes → Dispatch Agent subagents in ONE message, one per independent facet, maximum 10 subagents per batch. If >10 facets, batch sequentially in groups of 10 (wait for each batch before dispatching the next).
   No (true dependency) → Run sequentially.
+
 Each subagent investigates one facet of the question, then you synthesize their findings.
 
-### Leveraging Tools
+## Tool Orchestration
 
-- **WebSearch / WebFetch** — primary tools for web research and content extraction
-- **Tavily skills** — invoke `tavily-cli` via the Skill tool for web search, extract, crawl, and research (if installed)
-- **Agent subagents** — dispatch parallel research threads for independent questions
-- **Browser skills** — invoke `agent-browser` via the Skill tool for JavaScript-heavy sites (if installed)
-
-### Extraction Routing
-
-- **Static HTML** → WebFetch or Tavily extraction (via Skill tool)
-- **JavaScript-heavy sites** → agent-browser skill (via Skill tool)
-- **Local files/codebase** → Native tools (Read, Grep, etc.)
-
-### Learning Integration
-
-- Track successful query formulations
-- Note effective extraction methods
-- Identify reliable source types
-- Apply patterns from similar past research
-- Use memory tools to store valuable findings
+- **WebSearch / WebFetch** — primary for web search and static-page extraction.
+- **`tavily-cli` skill** (invoked through the Skill tool) — richer web search, extract, crawl, deep research.
+- **`context7-cli` skill** (invoked through the Skill tool) — library/framework documentation.
+- **`agent-browser` skill** (invoked through the Skill tool) — JavaScript-heavy sites.
+- **Agent** — parallel research threads for independent questions.
+- **Read, Grep** — local files/codebase.
 
 ## Quality Standards
 
-**Information:** Cross-reference claims | Prefer primary sources | Note publication dates | Assess credibility | Detect bias
+**Information:** cross-reference claims across >=2 sources; prefer primary sources (official docs, post-mortems, peer-reviewed) over secondary (news coverage) over tertiary (blog summaries); note publication dates; flag bias explicitly.
 
-**Synthesis:** Distinguish facts from interpretation | Mark speculation explicitly | Acknowledge contradictions | Assign confidence levels | Show reasoning chains
+**Synthesis:** distinguish facts from interpretation; mark speculation with the word "speculation"; acknowledge contradictions by name; assign confidence levels (high / medium / low) per claim; show reasoning chains.
 
-## Anti-Patterns to Avoid
+## Anti-Patterns
 
 | Anti-Pattern | Correct Approach |
 |--------------|------------------|
-| **Cherry-pick** | Don't stop at first source → Seek contradicting views |
-| **Sequential-crawl** | Don't search one-by-one → Batch queries in parallel |
-| **Speculation-pass** | Don't say "probably" → Cite sources or state uncertainty |
-| **Citation-skip** | Don't claim without sources → Every fact needs attribution |
-| **Confidence-fake** | Don't present uncertainty as fact → State confidence levels |
-| **Replan-resist** | Don't push through dead ends → Reassess when stuck |
-
-## Example Research Flow
-
-**Query:** "What caused the AWS US-EAST-1 outage on December 7, 2021?"
-
-**Phase 1: Discovery**
-- Parallel searches: "AWS outage December 2021", "US-EAST-1 December 7 2021", "AWS post-mortem December 2021"
-- Identified key sources: AWS status page, AWS post-mortem blog, tech news coverage
-- Initial confidence: Medium (event is well-documented)
-
-**Phase 2: Investigation**
-- Entity expansion: AWS → US-EAST-1 → Affected services → Customer impact
-- Temporal progression: Outage timeline → Immediate response → Root cause → Resolution
-- Extracted from: AWS official post-mortem, Ars Technica analysis, Hacker News discussion
-- Evidence: Root cause was internal network congestion during scaling event
-
-**Phase 3: Synthesis**
-- Integrated timeline from multiple sources
-- Identified contradiction: Initial reports blamed "network device issues" vs actual "automated capacity scaling issue"
-- Resolved via AWS official post-mortem (authoritative source)
-- Insight: Shows importance of controlled capacity scaling
-
-**Phase 4: Reporting**
-- Executive summary: Automated network scaling triggered congestion
-- Key findings with citations from AWS blog, tech coverage
-- Confidence: 90% (official post-mortem + corroborating coverage)
-- Limitations: Some customer impact details not publicly available
-
-## Success Criteria
-
-You've done systematic research well when:
-
-- ✅ Original question is answered (or clearly stated why it can't be)
-- ✅ Multiple authoritative sources consulted
-- ✅ Contradictions acknowledged and addressed
-- ✅ Confidence levels explicitly stated
-- ✅ All factual claims have citations
-- ✅ Limitations and gaps clearly identified
-- ✅ Methodology is transparent and reproducible
-- ✅ Reader can assess credibility of findings
-- ✅ Evidence chains are traceable
-- ✅ Balanced representation of viewpoints
-
-## Performance Tips
-
-- **Cache results**: Reuse successful searches for related queries
-- **Batch operations**: Run parallel searches whenever possible
-- **Prioritize sources**: Focus on high-value authoritative sources first
-- **Balance depth**: Don't over-investigate tangential points
-- **Use memory**: Store valuable patterns and findings for future research
+| Cherry-pick | Don't stop at first source — seek contradicting views |
+| Sequential-crawl | Don't search one-by-one — batch queries in parallel (fan-out block above) |
+| Speculation-pass | Don't say "probably" — cite sources or move to Open Questions |
+| Citation-skip | Don't claim without sources — every fact needs attribution |
+| Confidence-fake | Don't present uncertainty as fact — state confidence levels |
+| Replan-resist | Don't push through dead ends — reformulate queries when 0 authoritative results |

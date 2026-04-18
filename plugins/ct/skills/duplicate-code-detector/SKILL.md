@@ -94,7 +94,7 @@ jq '[.clones | group_by(.fragment) | map({fragment: .[0].fragment[0:500], lines:
 
 ### Step 4: Classify and analyze
 
-Dispatch subagents in parallel for all groups above the impact threshold:
+Dispatch subagents in ONE message, one subagent per duplicate group above the impact threshold, maximum 10 subagents per batch. If >10 groups qualify, batch sequentially in groups of 10 (wait for each batch to complete before dispatching the next).
 
 ```
 Analyze this duplicate group:

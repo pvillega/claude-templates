@@ -87,6 +87,8 @@ Work through [edge-cases.md](references/edge-cases.md) comprehensively — compl
 
 ## Phase 5: Summary (📋 SUMMARY)
 
+Keep summary under 30 lines. No preamble.
+
 ```markdown
 ## Test Coverage Summary
 
