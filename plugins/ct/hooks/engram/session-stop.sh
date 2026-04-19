@@ -14,7 +14,7 @@ if [ -z "$SESSION_ID" ]; then
   exit 0
 fi
 
-curl -sf --max-time 3 "${ENGRAM_URL}/sessions/${SESSION_ID}/end" \
+curl -sf "${ENGRAM_URL}/sessions/${SESSION_ID}/end" \
   -X POST \
   -H "Content-Type: application/json" \
   -d '{}' \

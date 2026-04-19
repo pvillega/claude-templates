@@ -23,10 +23,7 @@ PROJECT=$(detect_project "$CWD")
 # Ensure engram server is running
 if ! curl -sf "${ENGRAM_URL}/health" --max-time 1 > /dev/null 2>&1; then
   engram serve &>/dev/null &
-  for i in 1 2 3 4 5; do
-    curl -fsS --max-time 1 "${ENGRAM_URL}/health" >/dev/null 2>&1 && break
-    sleep 0.2
-  done
+  sleep 0.5
 fi
 
 # Migrate project name if it changed (one-time, idempotent)
