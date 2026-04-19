@@ -25,9 +25,11 @@ Do exactly what was asked — no gold-plating, no "while I'm here" additions.
   Yes → Edit, and in response list "touched-but-not-named files: X because Y."
 </literal_task_scope>
 
-<explain_reasoning>
-For non-obvious decisions, show the "why", not just the "what".
-</explain_reasoning>
+<explore_before_coding>
+→ About to write code in an unfamiliar area → Have I read the files that my change will touch or depend on (not just grep'd — read)?
+  No → STOP. Read first, or dispatch a subagent to explore. Do not implement from assumptions.
+  Yes → Name the files/symbols I relied on in the first response after writing code. Proceed.
+</explore_before_coding>
 
 <discover_agents>
 Check for AGENTS.md alongside CLAUDE.md in project directories for agent workflows.
@@ -56,6 +58,10 @@ Check for AGENTS.md alongside CLAUDE.md in project directories for agent workflo
   Yes → STOP. Dispatch fresh subagent with no prior context for objective review.
   No → Proceed inline.
 </subagent_for_objective_verification>
+
+<suggest_clear_between_unrelated_tasks>
+→ User pivots to a task unrelated to the previous one in the same session → Recommend `/clear` before starting. Keeps context focused and prevents cross-task contamination.
+</suggest_clear_between_unrelated_tasks>
 
 ## Plan Convention
 
@@ -100,10 +106,16 @@ HARD GATE - Plan QA Checkpoint:
 → About to write/edit any of: `.env*`, `*.local.json`, `settings.local.json`, `.git/config`, `.git/info/exclude`, `~/.ssh/*`, `credentials*`, `*.pem`, `*.key` → STOP. Read-only. Ask user before any modification (including formatting/whitespace).
 </readonly_config_files>
 
+<delete_only_own_session_work>
 → About to delete code/files/branches → Is this exclusively my changes from this session?
   Yes → Delete.
   No → STOP. Ask user before deleting.
-→ About to delete for type/lint errors → STOP. Ask first (may break other agents).
+</delete_only_own_session_work>
+
+<no_delete_to_satisfy_linter>
+→ About to delete code/files to silence a type or lint error → STOP. Ask first. May break other agents' in-progress work. Fix the error, don't remove the code.
+</no_delete_to_satisfy_linter>
+
 - Quote paths containing `[]()` chars.
 
 ## Validation & Done Criteria
@@ -138,6 +150,12 @@ HARD GATE - Plan QA Checkpoint:
   Yes → State hypothesis, then retry.
 </no_retry_without_hypothesis>
 
+<fix_root_cause>
+→ About to add a try/catch, early-return, conditional, or `skip` flag that silences a failing test / build / runtime error → Have I identified the root cause (not just the failing line)?
+  No → STOP. Diagnose first. Suppressing a symptom without diagnosis hides the real bug.
+  Yes → Fix at the cause, not the symptom.
+</fix_root_cause>
+
 ## Base-Branch Fidelity
 
 <no_silent_revert_against_base>
@@ -151,10 +169,6 @@ HARD GATE - Plan QA Checkpoint:
   Matches elsewhere → Fix all, report count.
   Only one instance → Fix it, state "audited N other diffed files, no other instances."
 </audit_same_mistake_across_branch>
-
-<match_existing_patterns>
-→ Implementing feature that may have patterns in main/develop → Before coding: read existing pattern from main/develop (specific file, specific code) → Am I reproducing it exactly or inventing a variant? Variant → STOP. Ask user before proceeding. Exact match → Proceed.
-</match_existing_patterns>
 
 ## Code Editing
 
@@ -173,3 +187,9 @@ HARD GATE - Plan QA Checkpoint:
   Yes → Read and iterate that source. Do NOT duplicate items inline.
   No → Inline OK, but add a comment linking where the canonical list should live.
 </no_hardcoded_enumerations>
+
+<no_compat_shims>
+→ About to add a backward-compat wrapper, re-export, `_unused`-renamed var, or `// removed:` comment for code this branch is deleting → Is there a live caller outside this diff that requires the shim?
+  No → Delete outright. Shims for non-existent callers are dead weight; `git log` preserves history.
+  Yes → Keep the shim AND document the caller in a site-local comment on the shim itself.
+</no_compat_shims>
