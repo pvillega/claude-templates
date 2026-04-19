@@ -73,6 +73,17 @@ The [install.sh](install.sh) script installs plugins, skills, sandbox settings, 
 
 Use `--clean` for a fresh install when you want to remove stale configuration that might not be properly overridden. The `--dry-run` flag lets you preview what would be deleted before committing.
 
+### Optional Tools
+
+At the end of every install, `install.sh` scans `tools/optional/*.sh` and offers a numbered menu of opt-in installers. Non-interactive runs honour `INSTALL_OPTIONAL=all|<csv>|<empty>` (e.g. `INSTALL_OPTIONAL=lean,postgres_mcp ./install.sh`). Failures in an optional installer warn but never abort the main install.
+
+Currently shipped:
+
+| Script | What it installs | Notes |
+|--------|-----------------|-------|
+| `tools/optional/lean.sh` | [lean-lsp-mcp](https://github.com/cameronfreer/lean-lsp-mcp) at user scope + `cameronfreer/lean4-skills` marketplace + `lean4` plugin + `lake build` PostToolUse hook | For Lean 4 projects. Requires `uv` + `rg` + `jq` + `claude` on PATH. Hook only fires when a `lakefile.lean` is present. |
+| `tools/optional/postgres_mcp.sh` | Prereq check + `uvx` cache pre-warm for [postgres-mcp](https://github.com/crystaldba/postgres-mcp) | Does **not** register the MCP at user scope (load-in-every-project cost). Prints the exact `claude mcp add --scope local` command and `DATABASE_URI` convention for per-project opt-in. |
+
 ### API Keys
 
 Tavily requires an API key. You can configure it via:
@@ -116,6 +127,8 @@ The installer sets up the following CLI tools, used by Claude Code for enhanced 
 | [agent-browser](https://github.com/vercel-labs/agent-browser) | AI-first browser automation (50+ commands) | npm + browser install |
 | [Engram](https://github.com/Gentleman-Programming/engram) | Persistent memory for AI agents (SQLite + FTS5) | Homebrew |
 | [Gabb](https://github.com/gabb-software/gabb-cli) | Local code indexer for semantic code understanding (MCP server) | Homebrew |
+| [uv](https://github.com/astral-sh/uv) | Fast Python package/project manager (required by optional lean-lsp-mcp and postgres-mcp) | Homebrew |
+| [tac](https://www.gnu.org/software/coreutils/) | Reverse-cat used by anti-rationalization hook (macOS only — Linux ships it via coreutils) | Homebrew (coreutils) |
 | [axe-core CLI](https://github.com/dequelabs/axe-core) + [Pa11y](https://github.com/pa11y/pa11y) | WCAG accessibility auditing (runtime + batch) | npm |
 | [Nuclei](https://github.com/projectdiscovery/nuclei) + [ZAP](https://www.zaproxy.org/) | DAST security scanning (fast + deep) | Homebrew + Docker |
 | [Semgrep](https://semgrep.dev) | OSS SAST scanner (PostToolUse security scanning via ct plugin hook) | Homebrew |
@@ -230,9 +243,9 @@ The context bar and rate limits are color-coded: green (< 70%), yellow (70–89%
 
 ## Shell Alias Awareness
 
-A `SessionStart` hook in `~/.claude/settings.json` automatically loads your shell aliases into Claude's context at the start of every session. This prevents issues where Claude uses a command (e.g., `grep`) that is aliased to a different tool (e.g., `rg`) with incompatible flags.
+A `SessionStart` hook owned by the `ct` plugin automatically loads your shell aliases into Claude's context at the start of every session. This prevents issues where Claude uses a command (e.g., `grep`) that is aliased to a different tool (e.g., `rg`) with incompatible flags.
 
-The `install.sh` script adds a line to your `~/.bashrc` and/or `~/.zshrc` that exports aliases to `~/.claude/shell-aliases.txt` on every new shell. The hook then reads this file at session start.
+The `install.sh` script adds a line to your `~/.bashrc` and/or `~/.zshrc` that exports aliases to `~/.claude/shell-aliases.txt` on every new shell. The hook reads that file (kept outside the plugin so it survives plugin updates and reinstalls) at session start.
 
 **If you install new tools or update aliases**, regenerate the file by running:
 
@@ -241,6 +254,12 @@ The `install.sh` script adds a line to your `~/.bashrc` and/or `~/.zshrc` that e
 ```
 
 **If you use a different shell** (fish, nushell, etc.), add the equivalent of `alias > ~/.claude/shell-aliases.txt` to your shell's config file so the aliases are kept up to date.
+
+## Remote Notifications (ntfy.sh)
+
+The `ct` plugin ships `Stop` and `Notification` hooks that POST to [ntfy.sh](https://ntfy.sh) so you get a push notification (mobile app, browser at https://ntfy.sh/app, or CLI subscriber) when Claude finishes a turn or blocks waiting for input. Designed for tmux-over-SSH workflows where `osascript` or terminal bells don't reach you.
+
+`install.sh` auto-generates a random topic of the form `claude-$USER-<16-hex>` and writes it to `NTFY_TOPIC` inside the `env` block of `~/.claude/settings.json`. Subscribe on your device to that topic URL to start receiving events. The hook silently no-ops when `NTFY_TOPIC` is unset, so removing the entry disables notifications without further changes.
 
 ## Other Contents
 

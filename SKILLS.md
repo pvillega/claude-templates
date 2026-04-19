@@ -9,6 +9,8 @@ This is the complete inventory of every plugin, skill, agent, command, hook, MCP
   - [Frontend Design](#frontend-design-1-skill)
   - [Code Review](#code-review-5-agents-1-command)
   - [Security Guidance](#security-guidance-1-hook)
+  - [Security Scanning](#security-scanning-1-hook)
+  - [Remote Notifications](#remote-notifications-1-hook)
   - [Commit Commands](#commit-commands-3-commands)
   - [Claude Code Setup](#claude-code-setup-1-skill)
   - [Hookify](#hookify-1-skill-1-agent-4-commands)
@@ -24,6 +26,7 @@ This is the complete inventory of every plugin, skill, agent, command, hook, MCP
   - [Code Navigation](#code-navigation-1-skill)
 - [MCP Servers](#mcp-servers)
 - [CLI Tools](#cli-tools)
+- [Optional Tools](#optional-tools)
 
 ---
 
@@ -92,6 +95,16 @@ Automatic SAST scanning on file edits using Semgrep OSS.
 | Name             | Type | Description                                                                  |
 | ---------------- | ---- | ---------------------------------------------------------------------------- |
 | semgrep-on-edit  | hook | PostToolUse hook on Edit/Write — runs semgrep scan, blocks on findings. Skip with `SKIP_SEMGREP=1` |
+
+### Remote Notifications (1 hook)
+
+Push notifications via ntfy.sh on turn end and when Claude blocks for input.
+
+**Source:** ct plugin
+
+| Name       | Type | Description                                                                    |
+| ---------- | ---- | ------------------------------------------------------------------------------ |
+| ntfy-notify | hook | `Stop` + `Notification` hook that POSTs to ntfy.sh. No-op when `NTFY_TOPIC` unset. `install.sh` auto-registers a random topic (`claude-$USER-<16-hex>`) in `~/.claude/settings.json`. |
 
 ### Commit Commands (3 commands)
 
@@ -261,7 +274,18 @@ Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memo
 | agent-browser           | AI-first browser automation (50+ commands)           | npm + browser install     |
 | Engram                  | Persistent memory for AI agents (SQLite + FTS5)      | Homebrew                  |
 | Gabb                    | Local code indexer for semantic code understanding   | Homebrew                  |
+| uv                      | Fast Python package/project manager (used by optional lean-lsp-mcp and postgres-mcp) | Homebrew |
+| tac                     | Reverse-cat used by anti-rationalization hook (macOS gets it via coreutils + symlink) | Homebrew (coreutils) |
 | axe-core + pa11y        | WCAG accessibility auditing (runtime + batch)        | npm                       |
 | Nuclei + ZAP            | DAST security scanning (fast + deep)                 | Homebrew + Docker          |
 | Semgrep                 | OSS SAST scanner (PostToolUse security scanning)     | Homebrew                   |
 | Gitleaks                | Secret detection via global git pre-commit hook      | Homebrew                   |
+
+### Optional Tools
+
+Selected at install time via the `tools/optional/*.sh` menu (or `INSTALL_OPTIONAL=...`). None run by default.
+
+| Script | Installs | Scope |
+| ------ | -------- | ----- |
+| `tools/optional/lean.sh` | [lean-lsp-mcp](https://github.com/cameronfreer/lean-lsp-mcp) + `cameronfreer/lean4-skills` marketplace + `lean4` plugin + `lake build` PostToolUse hook | User-scope MCP; hook fires only when a `lakefile.lean` is present |
+| `tools/optional/postgres_mcp.sh` | Prereq check + `uvx` cache pre-warm for [postgres-mcp](https://github.com/crystaldba/postgres-mcp); prints the exact `claude mcp add --scope local` command and `DATABASE_URI` convention | Per-project opt-in (intentionally not registered at user scope) |
