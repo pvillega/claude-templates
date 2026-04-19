@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
-# jscpd (copy/paste detector) - install, update, and uninstall via npm
+# jscpd (copy/paste detector) - install, update, and uninstall via Homebrew
 # Requires: critical_error, add_warning functions from parent script
-
-_npm_install_jscpd() {
-    npm install -g jscpd@latest
-}
 
 install_jscpd() {
     echo "Checking for jscpd..."
@@ -15,9 +11,13 @@ install_jscpd() {
         return 0
     fi
 
-    echo "jscpd not found. Installing..."
-    if ! _npm_install_jscpd; then
-        critical_error "Failed to install jscpd"
+    echo "jscpd not found. Installing jscpd via Homebrew..."
+    if ! brew install jscpd; then
+        critical_error "Failed to install jscpd via Homebrew"
+    fi
+
+    if ! command -v jscpd &> /dev/null; then
+        critical_error "jscpd installation appeared to succeed but jscpd command is still not available"
     fi
 
     echo "jscpd installed successfully"
@@ -31,19 +31,18 @@ update_jscpd() {
         return 0
     fi
 
-    if _npm_install_jscpd; then
-        echo "jscpd updated successfully"
-    else
-        add_warning "Failed to update jscpd"
-    fi
+    brew upgrade jscpd 2>/dev/null || echo "jscpd already up to date"
+    echo "jscpd update complete"
 }
 
 uninstall_jscpd() {
     echo "Removing jscpd..."
 
-    if ! npm uninstall -g jscpd 2>/dev/null; then
-        add_warning "Failed to uninstall jscpd"
+    if ! command -v jscpd &> /dev/null; then
+        echo "jscpd is not installed, nothing to remove"
+        return 0
     fi
 
+    brew uninstall jscpd 2>/dev/null || add_warning "Failed to uninstall jscpd via Homebrew"
     echo "jscpd removal complete"
 }

@@ -2,27 +2,8 @@
 
 # Tavily CLI - install, update, and uninstall functions
 # Requires: critical_error, add_warning functions from parent script
-# Uses pipx for safe installation (avoids PEP 668 issues on Ubuntu 24+, modern macOS)
-
-_ensure_pipx() {
-    if command -v pipx &> /dev/null; then
-        return 0
-    fi
-
-    # brew is a prerequisite for this script (validated in install.sh)
-    echo "pipx not found, installing via brew..."
-    if ! brew install pipx; then
-        return 1
-    fi
-    pipx ensurepath 2>/dev/null || true
-
-    # Ensure pipx bin dir is on PATH for the current session
-    # (ensurepath only modifies rc files, doesn't affect the running shell)
-    local pipx_bin="${PIPX_BIN_DIR:-$HOME/.local/bin}"
-    if [[ ":$PATH:" != *":$pipx_bin:"* ]]; then
-        export PATH="$pipx_bin:$PATH"
-    fi
-}
+# Uses `uv tool` (installed via tools/uv.sh, sourced first alphabetically) to
+# avoid PEP 668 issues on Ubuntu 24+ / modern macOS without needing pipx.
 
 install_tavily() {
     echo "Checking for Tavily CLI..."
@@ -32,14 +13,19 @@ install_tavily() {
         return 0
     fi
 
-    echo "Tavily CLI not found. Installing via pipx..."
-
-    if ! _ensure_pipx; then
-        critical_error "Failed to install pipx (required for Tavily CLI)"
+    if ! command -v uv &> /dev/null; then
+        critical_error "uv not found (expected from tools/uv.sh); cannot install Tavily CLI"
     fi
 
-    if ! pipx install tavily-cli; then
+    echo "Tavily CLI not found. Installing via uv tool..."
+    if ! uv tool install tavily-cli; then
         critical_error "Failed to install Tavily CLI"
+    fi
+
+    # uv installs binaries under ~/.local/bin; ensure it's on PATH for this session
+    local uv_bin="$HOME/.local/bin"
+    if [[ ":$PATH:" != *":$uv_bin:"* ]]; then
+        export PATH="$uv_bin:$PATH"
     fi
 
     if ! command -v tvly &> /dev/null; then
@@ -57,12 +43,12 @@ update_tavily() {
         return 0
     fi
 
-    if ! _ensure_pipx; then
-        add_warning "pipx not available, cannot update Tavily CLI"
+    if ! command -v uv &> /dev/null; then
+        add_warning "uv not available, cannot update Tavily CLI"
         return 0
     fi
 
-    if pipx upgrade tavily-cli; then
+    if uv tool upgrade tavily-cli; then
         echo "Tavily CLI updated successfully"
     else
         add_warning "Failed to update Tavily CLI"
@@ -77,13 +63,12 @@ uninstall_tavily() {
         return 0
     fi
 
-    # Try pipx uninstall first, fall back to manual removal
-    if command -v pipx &> /dev/null && pipx uninstall tavily-cli 2>/dev/null; then
-        echo "Tavily CLI removed via pipx"
+    if command -v uv &> /dev/null && uv tool uninstall tavily-cli 2>/dev/null; then
+        echo "Tavily CLI removed via uv tool"
         return 0
     fi
 
-    # Manual fallback for non-pipx installations
+    # Manual fallback if uv is gone or the install was not uv-managed
     local tavily_path
     tavily_path=$(command -v tvly 2>/dev/null)
     if [ -n "$tavily_path" ]; then
