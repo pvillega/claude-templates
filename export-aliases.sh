@@ -9,5 +9,7 @@ set -euo pipefail
 
 mkdir -p "$HOME/.claude"
 TARGET="$HOME/.claude/shell-aliases.txt"
-alias > "$TARGET" 2>/dev/null || true
+# Aliases are shell-local: this script's bash subshell has none of the user's.
+# Spawn the user's login shell in interactive mode so rc files define aliases.
+"${SHELL:-zsh}" -ic 'alias' >"$TARGET" 2>/dev/null || true
 echo "Generated $TARGET"
