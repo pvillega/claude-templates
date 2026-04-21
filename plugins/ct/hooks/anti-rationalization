@@ -34,10 +34,25 @@ if [[ -z "$TRANSCRIPT" || ! -f "$TRANSCRIPT" ]]; then
   exit 0
 fi
 
-# Extract the last assistant message from the JSONL transcript
+# Extract the most recent assistant text content block from the JSONL transcript.
+# Notes on the filter:
+#   - Role lives at `.message.role`; top-level `.role` is null (checked against
+#     Claude Code's JSONL schema). The old filter `select(.role == "assistant")`
+#     silently matched nothing, so the hook was a no-op.
+#   - Each content block (text/thinking/tool_use) is its own JSONL line. At
+#     PreToolUse time the most recent assistant line is the pending tool_use
+#     itself, so we have to walk back past tool_use/thinking blocks and match
+#     on the most recent `text` block.
+# `-c` (not `-r`) emits each text block as a single JSON-encoded line so
+# `head -n 1` picks one whole block instead of truncating multi-line text at
+# the first newline. Substring matching against the JSON-quoted form still
+# works for the patterns below (they contain no escape-sensitive chars).
 LAST_MSG=$(tac "$TRANSCRIPT" \
-  | jq -r 'select(.role == "assistant") | .message.content // empty' 2>/dev/null \
-  | head -1)
+  | jq -c 'select(.message.role == "assistant")
+           | .message.content[]?
+           | select(.type == "text")
+           | .text' 2>/dev/null \
+  | head -n 1)
 
 if [[ -z "$LAST_MSG" ]]; then
   exit 0
