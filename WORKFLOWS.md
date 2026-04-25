@@ -111,11 +111,71 @@ Task-driven guide for finding the right tool, skill, or command. Organized by wh
 | Create or modify skills | skill-creator | Say `create a skill` or `modify skill` — includes evals and benchmarking |
 | Reflect on session learnings | /reflect | `/reflect` — generate proposals, `/reflect review` — approve into CLAUDE.md, `/reflect consolidate` — CLAUDE.md health audit |
 
+## Deep-Operational Skills
+
+These ct skills load **only** when the task is about runtime tuning, incident diagnosis, or footguns — not day-to-day usage. Each `SKILL.md` lists explicit trigger phrases; the highlights below are a navigation aid.
+
+### Databases & data stores
+
+| Skill | Triggers on |
+|---|---|
+| `ct:postgres` | autovacuum lag, table bloat, MVCC, xid wraparound, replication lag, WAL/checkpoint tuning, PgBouncer sizing, deadlock diagnosis |
+| `ct:redis` | redis OOM, AOF rewrite, eviction policy, SLOWLOG/LATENCY, cluster slot migration, Streams vs Pub/Sub, fragmentation, Valkey fork |
+| `ct:sqlite-wal` | SQLITE_BUSY, WAL checkpoint, `journal_mode`, multi-process gotchas, FTS5/JSON1, Litestream/LiteFS replication |
+
+### Infrastructure & orchestration
+
+| Skill | Triggers on |
+|---|---|
+| `ct:kubernetes` | OOMKilled, CrashLoopBackOff, ImagePullBackOff, Pending pod, NetworkPolicy not blocking, PVC stuck Terminating, PDB/HPA tuning |
+| `ct:argocd` | sync wave, presync/postsync hook, out-of-sync drift, ApplicationSet generator, AppProject scoping, multi-cluster registration |
+| `ct:terraform-opentofu` | state drift, `import`/`moved`/`removed` blocks, count↔for_each migration, backend migration, post-1.5.5 fork divergence |
+| `ct:hetzner` | server-type taxonomy (cx/cpx/ccx/cax/ax), IPv4 cost, floating IP guest aliasing, hcloud, cloud-init, Robot vs Cloud |
+| `ct:coolify` | nixpacks build, magic `SERVICE_*` vars, env-var precedence, Traefik label generation, preview deployments |
+| `ct:docker-buildkit` | buildx driver, `RUN --mount` cache/secret/ssh, cache export/import, multi-platform with QEMU, distroless/scratch, attestations |
+| `ct:github-actions` | concurrency group, OIDC federation (AWS/GCP/Azure), matrix include/exclude, expression injection, `pull_request_target` |
+| `ct:traefik` | provider precedence, ACME challenge fails, middleware ordering, v2→v3 migration, certResolver storage, OTLP migration |
+| `ct:systemd` | stuck activating, restart loop, `Type=notify`, cgroup v2 resource control, hardening directives, journald filtering |
+
+### Observability
+
+| Skill | Triggers on |
+|---|---|
+| `ct:grafana` | high cardinality cost, PromQL/LogQL pitfalls, recording vs alerting rules, alert state stuck, exemplars, Tempo |
+| `ct:opentelemetry` | trace not propagating, head- vs tail-sampling, semantic-convention stability, OTLP gRPC vs HTTP, collector pipeline ordering |
+
+### Languages
+
+| Skill | Triggers on |
+|---|---|
+| `ct:golang` | GOMEMLIMIT/GOGC, GOMAXPROCS in containers, goroutine leak, escape analysis, pprof mutex/block, govulncheck reachability |
+| `ct:rust` | lifetime variance, Pin/Unpin, tokio scheduler quirk, Send/Sync auto-traits, miri, allocator swap, no_std |
+| `ct:c-language` | undefined behavior, ASan/UBSan/TSan/MSan finding, Valgrind, strict aliasing, alignment, ABI quirks |
+| `ct:uv-python` | `uv lock`, `uv workspace`, `[tool.uv.sources]`, build-isolation, managed Python toolchains, link-modes, CI patterns |
+| `ct:bash-hardening` | `set -euo pipefail` gotcha, IFS/word-splitting, `[[ ]]` vs `(( ))`, trap inheritance, ShellCheck SC2155 / SC2016 etc. |
+
+### Security & networking
+
+| Skill | Triggers on |
+|---|---|
+| `ct:secrets-management` | sops `.sops.yaml` rules, Vault auth methods, ESO `ExternalSecret`, kubeseal scopes, KMS provider config, rotation patterns |
+| `ct:tls-openssl` | `s_client` handshake forensics, chain incomplete, ACME challenge fails, OCSP stapling, mTLS, PEM/DER/PKCS#12 conversion |
+
+### ML / AI
+
+| Skill | Triggers on |
+|---|---|
+| `ct:pytorch` | `torch.compile` graph break / recompile, CUDA OOM, FSDP2 vs DDP, AMP/bfloat16, Profiler+Kineto, NaN/anomaly mode |
+| `ct:llm-inference-serving` | vLLM throughput / KV-cache OOM, PagedAttention, continuous batching, prefill/decode disagg, quantization tradeoffs |
+| `ct:cuda-gpu-ops` | Xid codes, NCCL hang, MIG vs MPS vs time-slicing, NVLink/IB topology, Nsight Systems/Compute, dcgm fields |
+| `ct:fine-tuning-llms` | LoRA/QLoRA rank, DPO/IPO/KTO/ORPO/SimPO/GRPO selection, chat-template footguns, completion-only loss, contamination |
+| `ct:vector-search` | HNSW (M, efConstruction, efSearch), IVF (nlist, nprobe), PQ/SQ/BQ, distance-metric correctness, pgvector halfvec |
+| `ct:rag-ops` | chunking strategy, contextual retrieval, 2026 embeddings, cross-encoder vs ColBERT rerankers, hybrid + RRF, RAGAS |
+| `ct:classical-ml-pitfalls` | data/target/group/temporal leakage, StratifiedGroupKFold, TimeSeriesSplit gap, ColumnTransformer fit, calibration |
+| `ct:dl-training` | LR schedule (cosine vs WSD), AdamW/Lion/Muon/Schedule-Free, decoupled weight decay, μP, NaN forensics |
+| `ct:time-series-ml` | walk-forward/rolling-origin CV, ADF+KPSS stationarity, multi-seasonal STL/MSTL, MASE, foundation models (TimeGPT/Chronos/Moirai) |
+
 ## Other Domains
-
-### Databases
-
-`ct:postgres` — deep PostgreSQL **operational** guide (MVCC, autovacuum, WAL, replication, PgBouncer, deadlock diagnosis). Triggers only on operational keywords ("autovacuum lag", "replication lag", "xid wraparound", "table bloat", etc.). Does NOT trigger on ordinary SQL writing or schema-first design — 4.7 handles those.
 
 ### Obsidian
 

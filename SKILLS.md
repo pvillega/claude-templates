@@ -15,7 +15,7 @@ This is the complete inventory of every plugin, skill, agent, command, hook, MCP
   - [Claude Code Setup](#claude-code-setup-1-skill)
   - [Hookify](#hookify-1-skill-1-agent-4-commands)
   - [Skill Creator](#skill-creator-1-skill)
-  - [CT](#ct-18-skills-7-agents)
+  - [CT](#ct-47-skills-7-agents)
   - [Engram](#engram-1-skill-mcp-server)
 - [Global Skills](#global-skills)
   - [Code Quality & Review](#code-quality--review-4-skills)
@@ -153,11 +153,18 @@ Create, modify, and measure skill performance with evals and variance analysis.
 | -------------- | ----- | ------------------------------------------------------------------------ |
 | skill-creator  | skill | Create new skills, modify existing ones, run evals, benchmark performance |
 
-### CT (18 skills, 7 agents)
+### CT (47 skills, 7 agents)
 
-Code quality, security, refactoring, triage, and development workflows.
+Code quality, security, refactoring, triage, and deep operational guides for languages, infra, observability, and ML.
 
 **Source:** this repo (`plugins/ct/`)
+
+The CT skill set splits into two layers:
+
+- **Workflow skills** — language- and tool-agnostic process discipline (TDD review loops, refactoring, threat modeling, triage). Triggered by user intent.
+- **Deep-operational skills** — narrow, high-density guides that load ONLY when the task is about runtime tuning, incident diagnosis, or footguns the model is shallow on. They do NOT trigger on day-to-day usage of the same tool. See trigger phrases inside each `SKILL.md`.
+
+#### Workflow skills (17)
 
 | Name                      | Type    | Description                                                                    |
 | ------------------------- | ------- | ------------------------------------------------------------------------------ |
@@ -173,19 +180,78 @@ Code quality, security, refactoring, triage, and development workflows.
 | lint-guard                | skill   | Set up strict complexity linting — 17 languages, auto-detection, Stop hook     |
 | mutation-testing          | skill   | Diff-scoped mutation testing — Stryker, mutmut, cargo-mutants, PIT             |
 | performance-optimization  | skill   | Baseline, profile, optimize backend/API/database performance                   |
-| postgres                  | skill   | Deep PostgreSQL operational guide — MVCC, autovacuum, WAL, replication, pooling |
 | reflect                   | skill   | Self-reflection after work sessions — structured proposals with review gate    |
 | research                  | skill   | Systematic research with scientific methodology and evidence-based synthesis   |
 | stacktrace-triage         | skill   | Parse stack traces, separate user vs library frames, ranked top-3 hypothesis tree (read-only) |
 | threat-modeling           | skill   | STRIDE framework threat analysis for auth, payments, APIs, webhooks            |
 | wcag-audit                | skill   | WCAG accessibility auditing — static analysis + axe-core runtime               |
-| code-reviewer             | agent   | Autonomous code review seeking disconfirmation — best practices, security, performance |
-| code-simplifier           | agent   | Simplify code for clarity while preserving functionality                       |
-| debugger                  | agent   | Autonomous runtime failure debugger — root-cause diagnosis for errors, test failures, flaky tests |
-| evaluator                 | agent   | Dynamic QA — runs the app, tests UX flows, scores criteria                     |
-| fixer                     | agent   | Targeted minimal fixes for critical review findings, verifies tests pass       |
-| refactor-scan             | agent   | Code quality coach — guides refactoring decisions post-TDD                     |
-| security-auditor          | agent   | Autonomous code-level security auditor — OWASP Top 10, STRIDE, file:line evidence (read-only) |
+
+#### Deep-operational: languages (5)
+
+| Name           | Type  | Description                                                                                              |
+| -------------- | ----- | -------------------------------------------------------------------------------------------------------- |
+| bash-hardening | skill | `set -euo pipefail` traps, IFS/quoting, `[[ ]]` vs `(( ))`, trap inheritance, ShellCheck edge cases       |
+| c-language     | skill | Undefined behavior, sanitizers (ASan/UBSan/TSan/MSan), Valgrind, strict aliasing, alignment, ABI quirks  |
+| golang         | skill | Race detector, GC tuning (GOGC/GOMEMLIMIT), pprof/trace, goroutine leak, govulncheck, GOMAXPROCS         |
+| rust           | skill | Borrow checker patterns, lifetime variance, Pin/Unpin, tokio scheduler, Send/Sync, miri, no_std          |
+| uv-python      | skill | uv project model, lockfile semantics, workspaces, `[tool.uv.sources]`, managed Python toolchains, CI     |
+
+#### Deep-operational: infra & orchestration (9)
+
+| Name               | Type  | Description                                                                                              |
+| ------------------ | ----- | -------------------------------------------------------------------------------------------------------- |
+| argocd             | skill | Sync waves, ApplicationSet generators, drift root causes, AppProject scoping, multi-cluster              |
+| coolify            | skill | Control-plane vs destination, build-pack detection (Nixpacks/Dockerfile), env-var precedence, Traefik labels |
+| docker-buildkit    | skill | Frontend pinning, `RUN --mount` (cache/secret/ssh), cache backends, multi-platform, attestations         |
+| github-actions     | skill | Concurrency groups, OIDC federation, matrix include/exclude, expression injection, `pull_request_target` |
+| hetzner            | skill | Cloud vs Robot vs Storage Box, server-type taxonomy (cx/cpx/ccx/cax/ax), IPv4 cost, hcloud, cloud-init   |
+| kubernetes         | skill | QoS/eviction, scheduler diagnosis, pod lifecycle, NetworkPolicy, PV/PVC, rollouts/PDB/HPA, etcd          |
+| systemd            | skill | Unit dependencies, `Type=`, restart-throttle math, cgroup v2, hardening directives, journald, triage     |
+| terraform-opentofu | skill | State mechanics, `import`/`moved`/`removed` blocks, count↔for_each migration, post-1.5.5 fork divergence |
+| traefik            | skill | Provider precedence, ACME debugging, middleware ordering, v2→v3 migration, OTLP, certResolver storage    |
+
+#### Deep-operational: observability & data stores (5)
+
+| Name          | Type  | Description                                                                                              |
+| ------------- | ----- | -------------------------------------------------------------------------------------------------------- |
+| grafana       | skill | Prometheus/Mimir cardinality cost, PromQL/LogQL pitfalls, alert state, exemplars, Tempo, provisioning    |
+| opentelemetry | skill | Propagator selection, head- vs tail-based sampling, semantic conventions, OTLP transport, collector pipelines |
+| postgres      | skill | MVCC, autovacuum, WAL/checkpoints, streaming/logical replication, PgBouncer, deadlock diagnosis          |
+| redis         | skill | RDB/AOF persistence, eviction policies, SLOWLOG/LATENCY/MEMORY, cluster vs Sentinel, Streams, Valkey fork|
+| sqlite-wal    | skill | WAL mechanics, checkpointing, locking, FTS5/JSON1, pragma tuning, Litestream/LiteFS/rqlite replication   |
+
+#### Deep-operational: security & networking (2)
+
+| Name                | Type  | Description                                                                                              |
+| ------------------- | ----- | -------------------------------------------------------------------------------------------------------- |
+| secrets-management  | skill | sops+age, KMS, Vault, Sealed Secrets, ESO, k8s native; rotation patterns, threat boundaries, leak detection |
+| tls-openssl         | skill | `s_client` handshake forensics, chain validation, ACME, OCSP stapling, mTLS, PEM/DER/PKCS#12 conversion  |
+
+#### Deep-operational: ML / AI (9)
+
+| Name                   | Type  | Description                                                                                              |
+| ---------------------- | ----- | -------------------------------------------------------------------------------------------------------- |
+| classical-ml-pitfalls  | skill | Leakage taxonomy, CV correctness (Stratified/Group/TimeSeriesSplit), Pipeline composition, calibration   |
+| cuda-gpu-ops           | skill | nvidia-smi/dcgm, NCCL tuning, MIG vs MPS, NVLink/IB, Nsight Systems/Compute, Xid codes                   |
+| dl-training            | skill | Init (Xavier/He/Fixup), AdamW/Lion/Muon, weight-decay correctness, cosine vs WSD, μP, NaN forensics      |
+| fine-tuning-llms       | skill | LoRA/QLoRA, DPO/IPO/KTO/ORPO/SimPO/GRPO, chat-template footguns, completion-only loss, contamination     |
+| llm-inference-serving  | skill | vLLM V1, SGLang RadixAttention, TensorRT-LLM, KV-cache math, continuous batching, quantization           |
+| pytorch                | skill | `torch.compile` diagnosis, FSDP2 vs DDP, AMP/bfloat16, DataLoader tuning, Profiler+Kineto, NaN forensics |
+| rag-ops                | skill | Chunking, contextual retrieval, 2026 embeddings, rerankers (cross-encoder/ColBERT), hybrid + RRF, RAGAS  |
+| time-series-ml         | skill | Walk-forward CV with gap, ADF+KPSS, multi-seasonal STL/MSTL, foundation models 2024-26, MASE             |
+| vector-search          | skill | HNSW (M/efConstruction/efSearch) and IVF (nlist/nprobe) tuning, PQ/SQ/BQ, distance-metric correctness    |
+
+#### Agents (7)
+
+| Name             | Type  | Description                                                                                              |
+| ---------------- | ----- | -------------------------------------------------------------------------------------------------------- |
+| code-reviewer    | agent | Autonomous code review seeking disconfirmation — best practices, security, performance                   |
+| code-simplifier  | agent | Simplify code for clarity while preserving functionality                                                 |
+| debugger         | agent | Autonomous runtime failure debugger — root-cause diagnosis for errors, test failures, flaky tests        |
+| evaluator        | agent | Dynamic QA — runs the app, tests UX flows, scores criteria                                               |
+| fixer            | agent | Targeted minimal fixes for critical review findings, verifies tests pass                                 |
+| refactor-scan    | agent | Code quality coach — guides refactoring decisions post-TDD                                               |
+| security-auditor | agent | Autonomous code-level security auditor — OWASP Top 10, STRIDE, file:line evidence (read-only)            |
 
 ### Engram (1 skill, MCP server)
 
@@ -202,7 +268,7 @@ Persistent memory across sessions via SQLite + FTS5. Disables built-in auto-memo
 
 ## Global Skills
 
-**50 skills total** — 37 from plugins (see [Plugins](#plugins) above) and 13 from [skills.sh](https://skills.sh) + tools (below).
+**79 skills total** — 66 from plugins (see [Plugins](#plugins) above) and 13 from [skills.sh](https://skills.sh) + tools (below).
 
 ### Code Quality & Review (4 skills)
 
