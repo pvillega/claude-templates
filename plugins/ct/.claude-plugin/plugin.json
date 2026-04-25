@@ -1,7 +1,7 @@
 {
   "name": "ct",
   "description": "Battle-tested skills, agents, and commands for Claude Code — TDD, systematic debugging, code review, and more.",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "author": {
     "name": "Pere Villega",
     "url": "https://github.com/pvillega"
